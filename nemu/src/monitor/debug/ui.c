@@ -68,6 +68,26 @@ static int cmd_info(char *args){
   }
   return 0;
 }
+
+static int cmd_x(char *args){
+  char *arg1 = strtok(NULL," ");
+  char *arg2 = strtok(NULL," ");
+  if(arg1==NULL){
+		printf("Usage: x [n][address]\n");
+  }
+  else if (arg2==NULL){
+		printf("Usage: x [n][address]\n");
+  }
+  else{
+		int times=atoi(arg1);
+		if(!times) printf("Usage: x [n][address]\n");
+		else{
+			//int i=0;
+			//for(i;i<times;i++)
+		}
+  }
+  return 0;
+}
 static int cmd_help(char *args);
 
 static struct {
@@ -79,7 +99,8 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si","Usage: si [n]\nStep N instructions.",cmd_si },
-  { "info","Usage: info [r][w]\n Generic command for showing things about the program being debugged.", cmd_info  },
+  { "info","Usage: info [r][w]\nGeneric command for showing things about the program being debugged.", cmd_info  },
+  { "x","Usage: x [n][address]\nExamine memory. ",cmd_x },
   /* TODO: Add more commands */
 
 };
