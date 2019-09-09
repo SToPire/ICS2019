@@ -88,7 +88,6 @@ static int cmd_x(char *args){
 			uint32_t i;
 			for(i=0;i<times;i++){
 				printf("0x%x: 0x%02x\n",addr_head+i,paddr_read(addr_head+i,1));
-
 			}
 		}
   }
