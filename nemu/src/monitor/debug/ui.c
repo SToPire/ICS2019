@@ -79,10 +79,11 @@ static int cmd_x(char *args){
 		printf("Usage: x [n][address]\n");
   }
   else{
-		int times=atoi(arg1);
-		if(!times) printf("Usage: x [n][address]\n");
+		uint32_t times=atoi(arg1);
+		uint32_t addr_head=atoi(arg2+2);/* cut off "0x" in beginning */
+		if(!times || !addr_head) printf("Usage: x [n][address]\n");
 		else{
-			//int i=0;
+			//uin32_t i=0;
 			//for(i;i<times;i++)
 		}
   }
