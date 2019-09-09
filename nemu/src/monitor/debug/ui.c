@@ -80,7 +80,8 @@ static int cmd_x(char *args){
   }
   else{
 		uint32_t times=atoi(arg1);
-		uint32_t addr_head=atoi(arg2+2);/* cut off "0x" in beginning */
+		uint32_t addr_head=0;
+		sscanf(arg2,"0x%x",&addr_head);
 		if(!times || !addr_head) printf("Usage: x [n][address]\n");
 		else{
 			uint32_t i;
