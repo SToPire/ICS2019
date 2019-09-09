@@ -83,8 +83,10 @@ static int cmd_x(char *args){
 		uint32_t addr_head=atoi(arg2+2);/* cut off "0x" in beginning */
 		if(!times || !addr_head) printf("Usage: x [n][address]\n");
 		else{
-			//uin32_t i=0;
-			//for(i;i<times;i++)
+			uint32_t i;
+			for(i=0;i<times;i++){
+				printf("0x%10x: 0x%x\n",addr_head+i,paddr_read(addr_head+i,1));
+			}
 		}
   }
   return 0;
