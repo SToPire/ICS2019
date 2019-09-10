@@ -86,8 +86,8 @@ static int cmd_x(char *args){
 		if(!times || !addr_head) printf("Usage: x [n][address]\n");
 		else{
 			uint32_t i;
-			for(i=0;i<times;i+=4){
-				printf("0x%x: 0x%08x\n",addr_head+i,vaddr_read(addr_head+i,4));
+			for(i=0;i<times;i++){
+				printf("0x%x: 0x%08x\n",addr_head+4*i,vaddr_read(addr_head+i,4));
 			}
 		}
   }
