@@ -45,7 +45,7 @@ static int cmd_si(char *args){
   }
   else{
 		int num = atoi(arg);
-		if(!num) printf("Invalid argument! Only positive integer allowd.\n");
+		if(!num) printf("Invalid argument! Only positive integer allowed.\n");
 		else cpu_exec(num);
   }
   return 0;
