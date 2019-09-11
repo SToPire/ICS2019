@@ -96,13 +96,13 @@ static int cmd_x(char *args){
 
 static int cmd_p(char *args)
 {
-  char *arg = strtok(NULL," ");
-  if(arg==NULL){
+  printf("%s",args);
+  if(args==NULL){
 	  printf("Usage: p [expr]\n");
   }
   else{
 	  bool success;
-	  expr(arg,&success);
+	  expr(args,&success);
   }
   return 0;
 }
