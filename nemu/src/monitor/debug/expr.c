@@ -117,15 +117,15 @@ static bool make_token(char *e) {
 			default: TODO();
         }
 
-		/* FOR DEBUG */
-		int i;
-		for(i=0;i<nr_token;i++){
-			printf("tokens[%d]: type=%d str=%s\n",i,tokens[nr_token].type,tokens[nr_token].str);
-		}
-		/* FOR DEBUG */
-
         break;
       }
+
+	/* FOR DEBUG */
+	int i;
+	for(i=0;i<nr_token;i++){
+		printf("tokens[%d]: type=%d str=%s\n",i,tokens[nr_token].type,tokens[nr_token].str);
+	}
+	/* FOR DEBUG */
     }
 
     if (i == NR_REGEX) {
