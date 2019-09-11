@@ -28,8 +28,8 @@ static struct rule {
   {"\\*", '*'},  		// multiply
   {"/", '/'},			// divide
   {"==", TK_EQ},        // equal
-  {"^0*$",TK_ZERO},		// zero
-  {"^0*[1-9][0-9]*$",TK_NUM},		// num
+  {"0*",TK_ZERO},		// zero
+  {"0*[1-9][0-9]*",TK_NUM},		// num
   
 };
 
@@ -126,7 +126,6 @@ static bool make_token(char *e) {
       return false;
     }
   }
-		printf("%d",nr_token);
 		/* FOR DEBUG */
 		int iii;
 		for(iii=0;iii<nr_token;iii++){
