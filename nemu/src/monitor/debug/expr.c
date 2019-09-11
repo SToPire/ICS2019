@@ -108,11 +108,10 @@ static bool make_token(char *e) {
 						 strcpy(tokens[nr_token].str,"0");
 						 ++nr_token;
 						 break;
-			case TK_NUM: printf("ENTER");
-						 tokens[nr_token].type=TK_NUM;
+			case TK_NUM: tokens[nr_token].type=TK_NUM;
 						 while(*substr_start==0){ ++substr_start; --substr_len; } //delete 0 in prefix
 						 sprintf(tokens[nr_token].str,"%.*s",substr_len,substr_start);
-						 ++nr_token;
+						 ++nr_token;printf("%d",nr_token);
 						 break;
 			default: TODO();
         }
