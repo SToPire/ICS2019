@@ -93,6 +93,15 @@ static int cmd_x(char *args){
   }
   return 0;
 }
+
+static int cmd_p(char *args)
+{
+  char *arg = strtok(NULL," ");
+  bool success;
+  expr(arg,&success);
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -106,6 +115,7 @@ static struct {
   { "si","Usage: si [n]\nStep N instructions.",cmd_si },
   { "info","Usage: info [r][w]\nGeneric command for showing things about the program being debugged.", cmd_info  },
   { "x","Usage: x [n][address]\nExamine memory. ",cmd_x },
+  { "p","Usage: p [expr]\n print the value of a expression.",cmd_p},
   /* TODO: Add more commands */
 
 };
