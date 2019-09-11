@@ -120,12 +120,6 @@ static bool make_token(char *e) {
         break;
       }
 
-	/* FOR DEBUG */
-	int i;
-	for(i=0;i<nr_token;i++){
-		printf("tokens[%d]: type=%d str=%s\n",i,tokens[nr_token].type,tokens[nr_token].str);
-	}
-	/* FOR DEBUG */
     }
 
     if (i == NR_REGEX) {
@@ -134,6 +128,12 @@ static bool make_token(char *e) {
     }
   }
 
+		/* FOR DEBUG */
+		int iii;
+		for(iii=0;iii<nr_token;iii++){
+			printf("tokens[%d]: type=%d str=%s\n",iii,tokens[nr_token].type,tokens[nr_token].str);
+		}
+		/* FOR DEBUG */
   return true;
 }
 
