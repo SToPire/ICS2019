@@ -27,6 +27,8 @@ static struct rule {
   {"-" , '-'},			// sub
   {"\\*", '*'},  		// multiply
   {"/", '/'},			// divide
+  {"\\(", '(' },		// left bracket
+  {"\\)", ')' },		// right bracket
   {"==", TK_EQ},        // equal
   {"0*[1-9][0-9]*",TK_NUM},		// num
   
@@ -100,6 +102,14 @@ static bool make_token(char *e) {
 					  ++nr_token;
 					  break;
 			case '/': tokens[nr_token].type='/';
+					  strcpy(tokens[nr_token].str,"");
+					  ++nr_token;
+					  break;
+			case '(': tokens[nr_token].type='(';
+					  strcpy(tokens[nr_token].str,"");
+					  ++nr_token;
+					  break;
+			case ')': tokens[nr_token].type=')';
 					  strcpy(tokens[nr_token].str,"");
 					  ++nr_token;
 					  break;
