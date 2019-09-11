@@ -86,7 +86,6 @@ static bool make_token(char *e) {
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
-printf("%d",rules[i].token_type);
         switch (rules[i].token_type) {
 			case TK_NOTYPE: break;
 			case '+': tokens[nr_token].type='+';
@@ -109,7 +108,8 @@ printf("%d",rules[i].token_type);
 						 strcpy(tokens[nr_token].str,"0");
 						 ++nr_token;
 						 break;
-			case TK_NUM: tokens[nr_token].type=TK_NUM;
+			case TK_NUM: printf("ENTER");
+						 tokens[nr_token].type=TK_NUM;
 						 while(*substr_start==0){ ++substr_start; --substr_len; } //delete 0 in prefix
 						 sprintf(tokens[nr_token].str,"%.*s",substr_len,substr_start);
 						 ++nr_token;
