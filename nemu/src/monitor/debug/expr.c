@@ -105,6 +105,7 @@ static bool make_token(char *e) {
 					  break;
 			case TK_NUM: tokens[nr_token].type=TK_NUM;
 						 while(*substr_start==0 && substr_len>1){ ++substr_start; --substr_len; } //delete 0 in prefix
+		printf("%d\n",substr_len);
 						 sprintf(tokens[nr_token].str,"%.*s",substr_len,substr_start);
 						 ++nr_token;
 						 break;
