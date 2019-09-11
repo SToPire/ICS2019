@@ -111,7 +111,7 @@ static bool make_token(char *e) {
 			case TK_NUM: tokens[nr_token].type=TK_NUM;
 						 while(*substr_start==0){ ++substr_start; --substr_len; } //delete 0 in prefix
 						 sprintf(tokens[nr_token].str,"%.*s",substr_len,substr_start);
-						 ++nr_token;printf("%d",nr_token);
+						 ++nr_token;
 						 break;
 			default: TODO();
         }
@@ -126,7 +126,7 @@ static bool make_token(char *e) {
       return false;
     }
   }
-
+		printf("%d",nr_token);
 		/* FOR DEBUG */
 		int iii;
 		for(iii=0;iii<nr_token;iii++){
