@@ -105,6 +105,10 @@ static bool make_token(char *e) {
 					  strcpy(tokens[nr_token].str,"");
 					  ++nr_token;
 					  break;
+			case TK_ZERO:tokens[nr_token].type=TK_NUM;
+						 strcpy(tokens[nr_token].str,"0");
+						 ++nr_token;
+						 break;
 			case TK_NUM: tokens[nr_token].type=TK_NUM;
 						 while(*substr_start==0){ ++substr_start; --substr_len; } //delete 0 in prefix
 						 sprintf(tokens[nr_token].str,"%.*s",substr_len,substr_start);
