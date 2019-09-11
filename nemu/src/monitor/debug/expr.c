@@ -28,7 +28,7 @@ static struct rule {
   {"\\*", '*'},  		// multiply
   {"/", '/'},			// divide
   {"==", TK_EQ},        // equal
-  {"^(0|[1~9][0~9]*)$",TK_NUM},		// num
+  {"^(0|[1-9][0-9]*)$",TK_NUM},		// num
   
 };
 
