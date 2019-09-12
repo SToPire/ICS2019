@@ -187,7 +187,7 @@ uint32_t eval(int p,int q){
 			return 0;
 		}										// illegal expression
 		else if(v==-1){
-			int op=find_main_operator(p,q);	printf("op=%d\n",op);// legal, but p & q don't match
+			int op=find_main_operator(p,q);		// legal, but p & q don't match
 			uint32_t val1=eval(p,op-1);
 			uint32_t val2=eval(op+1,q);
 			switch(tokens[op].type){
