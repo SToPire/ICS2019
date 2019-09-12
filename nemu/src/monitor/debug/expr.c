@@ -186,7 +186,7 @@ uint32_t eval(int p,int q){
 		}
 	}
 	else{
-		int v=check_parentheses(p,q);printf("v=%d",v);
+		int v=check_parentheses(p,q);printf("v=%d\n",v);
 		if(v==1) return eval(p+1,q-1); 			// match brackets
 		else if(v==0){
 			printf("Bad Expression!\n");
