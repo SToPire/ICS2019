@@ -5,6 +5,7 @@
  */
 #include <sys/types.h>
 #include <regex.h>
+#include <stdlib.h>
 
 enum {
   TK_NOTYPE = 256, TK_EQ,TK_NUM
@@ -139,6 +140,78 @@ static bool make_token(char *e) {
 		/* FOR DEBUG */
   return true;
 }
+
+int check_parentheses(int p, int q){
+	int i;
+	int cnt=0;
+	bool flag=false;
+	for(i=p;i<=q;i++){
+		if(tokens[i].type=='(') ++cnt;
+		else if(tokens[i].type==')') --cnt;
+		if(cnt<0) return 0;
+		if((cnt==0 && (i!=p && i!=q))) flag=true;
+	}
+	if(!cnt) return 0;
+	else if(flag) return -1;
+	else if(tokens[p].type=='(' && tokens[q].type==')') return 1;
+	return 2;
+}
+
+int find_main_operator(int p,int q){
+	bool in_brackets=false;
+	int now='*';
+	int ans=0;
+	int i;
+	for(i=p;i<=q;i++){
+		if(tokens[i].type=='(') in_brackets=true;
+		else if(tokens[i].type==')') in_brackets=false;
+		else if((tokens[i].type=='*' || tokens[i].type=='/')
+					&& now=='*' && !in_brackets)  ans=i;
+		else if((tokens[i].type=='*' || tokens[i].type=='/')
+					&& !in_brackets){ ans=i;now='+';}
+	}
+	return ans;
+}
+
+uint32_t eval(int p,int q){
+	if(p>q){
+		printf("Bad Expression!\n");
+		return 0;
+	}
+	else if(p==q){
+		if(tokens[p].type==TK_NUM) return atoi(tokens[p].str);
+		else{
+			printf("Bad Expression!\n");
+			return 0;
+		}
+	}
+	else{
+		int v=check_parentheses(p,q);
+		if(v==1) return eval(p+1,q-1); 			// match brackets
+		else if(v==0){
+			printf("Bad Expression!\n");
+			return 0;
+		}										// illegal expression
+		else if(v==-1){
+			int op=find_main_operator(p,q);	// legal, but p & q don't match
+			uint32_t val1=eval(p,op-1);
+			uint32_t val2=eval(op+1,q);
+			switch(tokens[op].type){
+				case '+':return val1 + val2;
+				case '-':return val1 - val2;
+				case '*':return val1 * val2;
+				case '/':return val1 / val2;
+			}
+		}
+	}
+	return 0;
+}
+
+
+
+
+
+
 
 uint32_t expr(char *e, bool *success) {
   if (!make_token(e)) {
