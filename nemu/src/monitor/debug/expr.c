@@ -214,6 +214,7 @@ uint32_t expr(char *e, bool *success) {
     return 0;
   }
   if(*success){
+		  printf("I am here\n");
 	printf("%d",eval(0,nr_token));
   }
 
