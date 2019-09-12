@@ -132,12 +132,6 @@ static bool make_token(char *e) {
       return false;
     }
   }
-		/* FOR DEBUG 
-		int iii;
-		for(iii=0;iii<nr_token;iii++){
-			printf("tokens[%d]: type=%d str=%s\n",iii,tokens[iii].type,tokens[iii].str);
-		}
-		 FOR DEBUG */
   return true;
 }
 
@@ -154,7 +148,7 @@ int check_parentheses(int p, int q){
 	if(cnt) return 0;
 	else if(flag) return -1;
 	else if(tokens[p].type=='(' && tokens[q].type==')') return 1;
-	return 2;
+	return 23333; //will not be executed forever, just for pass the compliation.
 }
 
 int find_main_operator(int p,int q){
@@ -186,7 +180,7 @@ uint32_t eval(int p,int q){
 		}
 	}
 	else{
-		int v=check_parentheses(p,q);printf("v=%d\n",v);
+		int v=check_parentheses(p,q);
 		if(v==1) return eval(p+1,q-1); 			// match brackets
 		else if(v==0){
 			printf("Bad Expression!\n");
@@ -213,13 +207,6 @@ uint32_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-  
-		  printf("%d\n",nr_token);
-	printf("%d",eval(0,nr_token-1));
-  
-
-  /* TODO: Insert codes to evaluate the expression. */
-  //TODO();
-
+  printf("%d",eval(0,nr_token-1));
   return 0;
 }
