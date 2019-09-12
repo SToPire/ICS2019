@@ -132,12 +132,12 @@ static bool make_token(char *e) {
       return false;
     }
   }
-		/* FOR DEBUG */
+		/* FOR DEBUG 
 		int iii;
 		for(iii=0;iii<nr_token;iii++){
 			printf("tokens[%d]: type=%d str=%s\n",iii,tokens[iii].type,tokens[iii].str);
 		}
-		/* FOR DEBUG */
+		 FOR DEBUG */
   return true;
 }
 
