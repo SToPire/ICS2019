@@ -151,7 +151,7 @@ int check_parentheses(int p, int q){
 		if(cnt<0) return 0;
 		if((cnt==0 && (i!=p && i!=q))) flag=true;
 	}
-	if(!cnt) return 0;
+	if(cnt) return 0;
 	else if(flag) return -1;
 	else if(tokens[p].type=='(' && tokens[q].type==')') return 1;
 	return 2;
