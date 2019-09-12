@@ -152,13 +152,13 @@ int check_parentheses(int p, int q){
 }
 
 int find_main_operator(int p,int q){
-	bool in_brackets=false;
+	int in_brackets=0; // wrapped in how many levels of brackets
 	int now='*';
 	int ans=0;
 	int i;
 	for(i=p;i<=q;i++){
-		if(tokens[i].type=='(') in_brackets=true;
-		else if(tokens[i].type==')') in_brackets=false;
+		if(tokens[i].type=='(') ++in_brackets;
+		else if(tokens[i].type==')') --in_brackets;
 		else if((tokens[i].type=='*' || tokens[i].type=='/')
 					&& now=='*' && !in_brackets)  ans=i;
 		else if((tokens[i].type=='+' || tokens[i].type=='-')
