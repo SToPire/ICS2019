@@ -167,7 +167,7 @@ int find_main_operator(int p,int q){
 		else if(tokens[i].type==')') in_brackets=false;
 		else if((tokens[i].type=='*' || tokens[i].type=='/')
 					&& now=='*' && !in_brackets)  ans=i;
-		else if((tokens[i].type=='*' || tokens[i].type=='/')
+		else if((tokens[i].type=='+' || tokens[i].type=='-')
 					&& !in_brackets){ ans=i;now='+';}
 	}
 	return ans;
