@@ -158,8 +158,13 @@ int find_main_operator(int p,int q){
 		else if(tokens[i].type==')') --in_brackets;
 		else if((tokens[i].type=='*' || tokens[i].type=='/')
 					&& now=='*' && !in_brackets)  ans=i;
-		else if((tokens[i].type=='+' || tokens[i].type=='-')
-					&& !in_brackets){ ans=i;now='+';}
+		else if((tokens[i].type=='+')
+					&& !in_brackets){ans=i;now='+';}
+		else if(tokens[i].type=='-' && !in_brackets && i!=p 
+					&& tokens[i-1].type!='+'
+					&& tokens[i-1].type!='-'
+					&& tokens[i-1].type!='*'
+					&& tokens[i-1].type!='/'){ans=i;now='+';}
 	}
 	return ans;
 }
@@ -176,6 +181,7 @@ uint32_t eval(int p,int q){
 			return 0;
 		}
 	}
+	else if(tokens[p].type=='-') return -eval(p+1,q);
 	else{
 		int v=check_parentheses(p,q);
 		if(v==1) return eval(p+1,q-1); 			// match brackets
