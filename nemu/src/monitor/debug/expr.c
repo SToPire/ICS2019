@@ -156,6 +156,10 @@ int check_parentheses(int p, int q){
 }
 
 int find_main_operator(int p,int q){
+		/*
+		 *	return -1:	no main operator found in the expression
+		 *	return i: 	main operator found in tokens[i]
+		 */
 	int in_brackets=0; // wrapped in how many levels of brackets
 	int now='*';
 	int ans=-1;
@@ -188,8 +192,9 @@ uint32_t eval(int p,int q){
 			return 0;
 		}
 	}
+	/* */
 	else if(tokens[p].type=='-' && ((q-p==1 || check_parentheses(p+1,q)==1))) return -eval(p+1,q);
-	else if(tokens[p].type=='-' && check_parentheses(p+1,q)==-1 && find_main_operator(p+1,q)==-1) return -eval(p+1,q);
+	//else if(tokens[p].type=='-' && check_parentheses(p+1,q)==-1 && find_main_operator(p+1,q)==-1) return -eval(p+1,q);
 	else{
 		int v=check_parentheses(p,q);
 		if(v==1) return eval(p+1,q-1); 			// match brackets
