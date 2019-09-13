@@ -151,7 +151,7 @@ int check_parentheses(int p, int q){
 int find_main_operator(int p,int q){
 	int in_brackets=0; // wrapped in how many levels of brackets
 	int now='*';
-	int ans=0;
+	int ans=-1;
 	int i;
 	for(i=p;i<=q;i++){
 		if(tokens[i].type=='(') ++in_brackets;
@@ -182,6 +182,7 @@ uint32_t eval(int p,int q){
 		}
 	}
 	else if(tokens[p].type=='-' && (q-p==1 || check_parentheses(p+1,q)==1)) return -eval(p+1,q);
+	else if(tokens[p].type=='-' && check_parentheses(p+1,q)==-1 && find_main_operator(p+1,q)==-1) return -eval(p+1,q);
 	else{
 		int v=check_parentheses(p,q);
 		if(v==1) return eval(p+1,q-1); 			// match brackets
