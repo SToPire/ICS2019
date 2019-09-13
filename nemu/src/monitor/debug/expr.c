@@ -135,17 +135,16 @@ static bool make_token(char *e) {
 int check_parentheses(int p, int q){
 	int i;
 	int cnt=0;
-	bool flag=false;
+//	bool flag=false;
 	for(i=p;i<=q;i++){
 		if(tokens[i].type=='(') ++cnt;
 		else if(tokens[i].type==')') --cnt;
 		if(cnt<0) return 0;
-		if((cnt==0 && (i!=p && i!=q))) flag=true;
+//		if((cnt==0 && (i!=p && i!=q))) flag=true;
 	}
 	if(cnt) return 0;
-	else if(flag) return -1;
 	else if(tokens[p].type=='(' && tokens[q].type==')') return 1;
-	return 23333; //will not be executed forever, just for pass the compliation.
+	else return -1;
 }
 
 int find_main_operator(int p,int q){
