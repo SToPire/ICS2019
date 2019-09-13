@@ -133,6 +133,7 @@ static bool make_token(char *e) {
 }
 
 int check_parentheses(int p, int q){
+	while(tokens[p].type=='-') ++p;
 	int i;
 	int cnt=0;
 	bool flag=false;
@@ -145,7 +146,6 @@ int check_parentheses(int p, int q){
 	if(cnt) return 0;
 	else if(flag) return -1;
 	else if(tokens[p].type=='(' && tokens[q].type==')') return 1;
-	else if(q-p<=2) return -1;
 	return 23333; //will not be executed forever, just for pass the compliation.
 }
 
@@ -183,7 +183,7 @@ uint32_t eval(int p,int q){
 		}
 	}
 	else if(tokens[p].type=='-' && ((q-p==1 || check_parentheses(p+1,q)==1))) return -eval(p+1,q);
-	else if(tokens[p].type=='-' && check_parentheses(p+1,q)==-1 && find_main_operator(p,q)==-1) return -eval(p+1,q);
+	else if(tokens[p].type=='-' && check_parentheses(p+1,q)==-1 && find_main_operator(p+1,q)==-1) return -eval(p+1,q);
 	else{
 		int v=check_parentheses(p,q);
 		if(v==1) return eval(p+1,q-1); 			// match brackets
