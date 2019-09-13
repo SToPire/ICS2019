@@ -134,6 +134,7 @@ static bool make_token(char *e) {
 
 int check_parentheses(int p, int q){
 	while(tokens[p].type=='-') ++p;
+	if(p==q && tokens[p].type==TK_NUM) return -1;
 	int i;
 	int cnt=0;
 	bool flag=false;
