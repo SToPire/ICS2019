@@ -192,9 +192,7 @@ uint32_t eval(int p,int q){
 			return 0;
 		}
 	}
-	/* */
 	else if(tokens[p].type=='-' && ((q-p==1 || check_parentheses(p+1,q)!=0))) return -eval(p+1,q);
-	//else if(tokens[p].type=='-' && check_parentheses(p+1,q)==-1 && find_main_operator(p+1,q)==-1) return -eval(p+1,q);
 	else{
 		int v=check_parentheses(p,q);
 		if(v==1) return eval(p+1,q-1); 			// match brackets
