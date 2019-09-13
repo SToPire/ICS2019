@@ -133,6 +133,7 @@ static bool make_token(char *e) {
 }
 
 int check_parentheses(int p, int q){
+	if(q-p<=2) return -1;
 	int i;
 	int cnt=0;
 	bool flag=false;
