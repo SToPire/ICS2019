@@ -221,6 +221,6 @@ uint32_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-  printf("%d\n",eval(0,nr_token-1));
+  printf("%u\n",eval(0,nr_token-1));
   return 0;
 }
