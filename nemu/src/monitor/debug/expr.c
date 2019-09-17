@@ -215,6 +215,7 @@ uint32_t eval(int p,int q){
 				case '/':return (uint32_t)((uint32_t)val1 / val2);
 			}
 		}
+printf("%d",v);
 	}
 	return 23333; //will not be executed forever, just for pass the compliation.
 }
