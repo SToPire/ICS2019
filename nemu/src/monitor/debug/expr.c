@@ -31,7 +31,7 @@ static struct rule {
   {"\\(", '(' },		// left bracket
   {"\\)", ')' },		// right bracket
   {"==", TK_EQ},        // equal
-  {"0*[1-9]*",TK_NUM},		// num
+  {"0*[1-9][0-9]*",TK_NUM},		// num
   
 };
 
