@@ -156,7 +156,7 @@ int check_parentheses(int p, int q){
 	if(cnt) return 0;
 	else if(flag) return -1;
 	else if(tokens[p].type=='(' && tokens[q].type==')') return 1;
-	return 23333; //will not be executed forever, just for pass the compliation.
+	else return 0;
 }
 
 int find_main_operator(int p,int q){
@@ -215,7 +215,6 @@ uint32_t eval(int p,int q){
 				case '/':return (uint32_t)((uint32_t)val1 / val2);
 			}
 		}
-printf("%d",v);
 	}
 	return 23333; //will not be executed forever, just for pass the compliation.
 }
