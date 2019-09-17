@@ -17,8 +17,14 @@ static inline void gen(char c){
 	buf[now++]=c;
 }
 static inline void gen_num(){
-	uint32_t t=choose(10);
-	buf[now++]=t+'0';
+	buf[now++]=choose(9)+'1';//avoid 0 prefix
+	int len=choose(8)+1;
+	int i;
+	for(i=1;i<=len;i++){
+		uint32_t t=choose(10);
+		buf[now++]=t+'0';
+	}
+	buf[now++]='u'; //unsigned 
 }
 
 static inline void gen_rand_op(){
@@ -60,11 +66,10 @@ int main(int argc, char *argv[]) {
 	now = 0;
     gen_rand_expr(0);
 	buf[now]='\0';
-	printf("buf:%s",buf);
-    sprintf(code_buf, code_format, buf);
 	
+    sprintf(code_buf, code_format, buf);
 
-    /*FILE *fp = fopen("/tmp/.code.c", "w");
+    FILE *fp = fopen("/tmp/.code.c", "w");
     assert(fp != NULL);
     fputs(code_buf, fp);
     fclose(fp);
@@ -79,7 +84,7 @@ int main(int argc, char *argv[]) {
     fscanf(fp, "%d", &result);
     pclose(fp);
 
-    printf("%u %s\n", result, buf);*/
+    printf("%u %s\n", result, buf);
   }
   return 0;
 }
