@@ -22,7 +22,7 @@ static struct rule {
   /* TODO: Add more rules.
    * Pay attention to the precedence level of different rules.
    */
-
+  {"u", TK_NOTYPE},		// u(unsigned)
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
   {"-" , '-'},			// sub
