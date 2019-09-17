@@ -11,7 +11,7 @@ void cpu_exec(uint64_t);
 void isa_reg_display();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
-static char* rl_gets() {
+/*static char* rl_gets() {
   static char *line_read = NULL;
 
   if (line_read) {
@@ -26,7 +26,7 @@ static char* rl_gets() {
   }
 
   return line_read;
-}
+}*/
 
 static int cmd_c(char *args) {
   cpu_exec(-1);
@@ -150,39 +150,42 @@ static int cmd_help(char *args) {
 }
 
 void ui_mainloop(int is_batch_mode) {
-  if (is_batch_mode) {
-    cmd_c(NULL);
-    return;
-  }
+//  if (is_batch_mode) {
+//    cmd_c(NULL);
+//    return;
+//  }
+//
+//  for (char *str; (str = rl_gets()) != NULL; ) {
+//    char *str_end = str + strlen(str);
+//
+//    /* extract the first token as the command */
+//    char *cmd = strtok(str, " ");
+//    if (cmd == NULL) { continue; }
+//
+//    /* treat the remaining string as the arguments,
+//     * which may need further parsing
+//     */
+//    char *args = cmd + strlen(cmd) + 1;
+//    if (args >= str_end) {
+//      args = NULL;
+//    }
+//
+//#ifdef HAS_IOE
+//    extern void sdl_clear_event_queue(void);
+//    sdl_clear_event_queue();
+//#endif
+//
+//    int i;
+//    for (i = 0; i < NR_CMD; i ++) {
+//      if (strcmp(cmd, cmd_table[i].name) == 0) {
+//        if (cmd_table[i].handler(args) < 0) { return; }
+//        break;
+//      }
+//    }
+//
+//    if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
+//  }
 
-  for (char *str; (str = rl_gets()) != NULL; ) {
-    char *str_end = str + strlen(str);
-
-    /* extract the first token as the command */
-    char *cmd = strtok(str, " ");
-    if (cmd == NULL) { continue; }
-
-    /* treat the remaining string as the arguments,
-     * which may need further parsing
-     */
-    char *args = cmd + strlen(cmd) + 1;
-    if (args >= str_end) {
-      args = NULL;
-    }
-
-#ifdef HAS_IOE
-    extern void sdl_clear_event_queue(void);
-    sdl_clear_event_queue();
-#endif
-
-    int i;
-    for (i = 0; i < NR_CMD; i ++) {
-      if (strcmp(cmd, cmd_table[i].name) == 0) {
-        if (cmd_table[i].handler(args) < 0) { return; }
-        break;
-      }
-    }
-
-    if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
-  }
+		FILE * fp = fopen("../tools/gen-expr/input","r");
+		assert(fp!=NULL);
 }
