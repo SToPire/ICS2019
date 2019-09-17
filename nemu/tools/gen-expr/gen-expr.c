@@ -56,8 +56,12 @@ static char code_buf[65536];
 static char *code_format =
 "#include <stdio.h>\n"
 "int main() { "
-"  unsigned result = %s; "
+"  FILE *fp = fopen(\"/tmp/log\",\"w\");"  //log file, 1 will be written if exception, else 12 will be written
+"  fprintf(fp,\"1\");"                                         	
+"  unsigned result = %s; "										
+"  fprintf(fp,\"2\");"											
 "  printf(\"%%u\", result); "
+"  fclose(fp);"
 "  return 0; "
 "}";
 
@@ -73,10 +77,10 @@ int main(int argc, char *argv[]) {
 	now = 0;
     gen_rand_expr(0);
 	buf[now]='\0';
-	
+
     sprintf(code_buf, code_format, buf);
 
-    FILE *fp = fopen("/tmp/.code.c", "w");
+    FILE *fp = fopen("/tmp/.code.c", "w"), *fp2 = fopen("/tmp/log","r");
     assert(fp != NULL);
     fputs(code_buf, fp);
     fclose(fp);
@@ -87,9 +91,20 @@ int main(int argc, char *argv[]) {
     fp = popen("/tmp/.expr", "r");
     assert(fp != NULL);
 
-    int result;
-    fscanf(fp, "%d", &result);
-    pclose(fp);
+	int NoERROR;
+	fscanf(fp2,"%d",&NoERROR);
+	fclose(fp2);
+
+	int result;
+	if(NoERROR==12){                     //No exception
+		fscanf(fp, "%d", &result);
+		pclose(fp);
+	}
+	else if(NoERROR==1){                 //exception happened. Run one more iteration.
+		--i;
+		pclose(fp);
+		continue;
+	}
 
     printf("%u %s\n", result, buf);
   }
