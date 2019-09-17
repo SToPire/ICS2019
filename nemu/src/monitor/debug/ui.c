@@ -193,7 +193,7 @@ void ui_mainloop(int is_batch_mode) {
 		char ex[1024];
 		for(i=1;i<=100;i++){
 			fscanf(fp,"%u",&res);
-			fgets(ex,1024,fp);
+			fscanf(fp,"%s\n",ex);
 			cmd_p(ex);
 			printf("%u\n",res);
 		}
