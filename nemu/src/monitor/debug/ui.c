@@ -194,7 +194,7 @@ void ui_mainloop(int is_batch_mode) {
 		for(i=1;i<=100;i++){
 			fscanf(fp,"%u",&res);
 			fscanf(fp,"%s\n",ex);
-			printf("%s",ex);
+			printf("%s\n",ex);
 	//		cmd_p(ex);
 	//		printf("%u\n",res);
 		}
