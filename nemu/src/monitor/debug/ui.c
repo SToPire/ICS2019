@@ -181,7 +181,7 @@ void ui_mainloop(int is_batch_mode) {
 //        if (cmd_table[i].handler(args) < 0) { return; }
 //        break;
 //      }
-//    }
+//    }[<0;34;38M>]
 //
 //    if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
 //  }
@@ -193,9 +193,12 @@ void ui_mainloop(int is_batch_mode) {
 		char ex[1024];
 		for(i=1;i<=100;i++){
 			fscanf(fp,"%u",&res);
-			fscanf(fp,"%s\n",ex);
-			printf("%s\n",ex);
-	//		cmd_p(ex);
-	//		printf("%u\n",res);
+			fgets(ex,1024,fp);
+			int j=0;
+			for(j=0;j<=1023;j++){
+					if(ex[j]=='\n')ex[j]='\0';
+			}
+			cmd_p(ex);
+			printf("%u\n",res);
 		}
 }
