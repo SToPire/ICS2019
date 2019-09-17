@@ -13,6 +13,13 @@ uint32_t choose(uint32_t n){
 	return rand()%n;
 }
 
+static inline void gen_space(){
+	switch(choose(4)){
+		case 0:buf[now++]=' ';break;
+		default:break;
+	}
+}
+
 static inline void gen(char c){
 	buf[now++]=c;
 }
@@ -39,9 +46,9 @@ static inline void gen_rand_op(){
 static inline void gen_rand_expr(int i) {
 	if(i>=10) return;
   	switch(choose(3)){
-		case 0:gen_num();break;
-		case 1:if(i<9){gen('(');gen_rand_expr(i+1);gen(')');break;}else{gen_num();break;}
-		case 2:if(i<9){gen_rand_expr(i+1);gen_rand_op();gen_rand_expr(i+1);break;}else{gen_num();break;}
+		case 0:gen_space();gen_num();gen_space();break;
+		case 1:if(i<9){gen_space();gen('(');gen_space();gen_rand_expr(i+1);gen_space();gen(')');gen_space();break;}else{gen_space();gen_num();gen_space();break;}
+		case 2:if(i<9){gen_space();gen_rand_expr(i+1);gen_space();gen_rand_op();gen_space();gen_rand_expr(i+1);gen_space();break;}else{gen_space();gen_num();gen_space();break;}
   	}
 }
 
