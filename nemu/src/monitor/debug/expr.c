@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ,TK_NUM
+  TK_NOTYPE = 256, TK_EQ, TK_NUM, TK_ZERO
 
   /* TODO: Add more token types */
 
@@ -32,7 +32,7 @@ static struct rule {
   {"\\)", ')' },		// right bracket
   {"==", TK_EQ},        // equal
   {"0*[1-9][0-9]*",TK_NUM},		// num
-  
+  {"0+",TK_ZERO}
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -117,6 +117,10 @@ static bool make_token(char *e) {
 			case TK_NUM: tokens[nr_token].type=TK_NUM;
 						 while(*substr_start=='0' && substr_len>1){ ++substr_start; --substr_len; } //delete 0 in prefix
 						 sprintf(tokens[nr_token].str,"%.*s",substr_len,substr_start);
+						 ++nr_token;
+						 break;
+			case TK_ZERO:tokens[nr_token].type=TK_NUM;
+						 strcpy(tokens[nr_token].str,"0");
 						 ++nr_token;
 						 break;
         }
