@@ -186,7 +186,7 @@ uint32_t eval(int p,int q){
 		return 0;
 	}
 	else if(p==q){
-		if(tokens[p].type==TK_NUM) return atoi(tokens[p].str);
+		if(tokens[p].type==TK_NUM) return (uint32_t)atoi(tokens[p].str);
 		else{
 			printf("Bad Expression!\n");
 			return 0;
@@ -205,10 +205,10 @@ uint32_t eval(int p,int q){
 			uint32_t val1=eval(p,op-1);
 			uint32_t val2=eval(op+1,q);
 			switch(tokens[op].type){
-				case '+':return val1 + val2;
-				case '-':return val1 - val2;
-				case '*':return val1 * val2;
-				case '/':return val1 / val2;
+				case '+':return (uint32_t)(val1 + val2);
+				case '-':return (uint32_t)(val1 - val2);
+				case '*':return (uint32_t)(val1 * val2);
+				case '/':return (uint32_t)(val1 / val2);
 			}
 		}
 	}
