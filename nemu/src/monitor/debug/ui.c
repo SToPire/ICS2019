@@ -186,6 +186,15 @@ void ui_mainloop(int is_batch_mode) {
 //    if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
 //  }
 
-		FILE * fp = fopen("../tools/gen-expr/input","r");
+		FILE * fp = fopen("./tools/gen-expr/input","r");
 		assert(fp!=NULL);
+		int i;
+		uint32_t res;
+		char ex[1024];
+		for(i=1;i<=100;i++){
+			fscanf(fp,"%u",&res);
+			fgets(ex,1024,fp);
+			cmd_p(ex);
+			printf("%u\n",res);
+		}
 }
