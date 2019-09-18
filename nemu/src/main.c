@@ -43,9 +43,11 @@ int main(int argc, char *argv[]) {
 		ex[strlen(ex)-1]='\0';
 		bool* tmp=0;
 					
-		FILE * fp2 = freopen("/tmp/nemu-log","w+",stdout);
+		FILE * fp2 = freopen("/tmp/nemu-log","w",stdout);
 		expr(ex,tmp); //result is saved in nemu-log file
-
+		fclose(fp2);
+		
+		fp2 = fopen("/tmp/nemu-log","r"); //rread
 		fscanf(fp2,"%u",&res2);
 		fclose(fp2);
 		
