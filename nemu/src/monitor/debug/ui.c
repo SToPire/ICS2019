@@ -189,6 +189,7 @@ void ui_mainloop(int is_batch_mode) {
 		FILE * fp = fopen("./tools/gen-expr/input","r");
 		assert(fp!=NULL);
 		int i;
+		bool CORRECT=1;
 		uint32_t res1,res2;
 		char ex[1024];
 		FILE * fp2 = freopen("/tmp/nemu-log","w+",stdout);
@@ -202,6 +203,7 @@ void ui_mainloop(int is_batch_mode) {
 			bool* tmp=0;
 			expr(ex,tmp);
 			fscanf(fp2,"%u",&res2);
-			if(res1!=res2)	printf("Wrong answer occcured.\n");
+			if(res1!=res2)	Log("Wrong answer occcured.\n");CORRECT=0;
 		}
+		if(CORRECT) Log("It seems that nothing wrong in your evaluation.Congratulations!\n");
 }
