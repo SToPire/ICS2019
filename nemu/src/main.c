@@ -30,10 +30,11 @@ int main(int argc, char *argv[]) {
   
 	FILE * fp = fopen("./tools/gen-expr/input","r");
 	assert(fp!=NULL);
-	int i;
+	int i,LOOP;
 	bool correct = 1;
 	uint32_t res1,res2;
 	char ex[1024];
+	fscanf(fp,"%d",&LOOP);
 	for(i=1;i<=100;i++){			
 		fscanf(fp,"%u",&res1);
 		fgets(ex,1024,fp);
