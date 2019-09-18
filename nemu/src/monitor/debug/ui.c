@@ -217,5 +217,5 @@ void ui_mainloop(int is_batch_mode) {
 		}
 		fclose(fp);
 		stdout=backup;
-		if(correct) fprintf(stderr,"Congratulations!It seems that nothing wrong in your evaluation.\n");
+		if(correct) printf("Congratulations!It seems that nothing wrong in your evaluation.\n");
 }
