@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
 		expr(ex,tmp); //result is saved in nemu-log file
 		fclose(fp2);
 		
-		fp2 = fopen("/tmp/nemu-log","r"); //rread
+		fp2 = fopen("/tmp/nemu-log","r"); //reread result from log file
 		fscanf(fp2,"%u",&res2);
 		fclose(fp2);
 		
@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	fclose(fp);
-	freopen("/dev/tty","w",stdout);
+	freopen("/dev/tty","w",stdout); // return the status of stdout
 	if(correct) printf("Congratulations!It seems that nothing wrong in your evaluation.\n");
 
   // Receive commands from user. 
