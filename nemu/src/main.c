@@ -12,14 +12,7 @@ int main(int argc, char *argv[]) {
 }*/
 
 
-
-
-
-
-
-
-
-
+/* This part of code is made for test */
 
 #include<stdio.h>
 #include<stdint.h>
@@ -30,7 +23,7 @@ int init_monitor(int, char *[]);
 void ui_mainloop(int);
 
 int main(int argc, char *argv[]) {
-  /* Initialize the monitor. */
+  // Initialize the monitor. 
   int is_batch_mode = init_monitor(argc, argv);
   
 									FILE * fp = fopen("./tools/gen-expr/input","r");
@@ -65,8 +58,10 @@ int main(int argc, char *argv[]) {
 									freopen("/dev/tty","w",stdout);
 									if(correct) printf("Congratulations!It seems that nothing wrong in your evaluation.\n");
 
-  /* Receive commands from user. */
+  // Receive commands from user. 
   ui_mainloop(is_batch_mode);
 
   return 0;
 }
+
+
