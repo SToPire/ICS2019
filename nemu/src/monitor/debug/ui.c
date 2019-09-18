@@ -189,6 +189,7 @@ void ui_mainloop(int is_batch_mode) {
 		FILE * fp = fopen("./tools/gen-expr/input","r");
 		assert(fp!=NULL);
 		int i;
+		bool correct = 1;
 		uint32_t res1,res2;
 		char ex[1024];
 		for(i=1;i<=100;i++){			
@@ -207,7 +208,12 @@ void ui_mainloop(int is_batch_mode) {
 			fp2 = fopen("/tmp/nemu-log","r");
 			fscanf(fp2,"%u",&res2);
 			fclose(fp2);
-			fprintf(stderr,"%u %u\n",res1,res2);
+			
+			if(res1!=res2){
+				printf("Wrong result occured:Line %d Correct answer:%u Wrong answer:%u\n",i,res1,res2);
+				correct=0;
+			}
 		}
 		fclose(fp);
+		if(correct) printf("Congratulations!It seems that nothing wrong in your evaluation.\n");
 }
