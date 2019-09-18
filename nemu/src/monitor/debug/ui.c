@@ -191,8 +191,8 @@ void ui_mainloop(int is_batch_mode) {
 		int i;
 		uint32_t res1,res2;
 		char ex[1024];
-		FILE * fp2 = freopen("/tmp/nemu-log","w",stdout);
 		for(i=1;i<=100;i++){
+				FILE * fp2 = freopen("/tmp/nemu-log","w+",stdout);
 			fscanf(fp,"%u",&res1);
 			fgets(ex,1024,fp);
 			int j=0;
