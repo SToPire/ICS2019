@@ -206,6 +206,7 @@ void ui_mainloop(int is_batch_mode) {
 			
 			fp2 = fopen("tmp/nemu-log","r");
 			fscanf(fp2,"%u",&res2);
+			fclose(fp2);
 			fprintf(stderr,"%u %u\n",res1,res2);
 		}
 }
