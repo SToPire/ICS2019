@@ -57,11 +57,15 @@ static char *code_format =
 "#include <stdio.h>\n"
 "int main() { "
 "  FILE *fp = fopen(\"/tmp/log\",\"w\");"  //log file, 1 will be written if exception, else 12 will be written
-"  fprintf(fp,\"1\");"                                         	
-"  unsigned result = %s; "										
-"  fprintf(fp,\"2\");"											
-"  printf(\"%%u\", result); "
+"  fprintf(fp,\"0\");"
+"  fclose(fp);"  
+                                       	
+"  unsigned result = %s; "	
+"  fp = fopen(\"/tmp/log\",\"w\");"									
+"  fprintf(fp,\"1\");"											
 "  fclose(fp);"
+
+"  printf(\"%%u\", result); "
 "  return 0; "
 "}";
 
@@ -80,7 +84,7 @@ int main(int argc, char *argv[]) {
 
     sprintf(code_buf, code_format, buf);
 
-    FILE *fp = fopen("/tmp/.code.c", "w"), *fp2 = fopen("/tmp/log","r");
+    FILE *fp = fopen("/tmp/.code.c", "w");
     assert(fp != NULL);
     fputs(code_buf, fp);
     fclose(fp);
@@ -90,23 +94,22 @@ int main(int argc, char *argv[]) {
 
     fp = popen("/tmp/.expr", "r");
     assert(fp != NULL);
-
+    uint32_t result;
+    fscanf(fp, "%u", &result);
+	FILE *fp2 = fopen("/tmp/log","r");
+	
 	int NoERROR;
 	fscanf(fp2,"%d",&NoERROR);
 	fclose(fp2);
 
-	int result;
-	if(NoERROR==12){                     //No exception
-		fscanf(fp, "%d", &result);
+	if(NoERROR){                     //No exception
 		pclose(fp);
+    	printf("%u %s\n" , result, buf);
 	}
-	else if(NoERROR==1){                 //exception happened. Run one more iteration.
+	else{                 //exception happened. Run one more iteration.
 		--i;
 		pclose(fp);
-		continue;
 	}
-
-    printf("%u %s\n", result, buf);
   }
   return 0;
 }
