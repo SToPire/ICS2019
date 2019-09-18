@@ -203,7 +203,7 @@ void ui_mainloop(int is_batch_mode) {
 			bool* tmp=0;
 			expr(ex,tmp);
 			fscanf(fp2,"%u",&res2);
-			if(res1!=res2)	Log("Wrong answer occcured.\n");CORRECT=0;
+			if(res1!=res2)	{fprintf(stderr,"Wrong answer occcured.\n");CORRECT=0;}
 		}
-		if(CORRECT) Log("It seems that nothing wrong in your evaluation.Congratulations!\n");
+		if(CORRECT) fprintf(stderr,"It seems that nothing wrong in your evaluation.Congratulations!\n");
 }
