@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
 	}
 	fclose(fp);
 	freopen("/dev/tty","w",stdout); // return the status of stdout
-	if(correct) printf("Congratulations!It seems that nothing wrong in your evaluation.\n");
+	if(correct) printf("\n\nCongratulations!It seems that nothing wrong in your evaluation.\n\n");
 
   // Receive commands from user. 
   ui_mainloop(is_batch_mode);
