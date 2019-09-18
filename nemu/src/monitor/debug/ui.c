@@ -189,7 +189,7 @@ void ui_mainloop(int is_batch_mode) {
 		FILE * fp = fopen("./tools/gen-expr/input","r");
 		assert(fp!=NULL);
 		int i;
-		uint32_t res1,res2;
+		uint32_t res1;
 		char ex[1024];
 		for(i=1;i<=100;i++){			
 			fscanf(fp,"%u",&res1);
@@ -204,10 +204,10 @@ void ui_mainloop(int is_batch_mode) {
 			expr(ex,tmp);
 			fclose(fp2);
 			
-			fp2 = fopen("tmp/nemu-log","r");
+			/*fp2 = fopen("tmp/nemu-log","r");
 			fscanf(fp2,"%u",&res2);
 			fclose(fp2);
-			fprintf(stderr,"%u %u\n",res1,res2);
+			fprintf(stderr,"%u %u\n",res1,res2);*/
 		}
 		fclose(fp);
 }
