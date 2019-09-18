@@ -209,4 +209,5 @@ void ui_mainloop(int is_batch_mode) {
 			fclose(fp2);
 			fprintf(stderr,"%u %u\n",res1,res2);
 		}
+		fclose(fp);
 }
