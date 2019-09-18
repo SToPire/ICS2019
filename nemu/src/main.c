@@ -28,24 +28,24 @@ int main(int argc, char *argv[]) {
   // Initialize the monitor. 
   int is_batch_mode = init_monitor(argc, argv);
   
+  	/* open input file*/
 	FILE * fp = fopen("./tools/gen-expr/input","r");
 	assert(fp!=NULL);
+	
 	int i,LOOP;
 	bool correct = 1;
 	uint32_t res1,res2;
 	char ex[1024];
-	fscanf(fp,"%d",&LOOP);
+	fscanf(fp,"%d",&LOOP); //read LOOP times
 	for(i=1;i<=100;i++){			
-		fscanf(fp,"%u",&res1);
-		fgets(ex,1024,fp);
+		fscanf(fp,"%u",&res1);//read correct answer
+		fgets(ex,1024,fp); //read expression
 		ex[strlen(ex)-1]='\0';
 		bool* tmp=0;
 					
-		FILE * fp2 = freopen("/tmp/nemu-log","w",stdout);
-		expr(ex,tmp);
-		fclose(fp2);
-		
-		fp2 = fopen("/tmp/nemu-log","r");
+		FILE * fp2 = freopen("/tmp/nemu-log","w+",stdout);
+		expr(ex,tmp); //result is saved in nemu-log file
+
 		fscanf(fp2,"%u",&res2);
 		fclose(fp2);
 		
