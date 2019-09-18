@@ -210,10 +210,10 @@ void ui_mainloop(int is_batch_mode) {
 			fclose(fp2);
 			
 			if(res1!=res2){
-				printf("Wrong result occured:Line %d Correct answer:%u Wrong answer:%u\n",i,res1,res2);
+				fprintf(stderr,"Wrong result occured:Line %d Correct answer:%u Wrong answer:%u\n",i,res1,res2);
 				correct=0;
 			}
 		}
 		fclose(fp);
-		if(correct) printf("Congratulations!It seems that nothing wrong in your evaluation.\n");
+		if(correct) fprintf(stderr,"Congratulations!It seems that nothing wrong in your evaluation.\n");
 }
