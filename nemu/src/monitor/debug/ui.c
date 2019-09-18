@@ -199,7 +199,8 @@ void ui_mainloop(int is_batch_mode) {
 			for(j=0;j<=1023;j++){
 					if(ex[j]=='\n')ex[j]='\0';
 			}
-			cmd_p(ex);
+			bool* tmp=0;
+			expr(ex,tmp);
 			printf("%u\n",res);
 		}
 }
