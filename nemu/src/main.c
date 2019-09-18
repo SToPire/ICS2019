@@ -9,10 +9,11 @@ int main(int argc, char *argv[]) {
   ui_mainloop(is_batch_mode);
 
   return 0;
-}*/
+}*/ 
 
-
-/* This part of code is made for test */
+/* Code above is original main.c */
+/* -------------------------------------------------------------------------------------------------------------------------------*/
+/* Code below is made for test */
 
 #include<stdio.h>
 #include<stdint.h>

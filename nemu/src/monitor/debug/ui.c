@@ -185,37 +185,4 @@ void ui_mainloop(int is_batch_mode) {
 
     if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
   }
-		/*
-		FILE * fp = fopen("./tools/gen-expr/input","r");
-		assert(fp!=NULL);
-		int i;
-		bool correct = 1;
-		uint32_t res1,res2;
-		char ex[1024];
-		for(i=1;i<=100;i++){			
-			fscanf(fp,"%u",&res1);
-			fgets(ex,1024,fp);
-			int j=0;
-			for(j=0;j<=1023;j++){
-					if(ex[j]=='\n')ex[j]='\0';
-			}
-			bool* tmp=0;
-						
-			FILE * fp2 = freopen("/tmp/nemu-log","w",stdout);
-			expr(ex,tmp);
-			fclose(fp2);
-			
-			fp2 = fopen("/tmp/nemu-log","r");
-			fscanf(fp2,"%u",&res2);
-			fclose(fp2);
-			
-			if(res1!=res2){
-				fprintf(stderr,"Wrong result occured:Line %d Correct answer:%u Wrong answer:%u\n",i,res1,res2);
-				correct=0;
-			}
-		}
-		fclose(fp);
-		freopen("/dev/tty","w",stdout);
-		if(correct) printf("Congratulations!It seems that nothing wrong in your evaluation.\n");
-		*/
 }
