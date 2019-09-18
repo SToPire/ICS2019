@@ -76,6 +76,7 @@ int main(int argc, char *argv[]) {
   if (argc > 1) {
     sscanf(argv[1], "%d", &loop);
   }
+  printf("%d\n",loop);
   int i;
   for (i = 0; i < loop; i ++) {
 	now = 0;
