@@ -6,7 +6,7 @@
 #include <string.h>
 
 // this should be enough
-static char buf[65536];
+static char buf[10000];
 static int now=0;
 
 uint32_t choose(uint32_t n){
