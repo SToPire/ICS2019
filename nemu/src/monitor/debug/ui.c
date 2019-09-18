@@ -200,7 +200,7 @@ void ui_mainloop(int is_batch_mode) {
 			}
 			bool* tmp=0;
 						
-			FILE * fp2 = freopen("/tmp/nemu-log","w+",stdout);
+			FILE * fp2 = freopen("/tmp/nemu-log","a",stdout);
 			expr(ex,tmp);
 			fclose(fp2);
 			
