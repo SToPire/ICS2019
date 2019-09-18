@@ -191,6 +191,7 @@ void ui_mainloop(int is_batch_mode) {
 		int i;
 		uint32_t res;
 		char ex[1024];
+		freopen("/tmp/nemu-log","w",stdout);
 		for(i=1;i<=100;i++){
 			fscanf(fp,"%u",&res);
 			fgets(ex,1024,fp);
