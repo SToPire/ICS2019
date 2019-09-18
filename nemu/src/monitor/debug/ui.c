@@ -201,6 +201,5 @@ void ui_mainloop(int is_batch_mode) {
 			}
 			bool* tmp=0;
 			expr(ex,tmp);
-			printf("%u\n",res);
 		}
 }
