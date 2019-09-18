@@ -202,6 +202,6 @@ void ui_mainloop(int is_batch_mode) {
 			bool* tmp=0;
 			expr(ex,tmp);
 			fscanf(fp2,"%u",&res2);
-			fprintf(stderr,"%d %d\n",res1,res2);
+			fprintf(stderr,"%u %u\n",res1,res2);
 		}
 }
