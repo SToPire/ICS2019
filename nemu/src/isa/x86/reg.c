@@ -55,7 +55,8 @@ uint32_t isa_reg_str2val(const char *s, bool *success) {
 	int i,l=strlen(s);
 	*success = true;
 	char *tmp="";strcpy(tmp,s);
-	for(i=0;i<l;i++) tmp[i]=tolower(s[i]);
+	for(i=0;i<l;i++) tmp[i]=tolower(s[i]); 
+	printf("tmp:%s",tmp);
 	for(i=0;i<8;i++){
 		if(strcmp(tmp,reg_name(i,1))==0) return reg_b(i);
 		if(strcmp(tmp,reg_name(i,2))==0) return reg_w(i);
