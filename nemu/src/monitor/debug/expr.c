@@ -92,17 +92,29 @@ static bool make_token(char *e) {
          */
         switch (rules[i].token_type) {
 			case TK_NOTYPE: break;
-			case '+': tokens[++nr_token].type='+';
+			case '+': tokens[nr_token].type='+';
+					  strcpy(tokens[nr_token].str,"+");
+					  ++nr_token;
 					  break;
-			case '-': tokens[++nr_token].type='-';
+			case '-': tokens[nr_token].type='-';
+					  strcpy(tokens[nr_token].str,"-");
+					  ++nr_token;
 					  break;
-			case '*': tokens[++nr_token].type='*';
+			case '*': tokens[nr_token].type='*';
+					  strcpy(tokens[nr_token].str,"*");
+					  ++nr_token;
 					  break;
-			case '/': tokens[++nr_token].type='/';
+			case '/': tokens[nr_token].type='/';
+					  strcpy(tokens[nr_token].str,"/");
+					  ++nr_token;
 					  break;
-			case '(': tokens[++nr_token].type='(';
+			case '(': tokens[nr_token].type='(';
+					  strcpy(tokens[nr_token].str,"(");
+					  ++nr_token;
 					  break;
-			case ')': tokens[++nr_token].type=')';
+			case ')': tokens[nr_token].type=')';
+					  strcpy(tokens[nr_token].str,")");
+					  ++nr_token;
 					  break;
 			case TK_NUM: tokens[nr_token].type=TK_NUM;
 						 while(*substr_start=='0' && substr_len>1){ ++substr_start; --substr_len; } //delete 0 in prefix
@@ -113,12 +125,6 @@ static bool make_token(char *e) {
 						 strcpy(tokens[nr_token].str,"0");
 						 ++nr_token;
 						 break;
-			case TK_EQ:	tokens[++nr_token].type=TK_EQ;
-						break;
-			case TK_NEQ:tokens[++nr_token].type=TK_NEQ;
-						break;
-			case TK_AND:tokens[++nr_token].type=TK_AND;
-						break;	
         }
         break;
       }
