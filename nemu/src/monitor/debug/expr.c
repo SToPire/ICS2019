@@ -10,7 +10,8 @@
 uint32_t isa_reg_str2val(const char *s, bool *success);
 
 enum {
-  TK_NOTYPE = 256, TK_EQ, TK_NEQ, TK_AND, TK_NUM, TK_ZERO, TK_HEX_NUM, TK_HEX_ZERO,TK_REG, 
+  TK_NOTYPE = 256, DEREF, TK_EQ, TK_NEQ, TK_AND, 
+  TK_NUM, TK_ZERO, TK_HEX_NUM, TK_HEX_ZERO, TK_REG, 
 
   /* TODO: Add more token types */
 
@@ -243,6 +244,7 @@ uint32_t eval(int p,int q){
 		}
 	}
 	else if(tokens[p].type=='-' && ((q-p==1 || ( check_parentheses(p+1,q)!=0 && find_main_operator(p+1,q)==-1)))) return -eval(p+1,q);
+	else if(tokens[p].type==DEREF && ((q-p==1 || ( check_parentheses(p+1,q)!=0 && find_main_operator(p+1,q)==-1)))) return vaddr_read(eval(p+1,q),4);
 	else{
 		int v=check_parentheses(p,q);
 		if(v==1) return eval(p+1,q-1); 			// match brackets
@@ -276,10 +278,15 @@ uint32_t expr(char *e, bool *success) {
   }
   int i;
   for(i=0;i<nr_token;i++){
-  	if(tokens[i].type==TK_REG){
+  	if(tokens[i].type==TK_REG){			//寄存器，用值替换
   		uint32_t t=isa_reg_str2val(tokens[i].str,success);
   		if(*success){tokens[i].type=TK_NUM;sprintf(tokens[i].str,"%u",t);}
   		else return 0;
+  	}
+  	else if(tokens[i].type=='*'){
+  		int j=i;
+  		while(tokens[j].type=='(' || tokens[j].type==')') --j;
+  		if(!(tokens[j].type==TK_NUM)) tokens[i].type=DEREF;
   	}
   }
   printf("%u\n",eval(0,nr_token-1));
