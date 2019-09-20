@@ -33,7 +33,7 @@ static struct rule {
   {"==", TK_EQ},        // equal
   {"!=", TK_NEQ},		// nonequal
   {"&&", TK_AND},		// and
-  {"0x0*[1-9][0-9]*",TK_HEX_NUM},//hex_num
+  {"0x0*[1-9a-fA-F][0-9a-fA-F]*",TK_HEX_NUM},//hex_num
   {"0x0+",TK_HEX_ZERO}, //hex_zero	
   {"0*[1-9][0-9]*",TK_NUM},		// num
   {"0+",TK_ZERO},		//zero
