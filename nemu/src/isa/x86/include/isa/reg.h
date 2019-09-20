@@ -2,6 +2,7 @@
 #define __X86_REG_H__
 
 #include "common.h"
+#include <ctype.h>
 
 #define PC_START IMAGE_START
 

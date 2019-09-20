@@ -7,8 +7,10 @@
 #include <regex.h>
 #include <stdlib.h>
 
+uint32_t isa_reg_str2val(const char *s, bool *success);
+
 enum {
-  TK_NOTYPE = 256, TK_EQ, TK_NEQ, TK_AND, TK_NUM, TK_ZERO, TK_HEX_NUM, TK_HEX_ZERO, 
+  TK_NOTYPE = 256, TK_EQ, TK_NEQ, TK_AND, TK_NUM, TK_ZERO, TK_HEX_NUM, TK_HEX_ZERO,TK_REG, 
 
   /* TODO: Add more token types */
 
@@ -34,10 +36,10 @@ static struct rule {
   {"!=", TK_NEQ},		// nonequal
   {"&&", TK_AND},		// and
   {"0x0*[1-9a-fA-F][0-9a-fA-F]*",TK_HEX_NUM},//hex_num
-  {"0x0+",TK_HEX_ZERO}, //hex_zero	
+  {"0x0+",TK_HEX_ZERO}, 		//hex_zero	
   {"0*[1-9][0-9]*",TK_NUM},		// num
-  {"0+",TK_ZERO},		//zero
-	
+  {"0+",TK_ZERO},				//zero
+  {"\\$[a-zA-Z]+",TK_REG},		//reg	
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -131,11 +133,16 @@ static bool make_token(char *e) {
 					  	strcpy(tokens[nr_token].str,"&&");
 					  	++nr_token;
 					  	break;
-			case TK_NUM: tokens[nr_token].type=TK_NUM;
-						 while(*substr_start=='0' && substr_len>1){ ++substr_start; --substr_len; } //delete 0 in prefix
-						 sprintf(tokens[nr_token].str,"%.*s",substr_len,substr_start);
-						 ++nr_token;
-						 break;
+			case TK_REG:		tokens[nr_token].type=TK_REG;
+								++substr_start;--substr_len;
+								sprintf(tokens[nr_token].str,"%.*s",substr_len,substr_start);
+								++nr_token;
+						 		break;							
+			case TK_NUM:		tokens[nr_token].type=TK_NUM;
+							 	while(*substr_start=='0' && substr_len>1){ ++substr_start; --substr_len; } //delete 0 in prefix
+						 		sprintf(tokens[nr_token].str,"%.*s",substr_len,substr_start);
+						 		++nr_token;
+						 		break;
 			case TK_ZERO:
 			case TK_HEX_ZERO:	tokens[nr_token].type=TK_NUM;
 							 	strcpy(tokens[nr_token].str,"0");
@@ -267,6 +274,14 @@ uint32_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
+  int i;
+  for(i=0;i<nr_token;i++){
+  	if(tokens[i].type==TK_REG){
+  		uint32_t t=isa_reg_str2val(tokens[i].str,success);
+  		if(*success){tokens[i].type=TK_NUM;sprintf(tokens[i].str,"%u",t);}
+  		else return 0;
+  	}
+  }
   printf("%u\n",eval(0,nr_token-1));
-  return 0;
+  return eval(0,nr_token-1);
 }
