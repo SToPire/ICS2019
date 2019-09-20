@@ -144,6 +144,7 @@ int check_parentheses(int p, int q){
 		 *	return 1: legal expression, and brackets match in begin and end
 		 *	return -1:legal expression, but brackets don't match in begin ane end
 		 */
+		 printf("p:%d q:%d\n",p,q);
 	while(tokens[p].type=='-') ++p; // delete '-' in prefix
 	if(p==q && tokens[p].type==TK_NUM) return -1;// a single number is legal
 	int i;
