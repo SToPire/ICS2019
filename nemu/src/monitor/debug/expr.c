@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ, TK_NUM, TK_ZERO
+  TK_NOTYPE = 256, TK_EQ, TK_NEQ, TK_AND, TK_NUM, TK_ZERO
 
   /* TODO: Add more token types */
 
@@ -31,8 +31,10 @@ static struct rule {
   {"\\(", '(' },		// left bracket
   {"\\)", ')' },		// right bracket
   {"==", TK_EQ},        // equal
+  {"!=", TK_NEQ},		// nonequal
+  {"&&", TK_AND},		// and
   {"0*[1-9][0-9]*",TK_NUM},		// num
-  {"0+",TK_ZERO}
+  {"0+",TK_ZERO}		
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -164,22 +166,34 @@ int find_main_operator(int p,int q){
 		 *	return -1:	no main operator found in the expression
 		 *	return i: 	main operator found in tokens[i]
 		 */
-	int in_brackets=0; // wrapped in how many levels of brackets
-	int now='*';
+	int in_brackets=0; 	// wrapped in how many levels of brackets
+	int now=4; 			// priority of matched operator now. 4:'*','/'; 3:'+','-'; 2:'==','!='; 1:'&&'
 	int ans=-1;
 	int i;
 	for(i=p;i<=q;i++){
 		if(tokens[i].type=='(') ++in_brackets;
 		else if(tokens[i].type==')') --in_brackets;
 		else if((tokens[i].type=='*' || tokens[i].type=='/')
-					&& now=='*' && !in_brackets)  ans=i;
+				&& now>=4 && !in_brackets)  
+					{ans=i;now=4;}
 		else if((tokens[i].type=='+')
-					&& !in_brackets){ans=i;now='+';}
-		else if(tokens[i].type=='-' && !in_brackets && i!=p 
-					&& tokens[i-1].type!='+'
-					&& tokens[i-1].type!='-'
-					&& tokens[i-1].type!='*'
-					&& tokens[i-1].type!='/'){ans=i;now='+';}
+				&& now>=3 && !in_brackets)
+					{ans=i;now=3;}
+		else if(tokens[i].type=='-' && now>=3 && !in_brackets && i!=p 
+				&& tokens[i-1].type!='+'
+				&& tokens[i-1].type!='-'
+				&& tokens[i-1].type!='*'
+				&& tokens[i-1].type!='/')
+					{ans=i;now=3;}
+		else if(tokens[i].type==TK_EQ 
+				&& now>=2 && !in_brackets)
+					{ans=i;now=2;}
+		else if(tokens[i].type==TK_NEQ 
+				&& now>=2 && !in_brackets)
+					{ans=i;now=2;}
+		else if(tokens[i].type==TK_AND
+				&& now>=1 && !in_brackets)
+					{ans=i;now=1;}
 	}
 	return ans;
 }
@@ -213,6 +227,9 @@ uint32_t eval(int p,int q){
 				case '-':return (uint32_t)((uint32_t)val1 - val2);
 				case '*':return (uint32_t)((uint32_t)val1 * val2);
 				case '/':return (uint32_t)((uint32_t)val1 / val2);
+				case TK_EQ:return val1 == val2;
+				case TK_NEQ:return val1 != val2;
+				case TK_AND:return val1 && val2;
 			}
 		}
 	}
