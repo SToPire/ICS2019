@@ -33,10 +33,11 @@ static struct rule {
   {"==", TK_EQ},        // equal
   {"!=", TK_NEQ},		// nonequal
   {"&&", TK_AND},		// and
+  {"0x0*[1-9][0-9]*",TK_HEX_NUM},//hex_num
+  {"0x0+",TK_HEX_ZERO}, //hex_zero	
   {"0*[1-9][0-9]*",TK_NUM},		// num
   {"0+",TK_ZERO},		//zero
-  {"0x0*[1-9][0-9]*",TK_HEX_NUM},//hex_num
-  {"0x0+",TK_HEX_ZERO}, //hex_zero		
+	
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
