@@ -54,7 +54,7 @@ void isa_reg_display() {
 uint32_t isa_reg_str2val(const char *s, bool *success) {
 	int i,l=strlen(s);
 	*success = true;
-	char *tmp="";strcpy(tmp,s);
+	char tmp[10]="";strcpy(tmp,s);
 	for(i=0;i<l;i++) tmp[i]=tolower(s[i]); 
 	printf("tmp:%s",tmp);
 	for(i=0;i<8;i++){
