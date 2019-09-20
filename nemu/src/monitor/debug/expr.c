@@ -212,7 +212,7 @@ uint32_t eval(int p,int q){
 	}
 	else if(tokens[p].type=='-' && ((q-p==1 || ( check_parentheses(p+1,q)!=0 && find_main_operator(p+1,q)==-1)))) return -eval(p+1,q);
 	else{
-		int v=check_parentheses(p,q);
+		int v=check_parentheses(p,q); printf("%d\n",v);
 		if(v==1) return eval(p+1,q-1); 			// match brackets
 		else if(v==0){
 			printf("Bad Expression!\n");
@@ -227,7 +227,7 @@ uint32_t eval(int p,int q){
 				case '-':return (uint32_t)((uint32_t)val1 - val2);
 				case '*':return (uint32_t)((uint32_t)val1 * val2);
 				case '/':return (uint32_t)((uint32_t)val1 / val2);
-				case TK_EQ:return val1 == val2;
+				case TK_EQ: return val1 == val2;
 				case TK_NEQ:return val1 != val2;
 				case TK_AND:return val1 && val2;
 			}
