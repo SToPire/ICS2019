@@ -148,6 +148,11 @@ static bool make_token(char *e) {
 							 	sprintf(tokens[nr_token].str,"%d",tmp);
 							 	++nr_token;
 							 	break;
+			case TK_HEX_ZERO:	tokens[nr_token].type=TK_ZERO;
+								strcpy(tokens[nr_token].str,"0");
+								++nr_token;
+								break;
+								
         }
         break;
       }
