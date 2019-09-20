@@ -82,8 +82,8 @@ static bool make_token(char *e) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
 
-        /*Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-            i, rules[i].regex, position, substr_len, substr_len, substr_start);*/
+        Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+            i, rules[i].regex, position, substr_len, substr_len, substr_start);
         position += substr_len;
 
         /* TODO: Now a new token is recognized with rules[i]. Add codes
@@ -212,7 +212,7 @@ uint32_t eval(int p,int q){
 	}
 	else if(tokens[p].type=='-' && ((q-p==1 || ( check_parentheses(p+1,q)!=0 && find_main_operator(p+1,q)==-1)))) return -eval(p+1,q);
 	else{
-		int v=check_parentheses(p,q); printf("%d\n",v);
+		int v=check_parentheses(p,q); 
 		if(v==1) return eval(p+1,q-1); 			// match brackets
 		else if(v==0){
 			printf("Bad Expression!\n");
