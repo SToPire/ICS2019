@@ -62,26 +62,6 @@ void free_wp(int n){
 	}
 	wp->next=free_;
 	wp->val=0;
-	memset(wp->what,'\0',1024);
 	free_=wp;
 	printf("Watchpoint %d has been successfully deleted.\n",n);
-}
-
-void watchpoints_display(){
-	WP* i=head;
-	printf("%12s %8s %8s","Watchpoints","What","Value");
-	while(i!=NULL){
-		
-	
-	}
-
-
-
-
-
-
-
-
-
-
 }

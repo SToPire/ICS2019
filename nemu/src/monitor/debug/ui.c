@@ -11,7 +11,6 @@ void cpu_exec(uint64_t);
 void isa_reg_display();
 WP* new_wp();
 void free_wp(int n);
-void watchpoints_display();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -64,7 +63,7 @@ static int cmd_info(char *args){
 		isa_reg_display();
   }
   else if(strcmp(arg,"w")==0){
-		//watchpoints_display();
+		/*unfinished now */
   }
   else{
 		printf("Usage: info [r][w]\n");
@@ -120,8 +119,7 @@ static int cmd_w(char *args)
   	  if(success){	
 		  WP* newWP=new_wp();
 		  newWP->val=tmp;
-		  strcpy(newWP->what,args);
-		  printf("Watchpoint:%d What:%s Value:%u\n",newWP->NO,newWP->what,newWP->val);
+		  printf("Watchpoint:%d What:%s Value:%u\n",newWP->NO,args,newWP->val);
 	  }  
   }	
   return 0;
