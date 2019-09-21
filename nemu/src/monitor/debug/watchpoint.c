@@ -67,10 +67,10 @@ void free_wp(int n){
 	printf("Watchpoint %d has been successfully deleted.\n",n);
 }
 void WP_disp(){
-	printf("%12s %8s %8s\n","Watchpoint","What","Value");
+	printf("%-12s %-32s %-8s\n","Watchpoint","What","Value");
 	WP *ip=head;
 	while(ip!=NULL){
-		printf("%-12d %8s %-8d\n",ip->NO,ip->what,ip->val);
+		printf("%-12d %-32s %-8d\n",ip->NO,ip->what,ip->val);
 		ip=ip->next;
 	}	
 }
