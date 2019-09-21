@@ -48,11 +48,9 @@ WP* new_wp(){
 void free_wp(int n){
 	if(!n){printf("Illegal watchpoint number.\n");return;}
 	if(head==NULL){printf("No watchpoints.\n");return;}
-	WP* wp=head;int i=1;
-	for(;i<n;++i){
-		wp=wp->next;
-		if(wp==NULL){printf("Illegal watchpoint number.\n");return;}
-	}
+	WP* wp=head;
+	while(wp != NULL && wp->NO != n) wp=wp->next;
+	if(wp==NULL){printf("Illegal watchpoint number.\n");return;}
 	--head_len;
 	if(wp==head){
 		head=wp->next;
