@@ -26,15 +26,9 @@ WP* new_wp(){
 		assert(0);
 	}
 	if(head==NULL){
-
 		head=free_;
 		free_=free_->next;
 		head->next=NULL;
-		
-			  	WP* test=NULL;
-				for(test=head;test!=NULL;test=test->next){
-					printf("NO:%d val:%u,",test->NO,test->val);
-				}printf("\n");
 		return head;
 	}
 	else{
@@ -43,18 +37,12 @@ WP* new_wp(){
 		tmp->next=free_;
 		free_=free_->next;
 		tmp->next->next=NULL;
-
-			  	WP* test=NULL;
-				for(test=head;test!=NULL;test=test->next){
-					printf("NO:%d val:%u,",test->NO,test->val);
-				}printf("\n");
-				
 		return tmp->next;
 	}	
 }
 
 void free_wp(int n){
-	if(!n){printf("Illegal NO\n");assert(0);}
+	if(!n){printf("Illegal NO.\n");assert(0);}
 	WP* wp=head;int i=1;
 	for(;i<n;++i){
 		wp=wp->next;
