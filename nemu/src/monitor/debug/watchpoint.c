@@ -32,7 +32,7 @@ WP* new_wp(){
 		head->next=NULL;
 		
 		  WP* test=NULL;
-	for(test=head;test!=NULL;test=head->next){
+	for(test=head;test!=NULL;test=test->next){
 		printf("NO:%d val:%u",test->NO,test->val);
 	}
 		return head;
@@ -43,11 +43,11 @@ WP* new_wp(){
 		tmp->next=free_;
 		free_=free_->next;
 		tmp->next->next=NULL;
-		printf("%d",tmp->next->NO);	
-		 /* WP* test=NULL;
-	for(test=head;test!=NULL;test=head->next){
+
+		  WP* test=NULL;
+	for(test=head;test!=NULL;test=test->next){
 		printf("NO:%d val:%u",test->NO,test->val);
-	}*/
+	}
 		return tmp->next;
 	}	
 }
