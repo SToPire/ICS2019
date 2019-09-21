@@ -102,7 +102,7 @@ static int cmd_p(char *args)
   }
   else{
 	  bool success;
-	  printf("%u",expr(args,&success));
+	  printf("%u\n",expr(args,&success));
   }
   return 0;
 }

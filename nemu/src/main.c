@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
 		bool* tmp=0;
 					
 		FILE * fp2 = freopen("/tmp/nemu-log","w",stdout);
-		printf("%u",expr(ex,tmp)); //result is saved in nemu-log file
+		printf("%u\n",expr(ex,tmp)); //result is saved in nemu-log file
 		fclose(fp2);
 		
 		fp2 = fopen("/tmp/nemu-log","r"); //reread result from log file
