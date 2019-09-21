@@ -75,3 +75,18 @@ void WP_disp(){
 		ip=ip->next;
 	}	
 }
+bool WP_check(){
+	WP* tmp=head;
+	bool changed=false;
+	while(tmp != NULL){
+		bool succ;
+		uint32_t newVal=expr(tmp->what,&succ);
+		if(tmp->val != newVal){
+			printf("Watchpoints %d:%s changed.\nNew value:%u Old value:%u\n",tmp->NO,tmp->what,newVal,tmp->val);
+			tmp->val=newVal;
+			changed=true;
+		}
+		tmp=tmp->next;
+	}
+	return changed;
+}

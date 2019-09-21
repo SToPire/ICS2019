@@ -12,6 +12,8 @@
 /* restrict the size of log file */
 #define LOG_MAX (1024 * 1024)
 
+bool WP_check();
+
 NEMUState nemu_state = {.state = NEMU_STOP};
 
 void interpret_rtl_exit(int state, vaddr_t halt_pc, uint32_t halt_ret) {
@@ -71,7 +73,7 @@ void cpu_exec(uint64_t n) {
 
     if (nemu_state.state != NEMU_RUNNING) break;
   }
-
+if(WP_check()) nemu_state.state=NEMU_STOP;
   switch (nemu_state.state) {
     case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break;
 
