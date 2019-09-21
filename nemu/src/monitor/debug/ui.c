@@ -114,7 +114,7 @@ static int cmd_w(char *args)
 	  printf("Usage: w [expr]\n");	
   }
   else{
-  	  bool success;
+  	  bool success=true;
 	  WP* newWP=new_wp();
 	  uint32_t tmp=expr(args,&success);
 	  if(success)	newWP->val=tmp;
