@@ -9,7 +9,6 @@ typedef struct watchpoint {
   uint32_t val;
   /* TODO: Add more members if necessary */
 
-
 } WP;
 
 #endif
