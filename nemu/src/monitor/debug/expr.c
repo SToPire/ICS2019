@@ -270,7 +270,6 @@ uint32_t eval(int p,int q){
 	return 23333; //will not be executed forever, just for pass the compliation.
 }
 
-
 uint32_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;

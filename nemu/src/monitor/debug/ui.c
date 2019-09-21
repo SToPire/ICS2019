@@ -104,7 +104,9 @@ static int cmd_p(char *args)
   }
   else{
 	  bool success;
-	  printf("%u\n",expr(args,&success));
+	  uint32_t tmp=expr(args,&success);
+	  if(success) printf("%u",tmp);
+	  else printf("Error in evaluation.\n");
   }
   return 0;
 }
@@ -122,7 +124,8 @@ static int cmd_w(char *args)
 		  newWP->val=tmp;
 		  strcpy(newWP->what,args);
 		  printf("Watchpoint:%d What:%s Value:%u\n",newWP->NO,newWP->what,newWP->val);
-	  }  
+	  } 
+	  else printf("Error in evaluation.\n");
   }	
   return 0;
 }
