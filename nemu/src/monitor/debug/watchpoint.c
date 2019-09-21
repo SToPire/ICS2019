@@ -42,7 +42,8 @@ WP* new_wp(){
 }
 
 void free_wp(int n){
-	if(!n){printf("Illegal NO.\n");assert(0);}
+	if(!n){printf("Illegal NO.\n");return;}
+	if(head==NULL){printf("No watchpoints.\n");return;}
 	WP* wp=head;int i=1;
 	for(;i<n;++i){
 		wp=wp->next;
