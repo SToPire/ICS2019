@@ -28,8 +28,8 @@ WP* new_wp(){
 	if(head==NULL){
 
 		head=free_;
-		head->next=NULL;
 		free_=free_->next;
+		head->next=NULL;
 		
 		  WP* test=NULL;
 	for(test=head;test!=NULL;test=head->next){
