@@ -29,7 +29,11 @@ WP* new_wp(){
 
 		head=free_;
 		free_=free_->next;
-	printf("NO:%d",head->NO);
+		
+		  WP* test=NULL;
+	for(test=head;test!=NULL;test=head->next){
+		printf("NO:%d val:%u",test->NO,test->val);
+	}
 		return head;
 	}
 	else{
@@ -38,13 +42,13 @@ WP* new_wp(){
 		tmp->next=free_;
 		free_=free_->next;
 		tmp->next->next=NULL;
-		return tmp->next;
-	}
-		printf("ICAME\n");
-	WP* test=NULL;
+		
+		  WP* test=NULL;
 	for(test=head;test!=NULL;test=head->next){
 		printf("NO:%d val:%u",test->NO,test->val);
 	}
+		return tmp->next;
+	}	
 }
 
 void free_wp(WP* wp){
