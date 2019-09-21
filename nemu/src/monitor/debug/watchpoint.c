@@ -26,6 +26,7 @@ WP* new_wp(){
 		assert(0);
 	}
 	if(head==NULL){
+	printf("ICAME\n");
 		head=free_;
 		free_=free_->next;
 		return head;
