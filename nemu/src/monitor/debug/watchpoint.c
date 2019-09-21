@@ -5,6 +5,7 @@
 
 static WP wp_pool[NR_WP] = {};
 static WP *head = NULL, *free_ = NULL;
+static int head_len=0;
 
 void init_wp_pool() {
   int i;
@@ -25,10 +26,12 @@ WP* new_wp(){
 		printf("No free space for watchpoints!\n");
 		assert(0);
 	}
+	++head_len;
 	if(head==NULL){
 		head=free_;
 		free_=free_->next;
 		head->next=NULL;
+		head->NO=head_len;
 		return head;
 	}
 	else{
@@ -37,6 +40,7 @@ WP* new_wp(){
 		tmp->next=free_;
 		free_=free_->next;
 		tmp->next->next=NULL;
+		tmp->next->NO=head_len;
 		return tmp->next;
 	}	
 }
@@ -49,6 +53,7 @@ void free_wp(int n){
 		wp=wp->next;
 		if(wp==NULL){printf("Illegal NO.\n");return;}
 	}
+	--head_len;
 	if(wp==head){
 		head=wp->next;
 	}

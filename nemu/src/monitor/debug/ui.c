@@ -117,6 +117,7 @@ static int cmd_w(char *args)
   	  bool success;
 	  WP* newWP=new_wp();
 	  newWP->val=expr(args,&success);
+	  printf("Watchpoint:%d What:%s Value:%u",newWP->NO,args,newWP->val);
   }	
   return 0;
 }
