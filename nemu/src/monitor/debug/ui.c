@@ -103,7 +103,7 @@ static int cmd_p(char *args)
 	  printf("Usage: p [expr]\n");
   }
   else{
-	  bool success;
+	  bool success=true;
 	  uint32_t tmp=expr(args,&success);
 	  if(success) printf("%u\n",tmp);
 	  else printf("Error in evaluation.\n");
