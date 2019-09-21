@@ -105,7 +105,7 @@ static int cmd_p(char *args)
   else{
 	  bool success;
 	  uint32_t tmp=expr(args,&success);
-	  if(success) printf("%u",tmp);
+	  if(success) printf("%u\n",tmp);
 	  else printf("Error in evaluation.\n");
   }
   return 0;
