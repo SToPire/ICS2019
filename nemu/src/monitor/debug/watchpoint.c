@@ -29,6 +29,7 @@ WP* new_wp(){
 	printf("ICAME\n");
 		head=free_;
 		free_=free_->next;
+	printf("NO:%d",head->NO);
 		return head;
 	}
 	else{
