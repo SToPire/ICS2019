@@ -20,4 +20,35 @@ void init_wp_pool() {
 
 /* TODO: Implement the functionality of watchpoint */
 
+WP* new_wp(){
+	if(free_==NULL){
+		printf("No free space for watchpoints!\n");
+		assert(0);
+	}
+	if(head==NULL){
+		head=free_;
+		free_=free_->next;
+		return head;
+	}
+	else{
+		WP* tmp=head;
+		while(tmp->next != NULL) tmp=tmp->next;
+		tmp->next=free_;
+		tmp->next->next=NULL;
+		free_=free_->next;
+		return tmp->next;
+	}
+}
 
+void free_wp(WP* wp){
+	if(wp==head){
+		head=wp->next;
+	}
+	else{
+		WP* tmp=head;
+		while(tmp->next != wp) tmp=tmp->next;
+		tmp->next=wp->next;
+	}
+	wp->next=free_;
+	free_=wp;
+}

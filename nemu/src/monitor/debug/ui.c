@@ -9,6 +9,7 @@
 
 void cpu_exec(uint64_t);
 void isa_reg_display();
+WP* new_wp();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -101,11 +102,23 @@ static int cmd_p(char *args)
   }
   else{
 	  bool success;
-	  expr(args,&success);
+	  printf("%u",expr(args,&success));
   }
   return 0;
 }
 
+static int cmd_w(char *args)
+{
+  if(args==NULL){
+	  printf("Usage: w [expr]\n");	
+  }
+  else{
+  	  bool success;
+	  WP* newWP=new_wp();
+	  newWP->val=expr(args,&success);
+  }	
+  return 0;
+}
 static int cmd_help(char *args);
 
 static struct {
@@ -119,7 +132,8 @@ static struct {
   { "si","Usage: si [n]\nStep N instructions.",cmd_si },
   { "info","Usage: info [r][w]\nGeneric command for showing things about the program being debugged.", cmd_info  },
   { "x","Usage: x [n][address]\nExamine memory. ",cmd_x },
-  { "p","Usage: p [expr]\n print the value of a expression.",cmd_p},
+  { "p","Usage: p [expr]\nprint the value of a expression.",cmd_p},
+  { "w","Usage: w [expr]\nset a watchpoint.",cmd_w},
   /* TODO: Add more commands */
 
 };
