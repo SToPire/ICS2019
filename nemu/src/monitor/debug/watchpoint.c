@@ -67,6 +67,7 @@ void free_wp(int n){
 	printf("Watchpoint %d has been successfully deleted.\n",n);
 }
 void WP_disp(){
+	if(!head_len) {printf("No watchpoints.\n"); return;}
 	printf("%-12s %-32s %-8s\n","Watchpoint","What","Value");
 	WP *ip=head;
 	while(ip!=NULL){
