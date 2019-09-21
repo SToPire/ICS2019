@@ -43,7 +43,7 @@ WP* new_wp(){
 		tmp->next=free_;
 		free_=free_->next;
 		tmp->next->next=NULL;
-		printf("%d",tmp->NO);	
+		printf("%d",tmp->next->NO);	
 		 /* WP* test=NULL;
 	for(test=head;test!=NULL;test=head->next){
 		printf("NO:%d val:%u",test->NO,test->val);
