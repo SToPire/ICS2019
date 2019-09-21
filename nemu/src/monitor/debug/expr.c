@@ -286,7 +286,7 @@ uint32_t expr(char *e, bool *success) {
   	else if(tokens[i].type=='*'){
   	printf("ICAME\n");
   		int j=i;
-  		while(tokens[j].type=='(' || tokens[j].type==')') --j;
+  		do{ --j;} while(tokens[j].type=='(' || tokens[j].type==')');
   		//if(!(tokens[j].type==TK_NUM) || i==0) tokens[i].type=DEREF;
   	}
   }
