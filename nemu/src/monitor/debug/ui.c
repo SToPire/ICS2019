@@ -114,11 +114,13 @@ static int cmd_w(char *args)
 	  printf("Usage: w [expr]\n");	
   }
   else{
-  	  bool success=true;
-	  WP* newWP=new_wp();
-	  uint32_t tmp=expr(args,&success);
-	  if(success)	newWP->val=tmp;
-	  printf("Watchpoint:%d What:%s Value:%u\n",newWP->NO,args,newWP->val);
+   	  bool success=true;
+  	  uint32_t tmp=expr(args,&success);
+  	  if(success){	
+		  WP* newWP=new_wp();
+		  newWP->val=tmp;
+		  printf("Watchpoint:%d What:%s Value:%u\n",newWP->NO,args,newWP->val);
+	  }  
   }	
   return 0;
 }
@@ -140,7 +142,7 @@ static struct {
   char *description;
   int (*handler) (char *);
 } cmd_table [] = {
-  { "help", "Display informations about all supported commands", cmd_help },
+  { "help", "Display informations about all supported commands", cmd_help 	 },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si","Usage: si [n]\nStep N instructions.",cmd_si },
