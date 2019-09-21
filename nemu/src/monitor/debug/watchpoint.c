@@ -63,5 +63,6 @@ void free_wp(int n){
 		tmp->next=wp->next;
 	}
 	wp->next=free_;
+	wp->val=0;
 	free_=wp;
 }
