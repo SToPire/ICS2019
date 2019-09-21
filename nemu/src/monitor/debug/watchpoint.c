@@ -26,7 +26,7 @@ WP* new_wp(){
 		assert(0);
 	}
 	if(head==NULL){
-	printf("ICAME\n");
+
 		head=free_;
 		free_=free_->next;
 	printf("NO:%d",head->NO);
@@ -40,7 +40,7 @@ WP* new_wp(){
 		tmp->next->next=NULL;
 		return tmp->next;
 	}
-	
+		printf("ICAME\n");
 	WP* test=NULL;
 	for(test=head;test!=NULL;test=head->next){
 		printf("NO:%d val:%u",test->NO,test->val);
