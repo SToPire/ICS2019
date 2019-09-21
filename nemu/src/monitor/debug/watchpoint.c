@@ -34,8 +34,8 @@ WP* new_wp(){
 		WP* tmp=head;
 		while(tmp->next != NULL) tmp=tmp->next;
 		tmp->next=free_;
-		tmp->next->next=NULL;
 		free_=free_->next;
+		tmp->next->next=NULL;
 		return tmp->next;
 	}
 }
