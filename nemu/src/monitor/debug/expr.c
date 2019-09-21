@@ -289,6 +289,5 @@ uint32_t expr(char *e, bool *success) {
   		if(!(tokens[j].type==TK_NUM) || i==0) tokens[i].type=DEREF;
   	}
   }
-  //printf("%u\n",eval(0,nr_token-1));
   return eval(0,nr_token-1);
 }

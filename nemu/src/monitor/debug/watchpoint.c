@@ -38,6 +38,11 @@ WP* new_wp(){
 		tmp->next->next=NULL;
 		return tmp->next;
 	}
+	
+	WP* test=NULL;
+	for(test=head;test!=NULL;test=head->next){
+		printf("NO:%d val:%u",test->NO,test->val);
+	}
 }
 
 void free_wp(WP* wp){
