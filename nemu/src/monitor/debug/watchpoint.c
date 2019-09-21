@@ -62,6 +62,7 @@ void free_wp(int n){
 	}
 	wp->next=free_;
 	wp->val=0;
+	memset(wp->what,'\0',128);
 	free_=wp;
 	printf("Watchpoint %d has been successfully deleted.\n",n);
 }

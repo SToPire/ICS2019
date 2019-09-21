@@ -119,7 +119,8 @@ static int cmd_w(char *args)
   	  if(success){	
 		  WP* newWP=new_wp();
 		  newWP->val=tmp;
-		  printf("Watchpoint:%d What:%s Value:%u\n",newWP->NO,args,newWP->val);
+		  strcpy(newWP->what,args);
+		  printf("Watchpoint:%d What:%s Value:%u\n",newWP->NO,newWP->what,newWP->val);
 	  }  
   }	
   return 0;
