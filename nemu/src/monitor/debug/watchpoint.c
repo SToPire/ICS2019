@@ -31,10 +31,10 @@ WP* new_wp(){
 		free_=free_->next;
 		head->next=NULL;
 		
-		  WP* test=NULL;
-	for(test=head;test!=NULL;test=test->next){
-		printf("NO:%d val:%u,",test->NO,test->val);
-	}
+			  	WP* test=NULL;
+				for(test=head;test!=NULL;test=test->next){
+					printf("NO:%d val:%u,",test->NO,test->val);
+				}printf("\n");
 		return head;
 	}
 	else{
@@ -44,10 +44,11 @@ WP* new_wp(){
 		free_=free_->next;
 		tmp->next->next=NULL;
 
-		  WP* test=NULL;
-	for(test=head;test!=NULL;test=test->next){
-		printf("NO:%d val:%u,",test->NO,test->val);
-	}
+			  	WP* test=NULL;
+				for(test=head;test!=NULL;test=test->next){
+					printf("NO:%d val:%u,",test->NO,test->val);
+				}printf("\n");
+				
 		return tmp->next;
 	}	
 }
