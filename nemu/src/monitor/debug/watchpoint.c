@@ -44,10 +44,10 @@ WP* new_wp(){
 		free_=free_->next;
 		tmp->next->next=NULL;
 		
-		  WP* test=NULL;
+		 /* WP* test=NULL;
 	for(test=head;test!=NULL;test=head->next){
 		printf("NO:%d val:%u",test->NO,test->val);
-	}
+	}*/
 		return tmp->next;
 	}	
 }
