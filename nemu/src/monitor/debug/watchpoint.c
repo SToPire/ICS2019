@@ -47,7 +47,7 @@ void free_wp(int n){
 	WP* wp=head;int i=1;
 	for(;i<n;++i){
 		wp=wp->next;
-		assert(wp!=NULL);
+		if(wp==NULL){printf("No watchpoints.\n");return;}
 	}
 	if(wp==head){
 		head=wp->next;
