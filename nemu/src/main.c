@@ -1,4 +1,4 @@
-int init_monitor(int, char *[]);
+/*int init_monitor(int, char *[]);
 void ui_mainloop(int);
 
 int main(int argc, char *argv[]) {
@@ -9,13 +9,13 @@ int main(int argc, char *argv[]) {
   ui_mainloop(is_batch_mode);
 
   return 0;
-}
+}*/
 
 /* Code above is original main.c */
 /* ---------------------------------------------------------------------*/
 /* Code below is made for test */
 
-/*#include<stdio.h>
+#include<stdio.h>
 #include<stdint.h>
 #include<stdbool.h>
 #include<assert.h>
@@ -63,6 +63,6 @@ int main(int argc, char *argv[]) {
   ui_mainloop(is_batch_mode);
 
   return 0;
-}*/
+}
 
 
