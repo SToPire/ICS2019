@@ -72,6 +72,10 @@ $(BINARY): $(OBJS)
 
 run-env: $(BINARY) $(QEMU_SO)
 
+count: 
+	echo "$$(find . -name "*.h"|xargs cat|wc -l)"
+	echo "$$(find . -name "*.c"|xargs cat|wc -l)"
+	
 run: run-env
 	$(call git_commit, "run")
 	$(NEMU_EXEC)
