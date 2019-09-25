@@ -41,8 +41,27 @@ void reg_test() {
 }
 
 void isa_reg_display() {
+	printf("%-8s0x%08x %d\n","%eax:",cpu.eax,cpu.eax);
+	printf("%-8s0x%08x %d\n","%ecx:",cpu.ecx,cpu.ecx);
+	printf("%-8s0x%08x %d\n","%edx:",cpu.edx,cpu.edx);
+	printf("%-8s0x%08x %d\n","%ebx:",cpu.ebx,cpu.ebx);
+	printf("%-8s0x%08x %d\n","%esp:",cpu.esp,cpu.esp);
+	printf("%-8s0x%08x %d\n","%ebp:",cpu.ebp,cpu.ebp);
+	printf("%-8s0x%08x %d\n","%esi:",cpu.esi,cpu.esi);
+	printf("%-8s0x%08x %d\n","%edi:",cpu.edi,cpu.edi);
 }
 
 uint32_t isa_reg_str2val(const char *s, bool *success) {
-  return 0;
+	int i,l=strlen(s);
+	*success = true;
+	char tmp[10]="";strcpy(tmp,s);
+	for(i=0;i<l;i++) tmp[i]=tolower(s[i]);
+	if(strcmp(tmp,"pc")==0) return cpu.pc; 
+	for(i=0;i<8;i++){
+		if(strcmp(tmp,reg_name(i,1))==0) return reg_b(i);
+		if(strcmp(tmp,reg_name(i,2))==0) return reg_w(i);
+		if(strcmp(tmp,reg_name(i,4))==0) return reg_l(i);
+	}	
+	*success = false;
+	return 0;
 }

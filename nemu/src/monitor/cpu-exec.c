@@ -12,6 +12,8 @@
 /* restrict the size of log file */
 #define LOG_MAX (1024 * 1024)
 
+bool WP_check();
+
 NEMUState nemu_state = {.state = NEMU_STOP};
 
 void interpret_rtl_exit(int state, vaddr_t halt_pc, uint32_t halt_ret) {
@@ -57,7 +59,8 @@ void cpu_exec(uint64_t n) {
               "we do not record more instruction trace beyond this point.\n"
               "To capture more trace, you can modify the LOG_MAX macro in %s\n\n", __FILE__);
   }
-
+  
+  if(WP_check()) nemu_state.state=NEMU_STOP;
     /* TODO: check watchpoints here. */
 
 #endif

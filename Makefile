@@ -13,4 +13,8 @@ submit: clean
 	git gc
 	STUID=$(STUID) STUNAME=$(STUNAME)  bash -c "$$(curl -s http://ics.nju.edu.cn/people/yanyanjiang/teach/submit.sh)"
 
-.PHONY: default clean submit
+count: 
+	echo "$$(find . -name "*.h"|xargs cat|wc -l)"
+	echo "$$(find . -name "*.c"|xargs cat|wc -l)"
+	
+.PHONY: default clean submit count
