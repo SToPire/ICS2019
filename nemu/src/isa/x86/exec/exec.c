@@ -185,7 +185,7 @@ static OpcodeEntry opcode_table [512] = {
   /* 0xfc */	EMPTY, EMPTY, EMPTY, EMPTY
 };
 
-static make_EHelper(2byte_esc) {
+static make_EHelper(2byte_esc) { printf("FUCK\n");
   uint32_t opcode = instr_fetch(pc, 1) | 0x100;
   decinfo.opcode = opcode;
   set_width(opcode_table[opcode].width);

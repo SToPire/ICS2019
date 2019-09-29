@@ -12,7 +12,7 @@ static inline make_DopHelper(I) {
   op->imm = instr_fetch(pc, op->width);
   rtl_li(&op->val, op->imm);
 
-  //print_Dop(op->str, OP_STR_SIZE, "$0x%x", op->imm);
+  print_Dop(op->str, OP_STR_SIZE, "$0x%x", op->imm);
 }
 
 /* I386 manual does not contain this abbreviation, but it is different from
