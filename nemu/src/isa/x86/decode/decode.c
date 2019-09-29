@@ -9,7 +9,7 @@
 static inline make_DopHelper(I) {
   /* pc here is pointing to the immediate */
   op->type = OP_TYPE_IMM;
-  op->imm = instr_fetch(pc, op->width);printf("%d",op->width);
+  op->imm = instr_fetch(pc, op->width);
   rtl_li(&op->val, op->imm);
 
   print_Dop(op->str, OP_STR_SIZE, "$0x%x", op->imm);
