@@ -26,6 +26,7 @@ static inline void rtl_sr(int r, const rtlreg_t* src1, int width) {
 static inline void rtl_push(const rtlreg_t* src1) {
   // esp <- esp - 4
   // M[esp] <- src1
+  printf("PUSH:\n");
   printf("esp:%x\n",cpu.esp);reg_l(R_ESP)-=4;printf("esp:%x\n",cpu.esp);
   rtl_sm(&reg_l(R_ESP), src1,4);printf("src1:%x\n\n\n",*src1);
 }
