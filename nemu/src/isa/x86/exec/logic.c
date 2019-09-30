@@ -20,7 +20,7 @@ printf("dest:%x src:%x\n",id_dest->val,id_src->val);
   cpu.eflags &= ~(1<<11);
   cpu.eflags &= ~(1<<5);
   operand_write(id_dest,&id_dest->val);
-  printf("dest:%x src:%x\n\n\n",id_dest->val,id_src->val);
+  printf("eax:%x src:%x\n\n\n",cpu.eax,id_src->val);
   print_asm_template2(xor);
 }
 
