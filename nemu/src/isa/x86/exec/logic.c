@@ -17,7 +17,7 @@ make_EHelper(xor) {
 printf("XOR");
 printf("dest:%x src:%x\n",id_dest->val,id_src->val);
   rtl_xor(&id_dest->val,&id_dest->val,&id_src->val);
-  cpu.eflags &= ~(1<<1);
+  cpu.eflags &= ~(1<<11);
   cpu.eflags &= ~(1<<5);
   operand_write(id_dest,&id_dest->val);
   printf("eax:%x src:%x\n\n\n",cpu.eax,id_src->val);
