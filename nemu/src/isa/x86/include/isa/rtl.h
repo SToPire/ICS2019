@@ -3,7 +3,6 @@
 
 #include "rtl/rtl.h"
 
-const rtlreg_t ZERO = 0;
 /* RTL pseudo instructions */
 
 static inline void rtl_lr(rtlreg_t* dest, int r, int width) {
