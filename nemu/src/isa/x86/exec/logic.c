@@ -15,9 +15,10 @@ make_EHelper(and) {
 
 make_EHelper(xor) {
   rtl_xor(&id_dest->val,&id_dest->val,&id_src->val);
-  cpu.eflags &= ~(1<<11);
-  cpu.eflags &= ~(1<<5);
+  rtl_update_ZFSF(&id_dest->val, id_dest->width);
+  rtl_set_OF(&ZERO);rtl_set_CF(&ZERO);
   operand_write(id_dest,&id_dest->val);
+  
   print_asm_template2(xor);
 }
 

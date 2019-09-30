@@ -37,7 +37,13 @@ typedef struct {
   
   vaddr_t pc;
 	
-  rtlreg_t eflags;
+  struct {
+  	rtlreg_t CF:1;
+  	rtlreg_t ZF:1;
+  	rtlreg_t SF:1;
+  	rtlreg_t IF:1;
+  	rtlreg_t OF:1;
+  }eflags;
 		
 } CPU_state;
 

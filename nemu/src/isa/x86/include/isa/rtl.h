@@ -3,6 +3,7 @@
 
 #include "rtl/rtl.h"
 
+const rtlreg_t ZERO = 0;
 /* RTL pseudo instructions */
 
 static inline void rtl_lr(rtlreg_t* dest, int r, int width) {
@@ -41,13 +42,16 @@ static inline void rtl_is_sub_overflow(rtlreg_t* dest,
     const rtlreg_t* res, const rtlreg_t* src1, const rtlreg_t* src2, int width) {
   // dest <- is_overflow(src1 - src2)
   if((*src1)>>(width-1) != (*src2)>>(width-1) && (*src1)>>(width-1) != (*res)>>(width-1))
-  	*dest=*dest | (1<<11);
+  	*dest=1;
+  else
+  	*dest=0;
 }
 
 static inline void rtl_is_sub_carry(rtlreg_t* dest,
     const rtlreg_t* res, const rtlreg_t* src1) {
   // dest <- is_carry(src1 - src2)
-  if(*res>*src1) *dest=*dest | 0x1;
+  if(*res>*src1) *dest=1;
+  else *dest=0;
 }
 
 static inline void rtl_is_add_overflow(rtlreg_t* dest,
@@ -64,10 +68,10 @@ static inline void rtl_is_add_carry(rtlreg_t* dest,
 
 #define make_rtl_setget_eflags(f) \
   static inline void concat(rtl_set_, f) (const rtlreg_t* src) { \
-    TODO(); \
+    cpu.eflags.f=*src; \
   } \
   static inline void concat(rtl_get_, f) (rtlreg_t* dest) { \
-    TODO(); \
+    *dest=cpu.eflags.f; \
   }
 
 make_rtl_setget_eflags(CF)
@@ -77,12 +81,15 @@ make_rtl_setget_eflags(SF)
 
 static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
   // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
-  TODO();
+  if(width==1) cpu.eflags.ZF = ~(((*result) && (0x000000ff)) | 0);
+  else if(width==2) cpu.eflags.ZF = ~(((*result) && (0x0000ffff)) | 0);
+  else if(width==4) cpu.eflags.ZF = ~(((*result) && (0xffffffff)) | 0);
+  else assert(0);
 }
 
 static inline void rtl_update_SF(const rtlreg_t* result, int width) {
   // eflags.SF <- is_sign(result[width * 8 - 1 .. 0])
-  TODO();
+  cpu.eflags.SF=((*result) >> (width*8-1));
 }
 
 static inline void rtl_update_ZFSF(const rtlreg_t* result, int width) {
