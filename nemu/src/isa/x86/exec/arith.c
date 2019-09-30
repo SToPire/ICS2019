@@ -7,7 +7,7 @@ make_EHelper(add) {
 }
 
 make_EHelper(sub) {
-  rtl_sub(&s0,&id_dest->val,&id_src->val);printf("dest:%u\n",id_dest->val);
+  rtl_sub(&s0,&id_dest->val,&id_src->val);
   rtl_is_sub_overflow(&cpu.eflags,&s0,&id_dest->val,&id_src->val,id_dest->width);
   rtl_is_sub_carry(&cpu.eflags,&s0,&id_dest->val);
   rtl_mv(&id_dest->val,&s0);
