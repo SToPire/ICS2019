@@ -11,7 +11,7 @@ printf("SUB\n");printf("dest :%x src: %x\n",id_dest->val,id_src->val);
   rtl_sub(&s0,&id_dest->val,&id_src->val);printf("s0: %x\n",s0);
   rtl_is_sub_overflow(&cpu.eflags,&s0,&id_dest->val,&id_src->val,id_dest->width);
   rtl_is_sub_carry(&cpu.eflags,&s0,&id_dest->val);
-  rtl_mv(&id_dest->val,&s0);printf("dest :%x src: %x\n\n\n",id_dest->val,id_src->val);
+  operand_write(id_dest,&s0);printf("esp :%x src: %x\n\n\n",cpu.esp,id_src->val);
   print_asm_template2(sub);
 }
 
