@@ -37,24 +37,7 @@ typedef struct {
   
   vaddr_t pc;
 	
-  struct {
-  	rtlreg_t CF:1;rtlreg_t _16:1;
-  	rtlreg_t _1:1;rtlreg_t _17:1;
-  	rtlreg_t _2:1;rtlreg_t _18:1;
-  	rtlreg_t _3:1;rtlreg_t _19:1;
-  	rtlreg_t _4:1;rtlreg_t _20:1;
-  	rtlreg_t _5:1;rtlreg_t _21:1;
-  	rtlreg_t _6:1;rtlreg_t _22:1;
-  	rtlreg_t _7:1;rtlreg_t _23:1;
-  	rtlreg_t _8:1;rtlreg_t _24:1;
-  	rtlreg_t _9:1;rtlreg_t _25:1;
-  	rtlreg_t _10:1;rtlreg_t _26:1;
-  	rtlreg_t OF:1;rtlreg_t _27:1;
-  	rtlreg_t _12:1;rtlreg_t _28:1;
-  	rtlreg_t _13:1;rtlreg_t _29:1;
-  	rtlreg_t _14:1;rtlreg_t _30:1;
-  	rtlreg_t _15:1;rtlreg_t _31:1;
-  } eflags;
+  rtlreg_t eflags;
 		
 } CPU_state;
 
