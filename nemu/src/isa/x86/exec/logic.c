@@ -14,9 +14,12 @@ make_EHelper(and) {
 }
 
 make_EHelper(xor) {
+printf("XOR");
+printf("dest:%x src:%x\n",id_dest->val,id_src->val);
   rtl_xor(&id_dest->val,&id_dest->val,&id_src->val);
   cpu.eflags &= ~(1<<11);
   cpu.eflags &= ~(1<<5);
+  printf("dest:%x src:%x\n\n\n",id_dest->val,id_src->val);
   print_asm_template2(xor);
 }
 
