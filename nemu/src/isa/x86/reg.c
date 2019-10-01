@@ -57,7 +57,11 @@ uint32_t isa_reg_str2val(const char *s, bool *success) {
 	char tmp[10]="";strcpy(tmp,s);
 	for(i=0;i<l;i++) tmp[i]=tolower(s[i]);
 	if(strcmp(tmp,"pc")==0) return cpu.pc;
-	else if(strcmp(tmp,"eflags")==0) return cpu.eflags.eflags_whole; 
+	else if(strcmp(tmp,"cf")==0) return cpu.eflags.CF; 
+	else if(strcmp(tmp,"zf")==0) return cpu.eflags.ZF;
+	else if(strcmp(tmp,"of")==0) return cpu.eflags.OF;
+	else if(strcmp(tmp,"sf")==0) return cpu.eflags.SF;
+	else if(strcmp(tmp,"if")==0) return cpu.eflags.IF;
 	for(i=0;i<8;i++){
 		if(strcmp(tmp,reg_name(i,1))==0) return reg_b(i);
 		if(strcmp(tmp,reg_name(i,2))==0) return reg_w(i);
