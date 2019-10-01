@@ -56,7 +56,8 @@ uint32_t isa_reg_str2val(const char *s, bool *success) {
 	*success = true;
 	char tmp[10]="";strcpy(tmp,s);
 	for(i=0;i<l;i++) tmp[i]=tolower(s[i]);
-	if(strcmp(tmp,"pc")==0) return cpu.pc; 
+	if(strcmp(tmp,"pc")==0) return cpu.pc;
+	else if(strcmp(tmp,"eflags")==0) return cpu.eflags.eflags_whole; 
 	for(i=0;i<8;i++){
 		if(strcmp(tmp,reg_name(i,1))==0) return reg_b(i);
 		if(strcmp(tmp,reg_name(i,2))==0) return reg_w(i);
