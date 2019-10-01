@@ -111,5 +111,6 @@ int init_monitor(int argc, char *argv[]) {
   /* Display welcome message. */
   welcome();
 
+is_batch_mode=false;
   return is_batch_mode;
 }
