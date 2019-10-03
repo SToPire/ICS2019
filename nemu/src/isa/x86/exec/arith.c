@@ -12,6 +12,7 @@ make_EHelper(add) {
   rtl_set_OF(&s1);
   rtl_is_add_carry(&s1,&s0,&id_dest->val);
   rtl_set_CF(&s1);
+  rtl_update_ZFSF(&s0, id_dest->width);
   operand_write(id_dest,&s0);
 
   print_asm_template2(add); 	
@@ -23,6 +24,7 @@ make_EHelper(sub) {
   rtl_set_OF(&s1);
   rtl_is_sub_carry(&s1,&s0,&id_dest->val);
   rtl_set_CF(&s1);
+  rtl_update_ZFSF(&s0, id_dest->width);
   operand_write(id_dest,&s0);
   
   print_asm_template2(sub);
@@ -34,13 +36,19 @@ make_EHelper(cmp) {
   rtl_set_OF(&s1);
   rtl_is_sub_carry(&s1,&s0,&id_dest->val);
   rtl_set_CF(&s1);
-
+	rtl_update_ZFSF(&s0, id_dest->width);
+	
   print_asm_template2(cmp);
 }
 
 make_EHelper(inc) {
-  TODO();
-
+  ONE=1;
+	rtl_add(&s0,&id_dest->val,&ONE);
+	rtl_is_add_overflow(&s1,&s0,&id_dest->val,&ONE,id_dest->width);
+	rtl_set_OF(&s1);
+	rtl_update_ZFSF(&s0, id_dest->width);
+	operand_write(id_dest,&s0);
+	
   print_asm_template1(inc);
 }
 
