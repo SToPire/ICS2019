@@ -31,6 +31,12 @@ make_EHelper(sub) {
 }
 
 make_EHelper(cmp) {
+	if(id_src->width < id_dest->width){ // sign-extension required
+		int w=id_dest->width-id_src->width;
+		id_src->val <<= (w*8);
+		id_src->val = (rtlreg_t)((int32_t)id_src->val >> (w*8)); 	 	
+		id_src->width=id_dest->width;
+  }
   rtl_sub(&s0,&id_dest->val,&id_src->val);
   rtl_is_sub_overflow(&s1,&s0,&id_dest->val,&id_src->val,id_dest->width);
   rtl_set_OF(&s1);
