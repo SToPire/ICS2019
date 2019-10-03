@@ -42,7 +42,7 @@ make_EHelper(cmp) {
 }
 
 make_EHelper(inc) {
-  ONE=1;
+  rtlreg_t ONE=1;
 	rtl_add(&s0,&id_dest->val,&ONE);
 	rtl_is_add_overflow(&s1,&s0,&id_dest->val,&ONE,id_dest->width);
 	rtl_set_OF(&s1);
