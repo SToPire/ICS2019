@@ -11,13 +11,14 @@ make_EHelper(push) {
 		id_dest->val = (rtlreg_t)((int32_t)id_src->val >> 24);
 	}
   rtl_push(&id_dest->val);
-	operand_write(id_dest, &id_dest->val);
+
   print_asm_template1(push);
 }
 
 make_EHelper(pop) {
   rtl_pop(&id_dest->val);
-
+	operand_write(id_dest, &id_dest->val);
+	
   print_asm_template1(pop);
 }
 
