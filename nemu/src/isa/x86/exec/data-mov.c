@@ -69,7 +69,7 @@ make_EHelper(movsx) {
 }
 
 make_EHelper(movzx) {
-  id_dest->width = decinfo.isa.is_operand_size_16 ? 2 : 4;  printf("%d %d\n",id_dest->width,id_src->width);
+  id_dest->width = decinfo.isa.is_operand_size_16 ? 2 : 4;
   operand_write(id_dest, &id_src->val);
   print_asm_template2(movzx);
 }
