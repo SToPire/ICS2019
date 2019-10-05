@@ -27,6 +27,8 @@ make_EHelper(sar);
 make_EHelper(shl);
 make_EHelper(dec);
 
+make_EHelper(imul2);
+
 make_EHelper(operand_size);
 
 make_EHelper(inv);
