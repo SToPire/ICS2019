@@ -24,6 +24,7 @@ make_EHelper(or);
 make_EHelper(pop);
 
 make_EHelper(sar);
+make_EHelper(shl);
 
 make_EHelper(operand_size);
 
