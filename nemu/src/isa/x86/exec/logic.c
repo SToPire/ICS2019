@@ -10,13 +10,8 @@ make_EHelper(test) {
 }
 
 make_EHelper(and) {
-  if(id_src->width < id_dest->width){ // sign-extension required
-		int w=id_dest->width-id_src->width;
-		id_src->val <<= (w*8);
-		id_src->val = (rtlreg_t)((int32_t)id_src->val >> (w*8)); 	 	
-		id_src->width=id_dest->width;
-  }
-  rtl_and(&id_dest->val,&id_dest->val,&id_src->val);
+  rtl_sext(&s2,&id_src->val,id_src->width);
+  rtl_and(&id_dest->val,&id_dest->val,&s2);
   rtl_update_ZFSF(&id_dest->val, id_dest->width);
   rtl_set_OF(&ZERO);rtl_set_CF(&ZERO);
   operand_write(id_dest,&id_dest->val);
@@ -25,13 +20,8 @@ make_EHelper(and) {
 }
 
 make_EHelper(xor) {
-	if(id_src->width < id_dest->width){ // sign-extension required
-		int w=id_dest->width-id_src->width;
-		id_src->val <<= (w*8);
-		id_src->val = (rtlreg_t)((int32_t)id_src->val >> (w*8)); 	 	
-		id_src->width=id_dest->width;
-  }
-  rtl_xor(&id_dest->val,&id_dest->val,&id_src->val);
+	rtl_sext(&s2,&id_src->val,id_src->width);
+  rtl_xor(&id_dest->val,&id_dest->val,&s2);
   rtl_update_ZFSF(&id_dest->val, id_dest->width);
   rtl_set_OF(&ZERO);rtl_set_CF(&ZERO);
   operand_write(id_dest,&id_dest->val);
@@ -40,13 +30,8 @@ make_EHelper(xor) {
 }
 
 make_EHelper(or) {
-  if(id_src->width < id_dest->width){ // sign-extension required
-		int w=id_dest->width-id_src->width;
-		id_src->val <<= (w*8);
-		id_src->val = (rtlreg_t)((int32_t)id_src->val >> (w*8)); 	 	
-		id_src->width=id_dest->width;
-  }
-  rtl_or(&id_dest->val,&id_dest->val,&id_src->val);
+  rtl_sext(&s2,&id_src->val,id_src->width);
+  rtl_or(&id_dest->val,&id_dest->val,&s2);
   rtl_update_ZFSF(&id_dest->val, id_dest->width);
   rtl_set_OF(&ZERO);rtl_set_CF(&ZERO);
   operand_write(id_dest,&id_dest->val);

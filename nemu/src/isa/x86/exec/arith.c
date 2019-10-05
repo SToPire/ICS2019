@@ -14,8 +14,9 @@ make_EHelper(add) {
 }
 
 make_EHelper(sub) {
-  rtl_sub(&s0,&id_dest->val,&id_src->val);
-  rtl_is_sub_overflow(&s1,&s0,&id_dest->val,&id_src->val,id_dest->width);
+	rtl_sext(&s2,&id_src->val,id_src->width);
+  rtl_sub(&s0,&id_dest->val,&s2);
+  rtl_is_sub_overflow(&s1,&s0,&id_dest->val,&s2,id_dest->width);
   rtl_set_OF(&s1);
   rtl_is_sub_carry(&s1,&s0,&id_dest->val);
   rtl_set_CF(&s1);
@@ -26,18 +27,13 @@ make_EHelper(sub) {
 }
 
 make_EHelper(cmp) {
-	if(id_src->width < id_dest->width){ // sign-extension required
-		int w=id_dest->width-id_src->width;
-		id_src->val <<= (w*8);
-		id_src->val = (rtlreg_t)((int32_t)id_src->val >> (w*8)); 	 	
-		id_src->width=id_dest->width;
-  }
-  rtl_sub(&s0,&id_dest->val,&id_src->val);
-  rtl_is_sub_overflow(&s1,&s0,&id_dest->val,&id_src->val,id_dest->width);
+	rtl_sext(&s2,&id_src->val,id_src->width);
+  rtl_sub(&s0,&id_dest->val,&s2);
+  rtl_is_sub_overflow(&s1,&s0,&id_dest->val,&s2,id_dest->width);
   rtl_set_OF(&s1);
   rtl_is_sub_carry(&s1,&s0,&id_dest->val);
   rtl_set_CF(&s1);
-	rtl_update_ZFSF(&s0, id_dest->width);
+  rtl_update_ZFSF(&s0, id_dest->width);
 	
   print_asm_template2(cmp);
 }
