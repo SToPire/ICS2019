@@ -23,6 +23,8 @@ make_EHelper(adc);
 make_EHelper(or);
 make_EHelper(pop);
 
+make_EHelper(sar);
+
 make_EHelper(operand_size);
 
 make_EHelper(inv);
