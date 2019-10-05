@@ -38,6 +38,8 @@ make_EHelper(not);
 make_EHelper(imul1);
 
 make_EHelper(call_rm);
+make_EHelper(jmp_rm);
+
 make_EHelper(operand_size);
 
 make_EHelper(inv);
