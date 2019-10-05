@@ -56,6 +56,7 @@ make_EHelper(or) {
 
 make_EHelper(sar) {
   id_dest->val = (rtlreg_t)((int32_t)id_dest->val >> id_src->val);
+  rtl_update_ZFSF(&id_dest->val, id_dest->width);
   operand_write(id_dest,&id_dest->val);
   // unnecessary to update CF and OF in NEMU
   
