@@ -59,7 +59,12 @@ make_EHelper(inc) {
 }
 
 make_EHelper(dec) {
-  TODO();
+  rtlreg_t ONE=1;
+	rtl_sub(&s0,&id_dest->val,&ONE);
+	rtl_is_sub_overflow(&s1,&s0,&id_dest->val,&ONE,id_dest->width);
+	rtl_set_OF(&s1);
+	rtl_update_ZFSF(&s0, id_dest->width);
+	operand_write(id_dest,&s0);
 
   print_asm_template1(dec);
 }
