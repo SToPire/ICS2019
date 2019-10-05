@@ -2,7 +2,7 @@
 
 CPU_state cpu;
 
-rtlreg_t s0, s1, t0, t1, ir, ZERO;
+rtlreg_t s0, s1, s2, t0, t1, ir, ZERO;
 
 /* shared by all helper functions */
 DecodeInfo decinfo;
