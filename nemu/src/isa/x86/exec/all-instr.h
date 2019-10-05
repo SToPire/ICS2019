@@ -33,6 +33,7 @@ make_EHelper(idiv);
 
 make_EHelper(jmp);
 make_EHelper(movsx);
+make_EHelper(not);
 
 make_EHelper(operand_size);
 
