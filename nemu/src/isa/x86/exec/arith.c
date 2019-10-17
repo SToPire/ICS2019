@@ -27,7 +27,7 @@ make_EHelper(sub) {
 }
 
 make_EHelper(cmp) { 
-  if(id_src->width != id_dest->width)
+ // if(id_src->width != id_dest->width)
 	  rtl_sext(&s2,&id_src->val,id_src->width);   
   rtl_sub(&s0,&id_dest->val,&s2);printf("%d\n",s0);
   rtl_is_sub_overflow(&s1,&s0,&id_dest->val,&s2,id_dest->width);
