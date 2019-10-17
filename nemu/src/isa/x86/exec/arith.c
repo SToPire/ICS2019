@@ -27,6 +27,7 @@ make_EHelper(sub) {
 }
 
 make_EHelper(cmp) { 
+  printf("fuck\n");
   if(id_src->width != id_dest->width)
 	  rtl_sext(&s2,&id_src->val,id_src->width);   
   rtl_sub(&s0,&id_dest->val,&s2);
