@@ -26,8 +26,8 @@ make_EHelper(sub) {
   print_asm_template2(sub);
 }
 
-make_EHelper(cmp) {printf("%x\n",id_src->val);  
-	rtl_sext(&s2,&id_src->val,id_src->width);printf("%x\n",id_src->val);  
+make_EHelper(cmp) { 
+	rtl_sext(&s2,&id_src->val,id_src->width);printf("%x\n",id_src->val); printf("%x\n",id_dest->val);   
   rtl_sub(&s0,&id_dest->val,&s2);
   rtl_is_sub_overflow(&s1,&s0,&id_dest->val,&s2,id_dest->width);
   rtl_set_OF(&s1);
