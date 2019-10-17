@@ -1,7 +1,9 @@
 #include "cpu/exec.h"
 
 make_EHelper(add) {
-  rtl_sext(&s2,&id_src->val,id_src->width);
+  if(id_src->width != id_dest->width)
+	  rtl_sext(&s2,&id_src->val,id_src->width);
+  else rtl_mv(&s2,&id_src->val);  
   rtl_add(&s0,&id_dest->val,&s2);
   rtl_is_add_overflow(&s1,&s0,&id_dest->val,&s2,id_dest->width);
   rtl_set_OF(&s1);
@@ -14,7 +16,9 @@ make_EHelper(add) {
 }
 
 make_EHelper(sub) {
-	rtl_sext(&s2,&id_src->val,id_src->width);
+	if(id_src->width != id_dest->width)
+	  rtl_sext(&s2,&id_src->val,id_src->width);
+  else rtl_mv(&s2,&id_src->val);  
   rtl_sub(&s0,&id_dest->val,&s2);
   rtl_is_sub_overflow(&s1,&s0,&id_dest->val,&s2,id_dest->width);
   rtl_set_OF(&s1);
@@ -26,8 +30,7 @@ make_EHelper(sub) {
   print_asm_template2(sub);
 }
 
-make_EHelper(cmp) { 
-  printf("fuck\n");
+make_EHelper(cmp) {
   if(id_src->width != id_dest->width)
 	  rtl_sext(&s2,&id_src->val,id_src->width);
   else rtl_mv(&s2,&id_src->val);   
