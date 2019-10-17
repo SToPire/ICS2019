@@ -26,7 +26,7 @@ make_EHelper(inv) {
 
 make_EHelper(nemu_trap) {
   difftest_skip_ref();
-printf("Fuck you:%d\n",cpu.eax);
+
   rtl_exit(NEMU_END, cpu.pc, cpu.eax);
 
   print_asm("nemu trap");
