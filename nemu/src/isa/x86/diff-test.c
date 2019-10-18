@@ -13,6 +13,7 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   if(r[5]!=ref_r->ebp) ans=false;
   if(r[6]!=ref_r->esi) ans=false;
   if(r[7]!=ref_r->edi) ans=false;
+  printf("%x\n",pc);ans=false;
   return ans;
 }
 
