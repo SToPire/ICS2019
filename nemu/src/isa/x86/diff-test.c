@@ -14,7 +14,7 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   if(r[6]!=ref_r->esi) ans=false;
   if(r[7]!=ref_r->edi) ans=false;
   if(r[8]!=ref_r->pc) ans=false;
-  //if((r[9]&1)!=ref_r->eflags.CF) ans=false;
+  if((r[9]&0x1)!=ref_r->eflags.CF) ans=false;
   printf("%x\n",r[9]);
   //if(((r[9]&(1<<6))>>6)!=ref_r->eflags.ZF) ans=false;
   //if(((r[9]&(1<<7))>>7)!=ref_r->eflags.SF) ans=false;
