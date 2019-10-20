@@ -46,5 +46,8 @@ make_EHelper(sbb);
 make_EHelper(operand_size);
 make_EHelper(neg);
 
+make_EHelper(in);
+make_EHelper(out);
+
 make_EHelper(inv);
 make_EHelper(nemu_trap);
