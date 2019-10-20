@@ -56,7 +56,7 @@ make_EHelper(in) {
 }
 
 make_EHelper(out) {
-  if(id_src->width==1){printf("FUCK\n");
+  if(id_src->width==1){printf("dest:%x src:%x\n",id_dest->val,id_src->val);
     pio_write_b(id_dest->val,id_src->val);
   }
   else if(id_src->width==2){
