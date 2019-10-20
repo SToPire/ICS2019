@@ -38,4 +38,4 @@ uint32_t pio_read_w(ioaddr_t addr) { return pio_read_common(addr, 2); }
 uint32_t pio_read_b(ioaddr_t addr) { return pio_read_common(addr, 1); }
 void pio_write_l(ioaddr_t addr, uint32_t data) { pio_write_common(addr, data, 4); }
 void pio_write_w(ioaddr_t addr, uint32_t data) { pio_write_common(addr, data, 2); }
-void pio_write_b(ioaddr_t addr, uint32_t data) { pio_write_common(addr, data, 1); }
+void pio_write_b(ioaddr_t addr, uint32_t data) { printf("addr:%x\n",addr);pio_write_common(addr, data, 1); }
