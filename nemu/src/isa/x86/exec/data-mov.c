@@ -3,6 +3,7 @@
 make_EHelper(mov)
 {
     operand_write(id_dest, &id_src->val);
+    printf("fuck");
     print_asm_template2(mov);
 }
 
