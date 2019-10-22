@@ -9,7 +9,7 @@ int printf(const char* fmt, ...)
     va_start(ap, fmt);
 
     char out[1024];
-    int  cnt = vsprintf(out, fmt, ap);
+    int cnt = vsprintf(out, fmt, ap);
     for (char* p = out; *p; p++) _putc(*p);
     return cnt;
 
@@ -18,7 +18,43 @@ int printf(const char* fmt, ...)
 
 int vsprintf(char* out, const char* fmt, va_list ap)
 {
-    return sprintf(out, fmt, ap);
+    char* outptr = out;
+    char* s;
+    int d;
+    char tmpd[20];
+
+    while (*fmt != '\0') {
+        if (*fmt == '%') {
+            switch (*(++fmt)) {
+                case 's':  //string
+                    s = va_arg(ap, char*);
+                    while (*s != '\0')
+                        *outptr++ = *s++;
+                    break;
+                case 'd':  //integer
+                    d = va_arg(ap, int);
+                    if (d < 0) {
+                        d         = -d;
+                        *outptr++ = '-';
+                    } else if (d == 0) {
+                        *outptr++ = '0';
+                    }
+                    size_t i;
+                    for (i = 1; d; i++, d /= 10)
+                        tmpd[i] = (d % 10) + '0';
+                    for (i--; i; i--)
+                        *outptr++ = tmpd[i];
+                    break;
+            }
+            ++fmt;
+        } else {
+            *outptr = *fmt;
+            ++fmt;
+            ++outptr;
+        }
+    }
+    *outptr = '\0';
+    return outptr - out;
 }
 
 int sprintf(char* out, const char* fmt, ...)
@@ -30,8 +66,8 @@ int sprintf(char* out, const char* fmt, ...)
     char* outptr = out;
 
     char* s;
-    int   d;
-    char  tmpd[20];
+    int d;
+    char tmpd[20];
 
     while (*fmt != '\0') {
         if (*fmt == '%') {
