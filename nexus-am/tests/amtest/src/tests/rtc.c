@@ -5,7 +5,7 @@ void rtc_test()
 {
     _DEV_TIMER_DATE_t rtc;
     int sec = 1;
-    printf("%d", sec);
+    printf("sec:%d\n", sec);
     while (1) {
         while (uptime() < 1000 * sec)
             ;
