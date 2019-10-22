@@ -7,8 +7,8 @@ void rtc_test()
     int sec = 1;
     while (1) {
         while (uptime() < 1000 * sec)
-            printf("%u\n", uptime());
-
+            ;
+        printf("fuck\n");
         get_timeofday(&rtc);
         printf("%d-%d-%d %02d:%02d:%02d GMT (", rtc.year, rtc.month, rtc.day, rtc.hour, rtc.minute, rtc.second);
         if (sec == 1) {
