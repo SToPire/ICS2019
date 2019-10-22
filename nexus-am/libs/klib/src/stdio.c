@@ -9,14 +9,16 @@ int printf(const char* fmt, ...)
     va_start(ap, fmt);
 
     char out[1024];
-    int  cnt = sprintf(out, fmt, ap);
+    int  cnt = vsprintf(out, fmt, ap);
     for (char* p = out; *p; p++) _putc(*p);
     return cnt;
+
+    va_end(ap);
 }
 
 int vsprintf(char* out, const char* fmt, va_list ap)
 {
-    return 0;
+    return sprintf(out, fmt, ap);
 }
 
 int sprintf(char* out, const char* fmt, ...)
