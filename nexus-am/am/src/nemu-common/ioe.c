@@ -8,7 +8,6 @@ int _ioe_init()
 {
     __am_vga_init();
     __am_timer_init();
-    _putc('c');
     return 0;
 }
 
