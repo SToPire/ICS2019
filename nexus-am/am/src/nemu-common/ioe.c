@@ -6,6 +6,7 @@ void __am_timer_init();
 
 int _ioe_init()
 {
+    _putc('c');
     __am_vga_init();
     __am_timer_init();
     return 0;
