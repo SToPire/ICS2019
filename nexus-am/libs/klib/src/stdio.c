@@ -69,6 +69,14 @@ int sprintf(char* out, const char* fmt, ...)
 
 int snprintf(char* out, size_t n, const char* fmt, ...)
 {
+    // char tmp[1024];
+    // va_list ap;
+    // va_start(ap, fmt);
+    // if (vsprintf(tmp, fmt, ap) >= n) {
+    //     strncpy(out, tmp, n - 1);
+    //     *(out + n - 1) = '\0';
+    //     return n - 1;
+    // }
     return 0;
 }
 

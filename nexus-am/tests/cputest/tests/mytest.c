@@ -2,6 +2,6 @@
 
 int main()
 {
-    printf("%d\n", 100);
-    return 0;
+    char out[1024];
+    nemu_assert(sprintf(out, "\n") == 1);
 }
