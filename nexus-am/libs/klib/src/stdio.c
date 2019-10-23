@@ -54,13 +54,11 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                             --width_now;
                         } else
                             d_negative_no_zero_padded_flag = 1;
-                        break;
                     } else if (d == 0) {
                         *outptr++ = '0';
                         --width_now;
                         while (width_now-- > 0) *outptr++ = '0';
                     }
-                    _putc('c');
                     size_t i;
                     for (i = 1; d; i++, d /= 10)
                         tmpd[i] = (d % 10) + '0';
