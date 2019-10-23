@@ -3,7 +3,7 @@
 int main()
 {
     char out[1024];
-    printf("%010d", -12345);
+    printf("%10d", -12345);
     //int a = sprintf(out, "%s", "hello");
     //int a = sprintf(out, "hello");
     //printf("%d\n", a);
