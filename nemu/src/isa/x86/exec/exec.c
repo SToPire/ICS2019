@@ -30,10 +30,10 @@ make_group(gp1, EX(add), EMPTY, EMPTY, EMPTY, EX(and), EX(sub), EMPTY, EX(cmp))
     make_group(gp3, IDEX(test_I, test), EMPTY, EX(not), EX(neg), EX(mul), EX(imul1), EMPTY, EX(idiv))
 
     /* 0xfe */
-    make_group(gp4, EMPTY, EX(dec), EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY)
+    make_group(gp4, EX(inc), EX(dec), EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY)
 
     /* 0xff */
-    make_group(gp5, EX(inc), EMPTY, EX(call_rm), EMPTY, EX(jmp_rm), EMPTY, EX(push), EMPTY)
+    make_group(gp5, EX(inc), EX(dec), EX(call_rm), EMPTY, EX(jmp_rm), EMPTY, EX(push), EMPTY)
 
     /* 0x0f 0x01*/
     make_group(gp7, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY)
@@ -176,7 +176,7 @@ make_group(gp1, EX(add), EMPTY, EMPTY, EMPTY, EX(and), EX(sub), EMPTY, EX(cmp))
 static make_EHelper(2byte_esc)
 {
     uint32_t opcode = instr_fetch(pc, 1) | 0x100;
-    decinfo.opcode  = opcode;
+    decinfo.opcode = opcode;
     set_width(opcode_table[opcode].width);
     idex(pc, &opcode_table[opcode]);
 }
@@ -184,7 +184,7 @@ static make_EHelper(2byte_esc)
 void isa_exec(vaddr_t* pc)
 {
     uint32_t opcode = instr_fetch(pc, 1);
-    decinfo.opcode  = opcode;
+    decinfo.opcode = opcode;
     set_width(opcode_table[opcode].width);
     idex(pc, &opcode_table[opcode]);
 }
