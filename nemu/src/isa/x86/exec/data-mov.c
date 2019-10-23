@@ -65,15 +65,13 @@ make_EHelper(cwtl)
     if (decinfo.isa.is_operand_size_16) {
         rtl_lr(&s0, R_AL, 1);
         if (reg_b(R_AL) < 0)
-            rtl_ori(&s1, &s0, 0xFF00);
-        rtl_sr(R_AX, &s1, 2);
+            rtl_ori(&s0, &s0, 0xFF00);
+        rtl_sr(R_AX, &s0, 2);
     } else {
         rtl_lr(&s0, R_AX, 2);
-        if (reg_w(R_AX) < 0) {
-            rtl_ori(&s1, &s0, 0xFFFF0000);
-            printf("%x\n", s1);
-        }
-        rtl_sr(R_EAX, &s1, 4);
+        if (reg_w(R_AX) < 0)
+            rtl_ori(&s0, &s0, 0xFFFF0000);
+        rtl_sr(R_EAX, &s0, 4);
     }
 
     print_asm(decinfo.isa.is_operand_size_16 ? "cbtw" : "cwtl");
