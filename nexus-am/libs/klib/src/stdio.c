@@ -19,10 +19,13 @@ int printf(const char* fmt, ...)
 int vsprintf(char* out, const char* fmt, va_list ap)
 {
     /* version 1.0 on Oct 18th, 2019, only %s and %d supported*/
+    /* version 2.0 on Oct 23th, 2019, width and zero flag supported*/
     char* outptr = out;
     char* s;
     int d;
     char tmpd[20];
+
+    //int d_negative_no_zero_padded_flag = 0;  //negative number with no zero_padded
 
     int zero_padded = 0;
     int in_format = 0;
@@ -50,9 +53,16 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                     d = va_arg(ap, int);
                     if (d < 0) {
                         d = -d;
-                        *outptr++ = '-';
+                        if (zero_padded) {
+                            *outptr++ = '-';
+                            --width_now;
+                        } else
+                            //d_negative_no_zero_padded_flag = 1;
+                            break;
                     } else if (d == 0) {
                         *outptr++ = '0';
+                        --width_now;
+                        while (width_now-- > 0) *outptr++ = '0';
                     }
                     size_t i;
                     for (i = 1; d; i++, d /= 10)
