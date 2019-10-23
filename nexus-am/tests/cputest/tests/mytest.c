@@ -3,7 +3,7 @@
 int main()
 {
     char out[1024];
-    printf("%02d", 0);
+    printf("%d-%d-%d %02d:%02d:%02d GMT (", 0, 0, 0, 0, 0, 0);
     //int a = sprintf(out, "%s", "hello");
     //int a = sprintf(out, "hello");
     //printf("%d\n", a);
