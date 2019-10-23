@@ -45,15 +45,15 @@ make_EHelper(leave)
 make_EHelper(cltd)
 {
     if (decinfo.isa.is_operand_size_16) {
-        rtlreg_t tmp = 0;
+        rtl_mv(&t0, &ZERO);
         if (reg_w(R_AX) < 0)
-            tmp = 0xFFFF;
-        rtl_sr(R_DX, &tmp, 2);
+            t0 = 0xFFFF;
+        rtl_sr(R_DX, &t0, 2);
     } else {
-        rtlreg_t tmp = 0;
+        rtl_mv(&t0, &ZERO);
         if (reg_w(R_EAX) < 0)
-            tmp = 0xFFFFFFFF;
-        rtl_sr(R_EDX, &tmp, 4);
+            t0 = 0xFFFFFFFF;
+        rtl_sr(R_EDX, &t0, 4);
     }
 
     print_asm(decinfo.isa.is_operand_size_16 ? "cwtl" : "cltd");
