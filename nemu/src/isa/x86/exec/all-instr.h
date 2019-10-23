@@ -29,7 +29,6 @@ make_EHelper(dec);
 
 make_EHelper(imul2);
 make_EHelper(cltd);
-make_EHelper(cwtl);
 make_EHelper(idiv);
 make_EHelper(div);
 make_EHelper(jmp);
@@ -49,6 +48,9 @@ make_EHelper(neg);
 
 make_EHelper(in);
 make_EHelper(out);
+
+make_EHelper(cwtl);
+make_EHelper(imul3);
 
 make_EHelper(inv);
 make_EHelper(nemu_trap);
