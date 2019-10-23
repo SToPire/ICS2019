@@ -64,6 +64,7 @@ make_EHelper(cwtl)
     rtl_mv(&s0, &ZERO);
     if (decinfo.isa.is_operand_size_16) {
         rtl_lr(&s0, R_AL, 1);
+        printf("%x", s0);
         if (reg_b(R_AL) < 0)
             rtl_ori(&s1, &s0, 0xFF00);
         rtl_sr(R_AX, &s1, 2);
