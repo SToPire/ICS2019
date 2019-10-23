@@ -77,8 +77,7 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                     break;
             }
             ++fmt;
-        }
-        if (*fmt == '%') {
+        } else if (*fmt == '%') {
             in_format = 1;
             width_now = 0;
             zero_padded = 0;
