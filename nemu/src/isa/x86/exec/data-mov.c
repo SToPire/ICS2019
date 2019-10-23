@@ -51,7 +51,7 @@ make_EHelper(cltd)
         rtl_sr(R_DX, &t0, 2);
     } else {
         rtl_mv(&t0, &ZERO);
-        if (reg_w(R_EAX) < 0)
+        if (reg_l(R_EAX) < 0)
             t0 = 0xFFFFFFFF;
         rtl_sr(R_EDX, &t0, 4);
     }
@@ -62,9 +62,15 @@ make_EHelper(cltd)
 make_EHelper(cwtl)
 {
     if (decinfo.isa.is_operand_size_16) {
-        TODO();
+        rtl_mv(&t0, &ZERO);
+        if (reg_b(R_AL) < 0)
+            t0 = 0xFFFF;
+        rtl_sr(R_AX, &t0, 2);
     } else {
-        TODO();
+        rtl_mv(&t0, &ZERO);
+        if (reg_w(R_AX) < 0)
+            t0 = 0xFFFFFFFF;
+        rtl_sr(R_EAX, &t0, 4);
     }
 
     print_asm(decinfo.isa.is_operand_size_16 ? "cbtw" : "cwtl");
