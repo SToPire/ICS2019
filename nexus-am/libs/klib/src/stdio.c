@@ -24,18 +24,31 @@ int vsprintf(char* out, const char* fmt, va_list ap)
     int d;
     char tmpd[20];
 
+    int zero_padded = 0;
+    int in_format = 0;
+    unsigned width_now = 0;
     while (*fmt != '\0') {
-        if (*fmt == '%') {
-            switch (*(++fmt)) {
+        if (in_format) {
+            switch (*fmt) {
                 case 's':  //string
                     s = va_arg(ap, char*);
-                    while (*s != '\0')
-                        *outptr++ = *s++;
+                    if (strlen(s) >= width_now) {
+                        while (width_now--) *outptr++ = *s++;
+                    } else if (zero_padded) {
+                        int count0 = width_now - strlen(s);
+                        while (count0--) *outptr++ = '0';
+                        while (*s != '\0') *outptr++ = *s++;
+                    } else {
+                        while (*s != '\0') *outptr++ = *s++;
+                    }
+                    in_format = 0;
+                    width_now = 0;
+                    zero_padded = 0;
                     break;
                 case 'd':  //integer
                     d = va_arg(ap, int);
                     if (d < 0) {
-                        d         = -d;
+                        d = -d;
                         *outptr++ = '-';
                     } else if (d == 0) {
                         *outptr++ = '0';
@@ -45,8 +58,32 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                         tmpd[i] = (d % 10) + '0';
                     for (i--; i; i--)
                         *outptr++ = tmpd[i];
+                    in_format = 0;
+                    width_now = 0;
+                    zero_padded = 0;
+                    break;
+                case '0':
+                    if (*(fmt - 1) == '%')
+                        zero_padded = 1;
+                    else
+                        width_now *= 10;
+                    break;
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    width_now = 10 * width_now + *fmt;
                     break;
             }
+            ++fmt;
+        }
+        if (*fmt == '%') {
+            in_format = 1;
             ++fmt;
         } else {
             *outptr = *fmt;
