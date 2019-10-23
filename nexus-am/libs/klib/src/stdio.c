@@ -47,7 +47,6 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                     break;
                 case 'd':  //integer
                     d = va_arg(ap, int);
-                    _putc('c');
                     if (d < 0) {
                         d = -d;
                         if (zero_padded) {
@@ -61,6 +60,7 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                         --width_now;
                         while (width_now-- > 0) *outptr++ = '0';
                     }
+                    _putc('c');
                     size_t i;
                     for (i = 1; d; i++, d /= 10)
                         tmpd[i] = (d % 10) + '0';
