@@ -34,11 +34,14 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                     s = va_arg(ap, char*);
                     if (strlen(s) >= width_now && width_now) {
                         while (width_now--) *outptr++ = *s++;
-                    } else if (zero_padded) {
-                        int count0 = width_now - strlen(s);
-                        while (count0--) *outptr++ = '0';
-                        while (*s != '\0') *outptr++ = *s++;
                     } else {
+                        int count = width_now - strlen(s);
+                        while (count--) {
+                            if (zero_padded)
+                                *outptr++ = '0';
+                            else
+                                *outptr++ = ' ';
+                        }
                         while (*s != '\0') *outptr++ = *s++;
                     }
                     in_format = 0;
