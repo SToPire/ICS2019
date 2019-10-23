@@ -8,5 +8,5 @@ int main()
     //int a = sprintf(out, "hello");
     //printf("%d\n", a);
     nemu_assert(sprintf(out, "%2s", "hello") == 5);
-    nemu_assert(strcmp(out, "     hello") == 0);
+    //  nemu_assert(strcmp(out, "     hello") == 0);
 }
