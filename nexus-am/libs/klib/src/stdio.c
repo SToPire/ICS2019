@@ -39,7 +39,6 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                         while (count0--) *outptr++ = '0';
                         while (*s != '\0') *outptr++ = *s++;
                     } else {
-                        _putc('f');
                         while (*s != '\0') *outptr++ = *s++;
                     }
                     in_format = 0;
