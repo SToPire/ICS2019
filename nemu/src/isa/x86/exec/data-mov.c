@@ -45,15 +45,15 @@ make_EHelper(leave)
 make_EHelper(cltd)
 {
     if (decinfo.isa.is_operand_size_16) {
-        rtl_mv(&t0, &ZERO);
+        rtl_mv(&s0, &ZERO);
         if (reg_w(R_AX) < 0)
-            t0 = 0xFFFF;
-        rtl_sr(R_DX, &t0, 2);
+            s0 = 0xFFFF;
+        rtl_sr(R_DX, &s0, 2);
     } else {
-        rtl_mv(&t0, &ZERO);
+        rtl_mv(&s0, &ZERO);
         if (reg_l(R_EAX) < 0)
-            t0 = 0xFFFFFFFF;
-        rtl_sr(R_EDX, &t0, 4);
+            s0 = 0xFFFFFFFF;
+        rtl_sr(R_EDX, &s0, 4);
     }
 
     print_asm(decinfo.isa.is_operand_size_16 ? "cwtl" : "cltd");
@@ -61,16 +61,17 @@ make_EHelper(cltd)
 
 make_EHelper(cwtl)
 {
+    rtl_mv(&s0, &ZERO);
     if (decinfo.isa.is_operand_size_16) {
-        rtl_mv(&t0, &ZERO);
+        rtl_lr(&s0, R_AL, 1);
         if (reg_b(R_AL) < 0)
-            t0 = 0xFFFF;
-        rtl_sr(R_AX, &t0, 2);
+            rtl_ori(&s1, &s0, 0xFF00);
+        rtl_sr(R_AX, &s1, 2);
     } else {
-        rtl_mv(&t0, &ZERO);
+        rtl_lr(&s0, R_AX, 2);
         if (reg_w(R_AX) < 0)
-            t0 = 0xFFFFFFFF;
-        rtl_sr(R_EAX, &t0, 4);
+            rtl_ori(&s1, &s0, 0xFFFF0000);
+        rtl_sr(R_EAX, &s1, 4);
     }
 
     print_asm(decinfo.isa.is_operand_size_16 ? "cbtw" : "cwtl");
