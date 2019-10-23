@@ -65,7 +65,7 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                         tmpd[i] = (d % 10) + '0';
                     if (d_negative_no_zero_padded_flag)
                         tmpd[++i] = '-';
-                    int count_d = i - width_now;
+                    int count_d = width_now - (i - 1);
                     while (count_d-- > 0) {
                         if (zero_padded)
                             *outptr++ = '0';
