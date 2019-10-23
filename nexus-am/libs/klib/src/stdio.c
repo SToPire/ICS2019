@@ -35,18 +35,14 @@ int vsprintf(char* out, const char* fmt, va_list ap)
             switch (*fmt) {
                 case 's':  //string
                     s = va_arg(ap, char*);
-                    if (strlen(s) >= width_now && width_now) {
-                        while (width_now--) *outptr++ = *s++;
-                    } else {
-                        int count = width_now - strlen(s);
-                        while (count--) {
-                            if (zero_padded)
-                                *outptr++ = '0';
-                            else
-                                *outptr++ = ' ';
-                        }
-                        while (*s != '\0') *outptr++ = *s++;
+                    int count = width_now - strlen(s);
+                    while (count-- > 0) {
+                        if (zero_padded)
+                            *outptr++ = '0';
+                        else
+                            *outptr++ = ' ';
                     }
+                    while (*s != '\0') *outptr++ = *s++;
                     in_format = 0;
                     break;
                 case 'd':  //integer
