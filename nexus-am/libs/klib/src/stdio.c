@@ -25,7 +25,7 @@ int vsprintf(char* out, const char* fmt, va_list ap)
     int d;
     char tmpd[20];
 
-    //int d_negative_no_zero_padded_flag = 0;  //negative number with no zero_padded
+    int d_negative_no_zero_padded_flag = 0;  //negative number with no zero_padded
 
     int zero_padded = 0;
     int in_format = 0;
@@ -35,8 +35,8 @@ int vsprintf(char* out, const char* fmt, va_list ap)
             switch (*fmt) {
                 case 's':  //string
                     s = va_arg(ap, char*);
-                    int count = width_now - strlen(s);
-                    while (count-- > 0) {
+                    int count_s = width_now - strlen(s);
+                    while (count_s-- > 0) {
                         if (zero_padded)
                             *outptr++ = '0';
                         else
@@ -53,8 +53,8 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                             *outptr++ = '-';
                             --width_now;
                         } else
-                            //d_negative_no_zero_padded_flag = 1;
-                            break;
+                            d_negative_no_zero_padded_flag = 1;
+                        break;
                     } else if (d == 0) {
                         *outptr++ = '0';
                         --width_now;
@@ -63,6 +63,15 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                     size_t i;
                     for (i = 1; d; i++, d /= 10)
                         tmpd[i] = (d % 10) + '0';
+                    if (d_negative_no_zero_padded_flag)
+                        tmpd[++i] = '-';
+                    int count_d = i - width_now;
+                    while (count_d-- > 0) {
+                        if (zero_padded)
+                            *outptr++ = '0';
+                        else
+                            *outptr++ = ' ';
+                    }
                     for (i--; i; i--)
                         *outptr++ = tmpd[i];
                     in_format = 0;
