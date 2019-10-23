@@ -52,5 +52,7 @@ make_EHelper(out);
 make_EHelper(cwtl);
 make_EHelper(imul3);
 
+make_EHelper(rol);
+
 make_EHelper(inv);
 make_EHelper(nemu_trap);
