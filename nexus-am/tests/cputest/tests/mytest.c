@@ -3,7 +3,7 @@
 int main()
 {
     //char out[1024];
-    printf("%01s", "hello");
+    printf("%d", strlen("hello"));
     //printf("%s", "hello");
     //int a = sprintf(out, "%s", "hello");
     //int a = sprintf(out, "hello");
