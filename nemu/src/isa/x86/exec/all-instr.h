@@ -4,7 +4,7 @@ make_EHelper(mov);
 make_EHelper(call);
 make_EHelper(push);
 make_EHelper(sub);
-make_EHelper(xor);
+make_EHelper (xor);
 make_EHelper(ret);
 
 make_EHelper(lea);
@@ -30,7 +30,7 @@ make_EHelper(dec);
 make_EHelper(imul2);
 make_EHelper(cltd);
 make_EHelper(idiv);
-
+make_EHelper(div);
 make_EHelper(jmp);
 make_EHelper(movsx);
 make_EHelper(not);
