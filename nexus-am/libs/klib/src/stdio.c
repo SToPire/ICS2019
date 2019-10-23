@@ -36,7 +36,6 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                         while (width_now--) *outptr++ = *s++;
                     } else if (zero_padded) {
                         int count0 = width_now - strlen(s);
-                        printf("%d\n", width_now);
                         while (count0--) *outptr++ = '0';
                         while (*s != '\0') *outptr++ = *s++;
                     } else {
@@ -74,7 +73,7 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                 case '7':
                 case '8':
                 case '9':
-                    width_now = 10 * width_now + *fmt;
+                    width_now = 10 * width_now + *fmt - '0';
                     break;
                 default: break;
             }
