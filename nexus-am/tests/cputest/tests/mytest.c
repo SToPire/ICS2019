@@ -7,6 +7,6 @@ int main()
     //int a = sprintf(out, "%s", "hello");
     //int a = sprintf(out, "hello");
     //printf("%d\n", a);
-    nemu_assert(sprintf(out, "%2d", 12345) == 5);
-    nemu_assert(strcmp(out, "12345") == 0);
+    nemu_assert(sprintf(out, "%10d", 12345) == 10);
+    nemu_assert(strcmp(out, "0000012345") == 0);
 }
