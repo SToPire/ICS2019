@@ -39,11 +39,10 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                         while (count0--) *outptr++ = '0';
                         while (*s != '\0') *outptr++ = *s++;
                     } else {
+                        _putc('f');
                         while (*s != '\0') *outptr++ = *s++;
                     }
                     in_format = 0;
-                    width_now = 0;
-                    zero_padded = 0;
                     break;
                 case 'd':  //integer
                     d = va_arg(ap, int);
@@ -59,8 +58,6 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                     for (i--; i; i--)
                         *outptr++ = tmpd[i];
                     in_format = 0;
-                    width_now = 0;
-                    zero_padded = 0;
                     break;
                 case '0':
                     if (*(fmt - 1) == '%')
@@ -84,6 +81,8 @@ int vsprintf(char* out, const char* fmt, va_list ap)
         }
         if (*fmt == '%') {
             in_format = 1;
+            width_now = 0;
+            zero_padded = 0;
             ++fmt;
         } else {
             *outptr = *fmt;
