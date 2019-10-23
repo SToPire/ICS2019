@@ -29,7 +29,7 @@ int vsprintf(char* out, const char* fmt, va_list ap)
 
     int zero_padded = 0;
     int in_format = 0;
-    unsigned width_now = 0;
+    int width_now = 0;
     while (*fmt != '\0') {
         if (in_format) {
             switch (*fmt) {
