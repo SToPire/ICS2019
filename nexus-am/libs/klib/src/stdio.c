@@ -61,12 +61,11 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                         while (width_now-- > 0) *outptr++ = '0';
                     }
                     size_t i;
+                    _putc('c');
                     for (i = 1; d; i++, d /= 10)
                         tmpd[i] = (d % 10) + '0';
-                    if (d_negative_no_zero_padded_flag) {
+                    if (d_negative_no_zero_padded_flag)
                         tmpd[i++] = '-';
-                        _putc('c');
-                    }
                     int count_d = width_now - (i - 1);
                     while (count_d-- > 0) {
                         if (zero_padded)
