@@ -8,6 +8,6 @@ int main()
     printf("%d\n", a);
     //nemu_assert(sprintf(out, "%s", "hello") == 5);
     //nemu_assert(sprintf(out, "hello") == 5);
-    for (int i = 0; i <= 7; i++) printf("%d\n", out[i]);
+    for (int i = 0; i <= 10; i++) printf("%d\n", out[i]);
     //nemu_assert(strcmp(out, "hello") == 0);
 }
