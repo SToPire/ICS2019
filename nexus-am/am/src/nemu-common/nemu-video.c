@@ -10,7 +10,7 @@ size_t __am_video_read(uintptr_t reg, void* buf, size_t size)
     switch (reg) {
         case _DEVREG_VIDEO_INFO: {
             _DEV_VIDEO_INFO_t* info = (_DEV_VIDEO_INFO_t*)buf;
-            info->width = 400;
+            info->width = inl(SCREEN_ADDR);
             info->height = 320;
             return sizeof(_DEV_VIDEO_INFO_t);
         }
@@ -27,11 +27,9 @@ size_t __am_video_write(uintptr_t reg, void* buf, size_t size)
             int x = ctl->x, y = ctl->y, w = ctl->w, h = ctl->h;
             uint32_t* pixels = ctl->pixels;
             int cp_bytes = sizeof(uint32_t) * (w < 400 - x ? w : 400 - x);
-            for (int j = 0; j < h && y + j < 320; j++) {
-                // memcpy(&fb[(y + j) * 400 + x], pixels, cp_bytes);
+            for (int j = 0; j < h && y + j < 320; j++)
                 for (int i = 0; i < cp_bytes; i++)
                     fb[(y + j) * 400 + x + i] = *pixels;
-            }
             if (ctl->sync) {
                 outl(SYNC_ADDR, 0);
             }
