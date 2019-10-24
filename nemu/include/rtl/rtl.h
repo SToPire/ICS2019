@@ -53,47 +53,35 @@ make_rtl_arith_logic(add)
                                                         make_rtl_arith_logic(idiv_q)
                                                             make_rtl_arith_logic(idiv_r)
 
-                                                                static inline void interpret_rtl_div64_q(rtlreg_t* dest,
-                                                                                                         const rtlreg_t* src1_hi,
-                                                                                                         const rtlreg_t* src1_lo,
-                                                                                                         const rtlreg_t* src2)
+                                                                static inline void interpret_rtl_div64_q(rtlreg_t* dest, const rtlreg_t* src1_hi, const rtlreg_t* src1_lo, const rtlreg_t* src2)
 {
     uint64_t dividend = ((uint64_t)(*src1_hi) << 32) | (*src1_lo);
     uint32_t divisor = (*src2);
     *dest = dividend / divisor;
 }
 
-static inline void interpret_rtl_div64_r(rtlreg_t* dest,
-                                         const rtlreg_t* src1_hi,
-                                         const rtlreg_t* src1_lo,
-                                         const rtlreg_t* src2)
+static inline void interpret_rtl_div64_r(rtlreg_t* dest, const rtlreg_t* src1_hi, const rtlreg_t* src1_lo, const rtlreg_t* src2)
 {
     uint64_t dividend = ((uint64_t)(*src1_hi) << 32) | (*src1_lo);
     uint32_t divisor = (*src2);
     *dest = dividend % divisor;
 }
 
-static inline void interpret_rtl_idiv64_q(rtlreg_t* dest,
-                                          const rtlreg_t* src1_hi,
-                                          const rtlreg_t* src1_lo,
-                                          const rtlreg_t* src2)
+static inline void interpret_rtl_idiv64_q(rtlreg_t* dest, const rtlreg_t* src1_hi, const rtlreg_t* src1_lo, const rtlreg_t* src2)
 {
     int64_t dividend = ((uint64_t)(*src1_hi) << 32) | (*src1_lo);
     int32_t divisor = (*src2);
     *dest = dividend / divisor;
 }
 
-static inline void interpret_rtl_idiv64_r(rtlreg_t* dest,
-                                          const rtlreg_t* src1_hi,
-                                          const rtlreg_t* src1_lo,
-                                          const rtlreg_t* src2)
+static inline void interpret_rtl_idiv64_r(rtlreg_t* dest, const rtlreg_t* src1_hi, const rtlreg_t* src1_lo, const rtlreg_t* src2)
 {
     int64_t dividend = ((uint64_t)(*src1_hi) << 32) | (*src1_lo);
     int32_t divisor = (*src2);
     *dest = dividend % divisor;
 }
 
-static inline void interpret_rtl_lm(rtlreg_t* dest, const rtlreg_t* addr, int len)
+inline void interpret_rtl_lm(rtlreg_t* dest, const rtlreg_t* addr, int len)
 {
     *dest = vaddr_read(*addr, len);
 }
@@ -140,10 +128,7 @@ static inline void interpret_rtl_jr(rtlreg_t* target)
     decinfo_set_jmp(true);
 }
 
-static inline void interpret_rtl_jrelop(uint32_t relop,
-                                        const rtlreg_t* src1,
-                                        const rtlreg_t* src2,
-                                        vaddr_t target)
+static inline void interpret_rtl_jrelop(uint32_t relop, const rtlreg_t* src1, const rtlreg_t* src2, vaddr_t target)
 {
     bool is_jmp = interpret_relop(relop, *src1, *src2);
     if (is_jmp) cpu.pc = target;
