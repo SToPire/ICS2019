@@ -92,8 +92,8 @@ void video_test()
     while (1) {
         unsigned long upt = uptime();
         if (upt - last > 1000 / FPS) {
-            printf("fuck you\n");
             update();
+            printf("fuck you\n");
             redraw();
             last = upt;
             fps++;
