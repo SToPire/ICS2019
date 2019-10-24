@@ -6,6 +6,7 @@ bool isa_difftest_checkregs(CPU_state* ref_r, vaddr_t pc)
     uint32_t r[77];
     ref_difftest_getregs(r);
     bool ans = true;
+    printf("%x\n", r[8]);
     if (r[0] != ref_r->eax) ans = false;
     if (r[1] != ref_r->ecx) ans = false;
     if (r[2] != ref_r->edx) ans = false;
