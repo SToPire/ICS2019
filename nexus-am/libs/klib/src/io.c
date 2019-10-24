@@ -41,7 +41,7 @@ void draw_sync()
     ctl.pixels = NULL;
     ctl.x = ctl.y = ctl.w = ctl.h = 0;
     ctl.sync = 1;
-    // _io_write(_DEV_VIDEO, _DEVREG_VIDEO_FBCTL, &ctl, sizeof(ctl));
+    _io_write(_DEV_VIDEO, _DEVREG_VIDEO_FBCTL, &ctl, sizeof(ctl));
 }
 
 int screen_width()
