@@ -6,15 +6,15 @@ bool isa_difftest_checkregs(CPU_state* ref_r, vaddr_t pc)
     uint32_t r[77];
     ref_difftest_getregs(r);
     bool ans = true;
-    if (r[0] != ref_r->eax) ans = false;
-    if (r[1] != ref_r->ecx) ans = false;
-    if (r[2] != ref_r->edx) ans = false;
-    if (r[3] != ref_r->ebx) ans = false;
-    if (r[4] != ref_r->esp) ans = false;
-    if (r[5] != ref_r->ebp) ans = false;
-    if (r[6] != ref_r->esi) ans = false;
-    if (r[7] != ref_r->edi) ans = false;
-    if (r[8] != ref_r->pc) ans = false;
+    if (cpu.eax != ref_r->eax) ans = false;
+    if (cpu.ecx != ref_r->ecx) ans = false;
+    if (cpu.edx != ref_r->edx) ans = false;
+    if (cpu.ebx != ref_r->ebx) ans = false;
+    if (cpu.esp != ref_r->esp) ans = false;
+    if (cpu.ebp != ref_r->ebp) ans = false;
+    if (cpu.esi != ref_r->esi) ans = false;
+    if (cpu.edi != ref_r->edi) ans = false;
+    if (cpu.pc != ref_r->pc) ans = false;
     return ans;
 }
 
