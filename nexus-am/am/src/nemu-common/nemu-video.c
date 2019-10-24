@@ -27,10 +27,9 @@ size_t __am_video_write(uintptr_t reg, void* buf, size_t size)
             int x = ctl->x, y = ctl->y, w = ctl->w, h = ctl->h;
             uint32_t* pixels = ctl->pixels;
             int cp_bytes = w < 400 - x ? w : 400 - x;
-            for (int j = 0; j < h && y + j < 300; j++) {
+            for (int j = 0; j < h && y + j < 300; j++)
                 for (int i = 0; i < cp_bytes; i++)
                     fb[(y + j) * 400 + x + i] = *pixels++;
-            }
             if (ctl->sync) {
                 outl(SYNC_ADDR, 0);
             }
