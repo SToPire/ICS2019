@@ -24,6 +24,7 @@ int read_key()
 
 void draw_rect(uint32_t* pixels, int x, int y, int w, int h)
 {
+    _putc('f');
     _DEV_VIDEO_FBCTL_t ctl = (_DEV_VIDEO_FBCTL_t){
         .pixels = pixels,
         .x = x,
@@ -32,8 +33,8 @@ void draw_rect(uint32_t* pixels, int x, int y, int w, int h)
         .h = h,
         .sync = 0,
     };
-    ctl = ctl;
-    //  _io_write(_DEV_VIDEO, _DEVREG_VIDEO_FBCTL, &ctl, sizeof(ctl));
+    _putc('g');
+    _io_write(_DEV_VIDEO, _DEVREG_VIDEO_FBCTL, &ctl, sizeof(ctl));
 }
 
 void draw_sync()
