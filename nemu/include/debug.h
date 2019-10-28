@@ -1,6 +1,5 @@
 #ifndef __DEBUG_H__
 #define __DEBUG_H__
-volatile static int dummyss;
 
 #include "common.h"
 #include <stdio.h>
