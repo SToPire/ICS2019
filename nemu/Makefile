@@ -5,7 +5,7 @@ ISA ?= x86
 ISAS = $(shell ls src/isa/)
 $(info Building $(ISA)-$(NAME))
 
-ifeq ($(filter $(ISAS), $(ISA)), ) # ISA must be valid
+ifeq ($(filter $(ISAS), $(ISA)),) # ISA must be valid
 $(error Invalid ISA. Supported: $(ISAS))
 endif
 endif
