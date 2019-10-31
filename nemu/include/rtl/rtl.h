@@ -9,6 +9,7 @@
 extern rtlreg_t s0, s1, s2, t0, t1, ir, ZERO;
 
 void decinfo_set_jmp(bool is_jmp);
+void decinfo_set_jmp_addr(vaddr_t addr);
 bool interpret_relop(uint32_t relop, const rtlreg_t src1, const rtlreg_t src2);
 
 /* RTL basic instructions */
