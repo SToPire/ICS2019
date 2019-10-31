@@ -25,9 +25,6 @@ make_EHelper(mov_cr2r)
 
 make_EHelper(int)
 {
-    // rtl_mv(&s0, &cpu.IDTR);
-    // printf("%x\n", id_dest->val);
-    // printf("%x\n", vaddr_read(s0, 4));
     raise_intr(id_dest->val, decinfo.seq_pc);
     print_asm("int %s", id_dest->str);
 
