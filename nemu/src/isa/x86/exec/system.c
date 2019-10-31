@@ -2,8 +2,7 @@
 
 make_EHelper(lidt)
 {
-    printf("dst:%x\n src:%x\n", id_dest->val, id_src->val);
-
+    operand_write(id_dest, &cpu.IDTR);
     print_asm_template1(lidt);
 }
 
@@ -25,7 +24,7 @@ make_EHelper(mov_cr2r)
 
 make_EHelper(int)
 {
-    TODO();
+    printf("%x\n", id_src->val);
 
     print_asm("int %s", id_dest->str);
 
