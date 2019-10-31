@@ -2,7 +2,7 @@
 
 make_EHelper(lidt)
 {
-    operand_write(id_dest, &cpu.IDTR);
+    rtl_mv(&cpu.IDTR, &id_dest->val);
     print_asm_template1(lidt);
 }
 
@@ -24,7 +24,7 @@ make_EHelper(mov_cr2r)
 
 make_EHelper(int)
 {
-        printf("%x\n", cpu.IDTR);
+    printf("%x\n", cpu.IDTR);
     print_asm("int %s", id_dest->str);
 
     difftest_skip_dut(1, 2);
