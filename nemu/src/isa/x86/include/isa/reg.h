@@ -75,7 +75,7 @@ typedef struct
         uint8_t EFLAGS;
     };
     uint32_t cs;
-
+    rtlreg_t IDTR;
 } CPU_state;
 
 static inline int check_reg_index(int index)
