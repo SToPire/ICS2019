@@ -24,7 +24,7 @@ make_EHelper(mov_cr2r)
 
 make_EHelper(int)
 {
-    printf("%x\n", id_src->val);
+    printf("%x\n", id_dest->val);
 
     print_asm("int %s", id_dest->str);
 
