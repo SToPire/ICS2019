@@ -9,9 +9,7 @@ void raise_intr(uint32_t NO, vaddr_t ret_addr)
     vaddr_t target_address =
         (vaddr_read(cpu.IDTR.head + index + 4, 4) & 0xFFFF0000) |
         (vaddr_read(cpu.IDTR.head + index, 4) & 0x0000FFFF);
-    decinfo_set_jmp(true);
-    printf("%x\n", target_address);
-    decinfo_set_jmp_addr(target_address);
+    rtl_j(target_address);
 }
 
 bool isa_query_intr(void)
