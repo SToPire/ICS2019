@@ -1,6 +1,6 @@
 #include <am.h>
 #include <x86.h>
-
+int printf(const char* fmt, ...);
 static _Context* (*user_handler)(_Event, _Context*) = NULL;
 
 void __am_irq0();
@@ -16,7 +16,7 @@ _Context* __am_irq_handle(_Context* c)
         switch (c->irq) {
             default: ev.event = _EVENT_ERROR; break;
         }
-
+        printf("f");
         next = user_handler(ev, c);
         if (next == NULL) {
             next = c;
