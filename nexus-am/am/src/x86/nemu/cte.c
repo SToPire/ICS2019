@@ -40,7 +40,7 @@ int _cte_init(_Context* (*handler)(_Event, _Context*))
     // ---------------------- system call ----------------------------
     idt[0x80] = GATE(STS_TG32, KSEL(SEG_KCODE), __am_vecsys, DPL_USER);
     idt[0x81] = GATE(STS_TG32, KSEL(SEG_KCODE), __am_vectrap, DPL_KERN);
-    _putc('c');
+
     set_idt(idt, sizeof(idt));
 
     // register event handler
