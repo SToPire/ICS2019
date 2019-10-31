@@ -1,5 +1,5 @@
 #include "cpu/exec.h"
-
+void raise_intr(uint32_t NO, vaddr_t ret_addr);
 make_EHelper(lidt)
 {
     cpu.IDTR.len = vaddr_read(id_dest->addr, 2);
@@ -28,7 +28,7 @@ make_EHelper(int)
     // rtl_mv(&s0, &cpu.IDTR);
     // printf("%x\n", id_dest->val);
     // printf("%x\n", vaddr_read(s0, 4));
-    printf("%x\n", vaddr_read(cpu.IDTR.head, 4));
+    raise_intr(id_dest->val, decinfo.seq_pc);
     print_asm("int %s", id_dest->str);
 
     difftest_skip_dut(1, 2);
