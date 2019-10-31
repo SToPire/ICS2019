@@ -2,7 +2,7 @@
 
 make_EHelper(lidt)
 {
-    printf("%x\n", id_dest->addr);
+    printf("%x\n", id_dest->val);
     //rtl_mv(&cpu.IDTR, &id_dest->val);
     print_asm_template1(lidt);
 }
