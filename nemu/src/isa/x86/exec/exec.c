@@ -65,7 +65,7 @@ make_group(gp1, EX(add), EX(or), EMPTY, EMPTY, EX(and), EX(sub), EX (xor), EX(cm
         /* 0x54 */ IDEX(r, push), IDEX(r, push), IDEX(r, push), IDEX(r, push),
         /* 0x58 */ IDEX(r, pop), IDEX(r, pop), IDEX(r, pop), IDEX(r, pop),
         /* 0x5c */ IDEX(r, pop), IDEX(r, pop), IDEX(r, pop), IDEX(r, pop),
-        /* 0x60 */ EMPTY, EMPTY, EMPTY, EMPTY,
+        /* 0x60 */ EX(pusha), EX(popa), EMPTY, EMPTY,
         /* 0x64 */ EMPTY, EMPTY, EX(operand_size), EMPTY,
         /* 0x68 */ IDEXW(push_SI, push, 4), IDEX(I_E2G, imul3), IDEXW(push_SI, push, 1), EMPTY,
         /* 0x6c */ EMPTY, EMPTY, EMPTY, EMPTY,
