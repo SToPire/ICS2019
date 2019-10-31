@@ -2,7 +2,7 @@
 
 make_EHelper(lidt)
 {
-    TODO();
+    printf("dst:%x\n", id_dest->val);
 
     print_asm_template1(lidt);
 }
@@ -42,9 +42,9 @@ make_EHelper(iret)
 uint32_t pio_read_l(ioaddr_t);
 uint32_t pio_read_w(ioaddr_t);
 uint32_t pio_read_b(ioaddr_t);
-void     pio_write_l(ioaddr_t, uint32_t);
-void     pio_write_w(ioaddr_t, uint32_t);
-void     pio_write_b(ioaddr_t, uint32_t);
+void pio_write_l(ioaddr_t, uint32_t);
+void pio_write_w(ioaddr_t, uint32_t);
+void pio_write_b(ioaddr_t, uint32_t);
 
 make_EHelper(in)
 {
