@@ -2,8 +2,9 @@
 
 make_EHelper(lidt)
 {
-    printf("%x\n", id_dest->val);
-    //rtl_mv(&cpu.IDTR, &id_dest->val);
+    cpu.IDTR.len = vaddr_read(id_dest->addr, 2);
+    printf("%x\n", cpu.IDTR.len);
+    rtl_mv(&cpu.IDTR.head, &id_dest->val);
     print_asm_template1(lidt);
 }
 
