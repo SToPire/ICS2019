@@ -24,8 +24,7 @@ make_EHelper(mov_cr2r)
 
 make_EHelper(int)
 {
-    rtl_lr(&s0, R_EAX, 4);
-    printf("%x\n", R_EAX);
+        printf("%x\n", cpu.IDTR);
     print_asm("int %s", id_dest->str);
 
     difftest_skip_dut(1, 2);
