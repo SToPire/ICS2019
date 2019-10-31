@@ -2,7 +2,8 @@
 
 make_EHelper(lidt)
 {
-    rtl_mv(&cpu.IDTR, &id_dest->val);
+    printf("%x\n", id_dest->addr);
+    //rtl_mv(&cpu.IDTR, &id_dest->val);
     print_asm_template1(lidt);
 }
 
@@ -24,10 +25,10 @@ make_EHelper(mov_cr2r)
 
 make_EHelper(int)
 {
-    rtl_mv(&s0, &cpu.IDTR);
-    printf("%x\n", id_dest->val);
-    printf("%x\n", vaddr_read(s0, 4));
-    print_asm("int %s", id_dest->str);
+    // rtl_mv(&s0, &cpu.IDTR);
+    // printf("%x\n", id_dest->val);
+    // printf("%x\n", vaddr_read(s0, 4));
+    // print_asm("int %s", id_dest->str);
 
     difftest_skip_dut(1, 2);
 }
