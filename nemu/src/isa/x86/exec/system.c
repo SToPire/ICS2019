@@ -2,7 +2,7 @@
 
 make_EHelper(lidt)
 {
-    printf("dst:%x\n", id_dest->val);
+    printf("dst:%x\n src:%x\n", id_dest->val, id_src->val);
 
     print_asm_template1(lidt);
 }
