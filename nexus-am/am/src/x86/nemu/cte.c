@@ -10,7 +10,7 @@ void __am_vecnull();
 
 _Context* __am_irq_handle(_Context* c)
 {
-    printf("fuck:%d", c->edi);
+    printf("fuck:%d", c->irq);
     _Context* next = c;
     if (user_handler) {
         _Event ev = {0};
