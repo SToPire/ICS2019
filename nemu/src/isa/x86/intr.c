@@ -8,7 +8,6 @@ void raise_intr(uint32_t NO, vaddr_t ret_addr)
     rtl_push(&cpu.EFLAGS);
     rtl_push(&cpu.cs);
     rtl_push(&cpu.pc);
-    printf("eflags:%x\n", cpu.EFLAGS);
     uint32_t index = NO * 8;
     vaddr_t target_address =
         (vaddr_read(cpu.IDTR.head + index + 4, 4) & 0xFFFF0000) |

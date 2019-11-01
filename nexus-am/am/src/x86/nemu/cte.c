@@ -15,6 +15,7 @@ _Context* __am_irq_handle(_Context* c)
     if (user_handler) {
         _Event ev = {0};
         switch (c->irq) {
+            case 0x81: printf("hey man");
             default: ev.event = _EVENT_ERROR; break;
         }
 
