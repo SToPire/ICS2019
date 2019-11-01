@@ -1,14 +1,17 @@
 #include "common.h"
+int printf(const char* fmt, ...);
+static _Context* do_event(_Event e, _Context* c)
+{
+    switch (e.event) {
+        case _EVENT_YIELD: printf("Hey man!\n");
+        default: panic("Unhandled event ID = %d", e.event);
+    }
 
-static _Context* do_event(_Event e, _Context* c) {
-  switch (e.event) {
-    default: panic("Unhandled event ID = %d", e.event);
-  }
-
-  return NULL;
+    return NULL;
 }
 
-void init_irq(void) {
-  Log("Initializing interrupt/exception handler...");
-  _cte_init(do_event);
+void init_irq(void)
+{
+    Log("Initializing interrupt/exception handler...");
+    _cte_init(do_event);
 }
