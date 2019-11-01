@@ -36,7 +36,7 @@ make_EHelper(iret)
     rtl_pop(&cpu.pc);
     rtl_pop(&cpu.cs);
     rtl_pop(&cpu.EFLAGS);
-    printf("eflags:%x\n", cpu.cs);
+    printf("eflags:%x\n", cpu.pc);
 
     print_asm("iret");
 }
