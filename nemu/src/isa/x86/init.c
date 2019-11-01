@@ -18,7 +18,7 @@ static void restart()
     /* Set the initial program counter. */
     cpu.pc = PC_START;
     cpu.cs = 8;
-    cpu.EFLAGS = 0x00000002;
+    cpu.EFLAGS = 0x2;
 }
 
 void init_isa(void)
