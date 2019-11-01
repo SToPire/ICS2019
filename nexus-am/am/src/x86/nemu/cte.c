@@ -16,7 +16,7 @@ _Context* __am_irq_handle(_Context* c)
         switch (c->irq) {
             default: ev.event = _EVENT_ERROR; break;
         }
-        printf("esi:%x", c->esi);
+        printf("esi:%x", c->irq);
         next = user_handler(ev, c);
         if (next == NULL) {
             next = c;
