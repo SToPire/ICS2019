@@ -30,6 +30,7 @@ int vsprintf(char* out, const char* fmt, va_list ap)
     int zero_padded = 0;
     int in_format = 0;
     int width_now = 0;
+    size_t i;
     while (*fmt != '\0') {
         if (in_format) {
             switch (*fmt) {
@@ -59,13 +60,41 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                         --width_now;
                         while (width_now-- > 0) *outptr++ = '0';
                     }
-                    size_t i;
                     for (i = 1; d; i++, d /= 10)
                         tmpd[i] = (d % 10) + '0';
                     if (d_negative_no_zero_padded_flag)
                         tmpd[i++] = '-';
                     int count_d = width_now - (i - 1);
                     while (count_d-- > 0) {
+                        if (zero_padded)
+                            *outptr++ = '0';
+                        else
+                            *outptr++ = ' ';
+                    }
+                    for (i--; i; i--)
+                        *outptr++ = tmpd[i];
+                    in_format = 0;
+                    break;
+                case 'x':  //hex
+                    d = va_arg(ap, int);
+                    if (d < 0) {
+                        d = -d;
+                        if (zero_padded) {
+                            *outptr++ = '-';
+                            --width_now;
+                        } else
+                            d_negative_no_zero_padded_flag = 1;
+                    } else if (d == 0) {
+                        *outptr++ = '0';
+                        --width_now;
+                        while (width_now-- > 0) *outptr++ = '0';
+                    }
+                    for (i = 1; d; i++, d /= 16)
+                        tmpd[i] = (d % 16) + '0';
+                    if (d_negative_no_zero_padded_flag)
+                        tmpd[i++] = '-';
+                    int count_x = width_now - (i - 1);
+                    while (count_x-- > 0) {
                         if (zero_padded)
                             *outptr++ = '0';
                         else
