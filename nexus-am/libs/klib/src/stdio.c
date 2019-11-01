@@ -75,35 +75,6 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                         *outptr++ = tmpd[i];
                     in_format = 0;
                     break;
-                case 'x':  //hex
-                    d = va_arg(ap, int);
-                    if (d < 0) {
-                        d = -d;
-                        if (zero_padded) {
-                            *outptr++ = '-';
-                            --width_now;
-                        } else
-                            d_negative_no_zero_padded_flag = 1;
-                    } else if (d == 0) {
-                        *outptr++ = '0';
-                        --width_now;
-                        while (width_now-- > 0) *outptr++ = '0';
-                    }
-                    for (i = 1; d; i++, d /= 16)
-                        tmpd[i] = (d % 16) + '0';
-                    if (d_negative_no_zero_padded_flag)
-                        tmpd[i++] = '-';
-                    int count_x = width_now - (i - 1);
-                    while (count_x-- > 0) {
-                        if (zero_padded)
-                            *outptr++ = '0';
-                        else
-                            *outptr++ = ' ';
-                    }
-                    for (i--; i; i--)
-                        *outptr++ = tmpd[i];
-                    in_format = 0;
-                    break;
                 case '0':
                     if (*(fmt - 1) == '%')
                         zero_padded = 1;
