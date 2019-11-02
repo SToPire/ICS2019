@@ -70,7 +70,7 @@ int main(const char* args)
 {
     const char* setting_name = args;
     printf("sss:%s\n", args);
-    if (args == NULL || (strcmp(args, "") == 0)) {
+    if (strcmp(args, "") == 0) {
         printf("Empty mainargs. Use \"ref\" by default\n");
         setting_name = "ref";
     }
