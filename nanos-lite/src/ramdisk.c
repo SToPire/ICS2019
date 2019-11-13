@@ -29,7 +29,7 @@ void init_ramdisk()
 {
     // Log("ramdisk info: start = %p, end = %p, size = %d bytes",
     //     &ramdisk_start, &ramdisk_end, RAMDISK_SIZE);
-    Log("test:%u\n", 123);
+    Log("test:%5u\n", 123);
 }
 
 size_t get_ramdisk_size()
