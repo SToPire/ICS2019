@@ -97,6 +97,11 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                     in_format = 0;
                     break;
                 case 'x':  //hex
+                case 'p':  //pointer
+                    if (*fmt == 'p') {
+                        *outptr++ = '0';
+                        *outptr++ = 'x';
+                    }
                     u = va_arg(ap, unsigned);
                     if (u == 0) {
                         *outptr++ = '0';
