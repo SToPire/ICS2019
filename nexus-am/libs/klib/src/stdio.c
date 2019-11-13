@@ -92,7 +92,7 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                 case '9':
                     width_now = 10 * width_now + *fmt - '0';
                     break;
-                default: break;
+                default: assert(0);
             }
             ++fmt;
         } else if (*fmt == '%') {
