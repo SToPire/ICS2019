@@ -13,12 +13,17 @@ size_t ramdisk_read(void* buf, size_t offset, size_t len);
 size_t get_ramdisk_size();
 static uintptr_t loader(PCB* pcb, const char* filename)
 {
-    Elf32_Ehdr tmp;
-    ramdisk_read(&tmp, 0x0, sizeof(Elf32_Ehdr));
-    printf("e_phoff:%x\n", tmp.e_phoff);
-    printf("e_phentsize:%x\n", tmp.e_phentsize);
-    printf("e_phnum:%x\n", tmp.e_phnum);
+    Elf32_Ehdr E_hdr;
+    ramdisk_read(&E_hdr, 0x0, sizeof(Elf32_Ehdr));
+    printf("e_phoff:%x\n", E_hdr.e_phoff);
+    printf("e_phentsize:%x\n", E_hdr.e_phentsize);
+    printf("e_phnum:%x\n", E_hdr.e_phnum);
 
+    Elf32_Phdr P_hdr[10];
+    for (int i = 0; i < E_hdr.e_phnum; i++) {
+        ramdisk_read(&P_hdr[i], E_hdr.e_phoff + i * E_hdr.e_phentsize, E_hdr.e_phentsize);
+        printf("%d:%x\n", i, P_hdr[i].p_offset);
+    }
     return 0;
 }
 
