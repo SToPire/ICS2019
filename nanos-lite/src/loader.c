@@ -22,8 +22,8 @@ static uintptr_t loader(PCB* pcb, const char* filename)
         if (P_hdr.p_type == PT_LOAD) {
             uint32_t tmp[0xFFFF];
             ramdisk_read(tmp, P_hdr.p_offset, P_hdr.p_filesz);
-            // memcpy((void*)P_hdr.p_vaddr, tmp, P_hdr.p_filesz);
-            // memset((void*)P_hdr.p_filesz, 0, P_hdr.p_memsz - P_hdr.p_filesz);
+            memcpy((void*)P_hdr.p_vaddr, tmp, P_hdr.p_filesz);
+            memset((void*)P_hdr.p_filesz, 0, P_hdr.p_memsz - P_hdr.p_filesz);
         }
         printf("%d:%x\n", i, P_hdr.p_type);
     }
