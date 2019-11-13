@@ -14,7 +14,7 @@ size_t get_ramdisk_size();
 static uintptr_t loader(PCB* pcb, const char* filename)
 {
     uint32_t tmp;
-    ramdisk_read(&tmp, 0x1000, 4);
+    ramdisk_read(&tmp, 0, 4);
     printf("%u\n", tmp);
     return 0;
 }
