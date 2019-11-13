@@ -117,6 +117,7 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                         else
                             *outptr++ = ' ';
                     }
+                    break;
                 case '0':
                     if (*(fmt - 1) == '%')
                         zero_padded = 1;
