@@ -29,7 +29,6 @@ void init_ramdisk()
 {
     Log("ramdisk info: start = %p, end = %p, size = %d bytes",
         &ramdisk_start, &ramdisk_end, RAMDISK_SIZE);
-    Log("\nfuck you : %x\n fuck you: %u", &ramdisk_start, &ramdisk_start);
 }
 
 size_t get_ramdisk_size()
