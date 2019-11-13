@@ -76,7 +76,7 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                         *outptr++ = tmp_num[i];
                     in_format = 0;
                     break;
-                case 'u':
+                case 'u':  //unsigned
                     u = va_arg(ap, unsigned);
                     if (u == 0) {
                         *outptr++ = '0';
@@ -96,6 +96,27 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                         *outptr++ = tmp_num[i];
                     in_format = 0;
                     break;
+                case 'x':  //hex
+                    u = va_arg(ap, unsigned);
+                    if (u == 0) {
+                        *outptr++ = '0';
+                        --width_now;
+                        while (width_now-- > 0) *outptr++ = '0';
+                    }
+                    for (i = 1; u; i++, u /= 16) {
+                        if (u % 16 <= 9) {
+                            tmp_num[i] = (u % 16) + '0';
+                        } else {
+                            tmp_num[i] = (u % 16) + 'a' - 10;
+                        }
+                    }
+                    int count_x = width_now - (i - 1);
+                    while (count_x-- > 0) {
+                        if (zero_padded)
+                            *outptr++ = '0';
+                        else
+                            *outptr++ = ' ';
+                    }
                 case '0':
                     if (*(fmt - 1) == '%')
                         zero_padded = 1;
