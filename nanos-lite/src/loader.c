@@ -13,7 +13,7 @@ size_t ramdisk_read(void* buf, size_t offset, size_t len);
 size_t get_ramdisk_size();
 static uintptr_t loader(PCB* pcb, const char* filename)
 {
-    printf("%u\n", get_ramdisk_size);
+    printf("%u\n", get_ramdisk_size());
     return 0;
 }
 
