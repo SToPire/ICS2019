@@ -1,33 +1,36 @@
 #include "proc.h"
 
 #define MAX_NR_PROC 4
-
+void naive_uload(PCB* pcb, const char* filename);
 static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
 static PCB pcb_boot = {};
-PCB *current = NULL;
+PCB* current = NULL;
 
-void switch_boot_pcb() {
-  current = &pcb_boot;
+void switch_boot_pcb()
+{
+    current = &pcb_boot;
 }
 
-void hello_fun(void *arg) {
-  int j = 1;
-  while (1) {
-    Log("Hello World from Nanos-lite for the %dth time!", j);
-    j ++;
-    _yield();
-  }
+void hello_fun(void* arg)
+{
+    int j = 1;
+    while (1) {
+        Log("Hello World from Nanos-lite for the %dth time!", j);
+        j++;
+        _yield();
+    }
 }
 
-void init_proc() {
-  switch_boot_pcb();
+void init_proc()
+{
+    switch_boot_pcb();
 
-  Log("Initializing processes...");
+    Log("Initializing processes...");
 
-  // load program here
-
+    naive_uload(NULL, NULL);
 }
 
-_Context* schedule(_Context *prev) {
-  return NULL;
+_Context* schedule(_Context* prev)
+{
+    return NULL;
 }
