@@ -11,7 +11,7 @@
 int printf(const char* fmt, ...);
 static uintptr_t loader(PCB* pcb, const char* filename)
 {
-    printf("Fuck you\n");
+    //printf("Fuck you\n");
     return 0;
 }
 
