@@ -8,10 +8,10 @@
 #    define Elf_Ehdr Elf32_Ehdr
 #    define Elf_Phdr Elf32_Phdr
 #endif
-
+int printf(const char* fmt, ...);
 static uintptr_t loader(PCB* pcb, const char* filename)
 {
-    TODO();
+    printf("Fuck you\n");
     return 0;
 }
 
