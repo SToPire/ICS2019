@@ -10,12 +10,12 @@
 #endif
 int printf(const char* fmt, ...);
 size_t ramdisk_read(void* buf, size_t offset, size_t len);
+size_t get_ramdisk_size();
 static uintptr_t loader(PCB* pcb, const char* filename)
 {
-    char tmp[20];
-    ramdisk_read(tmp, 0x1000, 1);
-    printf("%s\n", tmp);
-    return 0;
+    uintptr_t addr;
+    ramdisk_read(&addr, 0, get_ramdisk_size());
+    return addr;
 }
 
 void naive_uload(PCB* pcb, const char* filename)
