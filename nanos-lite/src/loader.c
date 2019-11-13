@@ -27,7 +27,7 @@ static uintptr_t loader(PCB* pcb, const char* filename)
         }
         printf("%d:%x\n", i, P_hdr.p_type);
     }
-    return 0;
+    return 0x3000000;
 }
 
 void naive_uload(PCB* pcb, const char* filename)
