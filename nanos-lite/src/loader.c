@@ -9,9 +9,12 @@
 #    define Elf_Phdr Elf32_Phdr
 #endif
 int printf(const char* fmt, ...);
+size_t ramdisk_read(void* buf, size_t offset, size_t len);
 static uintptr_t loader(PCB* pcb, const char* filename)
 {
-    //printf("Fuck you\n");
+    char tmp[20];
+    ramdisk_read(tmp, 0x1000, 1);
+    printf("%s\n", tmp);
     return 0;
 }
 
