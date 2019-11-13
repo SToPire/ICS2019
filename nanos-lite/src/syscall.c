@@ -18,7 +18,7 @@ int sys_write(uintptr_t fd, uintptr_t buf, uintptr_t count)
             _putc(*(char*)(buf + i));
         return count;
     }
-    return 0;
+    return 1;
 }
 _Context* do_syscall(_Context* c)
 {
