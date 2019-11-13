@@ -13,6 +13,7 @@ int sys_exit(int status)
 }
 int sys_write(int fd, void* buf, size_t count)
 {
+    printf("fd:%d,buf:%p,count:%d\n", fd, buf, count);
     int i = 0;
     if (fd == 1 || fd == 2) {
         for (; i < count; i++)
@@ -34,6 +35,5 @@ _Context* do_syscall(_Context* c)
         case SYS_exit: c->GPRx = sys_exit((int)a[1]); break;
         default: panic("Unhandled syscall ID = %d", a[0]);
     }
-    printf("c->GPRx:%d\n", c->GPRx);
     return NULL;
 }
