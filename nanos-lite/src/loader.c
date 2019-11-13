@@ -22,7 +22,7 @@ static uintptr_t loader(PCB* pcb, const char* filename)
     Elf32_Phdr P_hdr[10];
     for (int i = 0; i < E_hdr.e_phnum; i++) {
         ramdisk_read(&P_hdr[i], E_hdr.e_phoff + i * E_hdr.e_phentsize, E_hdr.e_phentsize);
-        printf("%d:%x\n", i, P_hdr[i].p_offset);
+        printf("%d:%x\n", i, P_hdr[i].p_type);
     }
     return 0;
 }
