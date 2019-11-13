@@ -23,7 +23,8 @@ int vsprintf(char* out, const char* fmt, va_list ap)
     char* outptr = out;
     char* s;
     int d;
-    char tmpd[20];
+    unsigned u;
+    char tmp_num[20];
 
     int d_negative_no_zero_padded_flag = 0;  //negative number with no zero_padded
 
@@ -61,9 +62,9 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                         while (width_now-- > 0) *outptr++ = '0';
                     }
                     for (i = 1; d; i++, d /= 10)
-                        tmpd[i] = (d % 10) + '0';
+                        tmp_num[i] = (d % 10) + '0';
                     if (d_negative_no_zero_padded_flag)
-                        tmpd[i++] = '-';
+                        tmp_num[i++] = '-';
                     int count_d = width_now - (i - 1);
                     while (count_d-- > 0) {
                         if (zero_padded)
@@ -72,7 +73,27 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                             *outptr++ = ' ';
                     }
                     for (i--; i; i--)
-                        *outptr++ = tmpd[i];
+                        *outptr++ = tmp_num[i];
+                    in_format = 0;
+                    break;
+                case 'u':
+                    u = va_arg(ap, unsigned);
+                    if (u == 0) {
+                        *outptr++ = '0';
+                        --width_now;
+                        while (width_now-- > 0) *outptr++ = '0';
+                    }
+                    for (i = 1; u; i++, u /= 10)
+                        tmp_num[i] = (u % 10) + '0';
+                    int count_u = width_now - (i - 1);
+                    while (count_u-- > 0) {
+                        if (zero_padded)
+                            *outptr++ = '0';
+                        else
+                            *outptr++ = ' ';
+                    }
+                    for (i--; i; i--)
+                        *outptr++ = tmp_num[i];
                     in_format = 0;
                     break;
                 case '0':
