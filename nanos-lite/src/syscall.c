@@ -34,6 +34,6 @@ _Context* do_syscall(_Context* c)
         case SYS_exit: c->GPRx = sys_exit((int)a[1]); break;
         default: panic("Unhandled syscall ID = %d", a[0]);
     }
-
+    printf("c->GPRx");
     return NULL;
 }
