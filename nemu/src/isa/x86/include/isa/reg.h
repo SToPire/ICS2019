@@ -38,16 +38,12 @@ enum { R_AL,
  * For more details about the register encoding scheme, see i386 manual.
  */
 
-typedef struct
-{
-    union
-    {
-        struct
-        {
+typedef struct {
+    union {
+        struct {
             rtlreg_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
         };
-        union
-        {
+        union {
             uint32_t _32;
             uint16_t _16;
             uint8_t _8[2];
@@ -61,10 +57,8 @@ typedef struct
    */
 
     vaddr_t pc;
-    union
-    {
-        struct
-        {
+    union {
+        struct {
             rtlreg_t CF : 1;
             rtlreg_t EMPTY1 : 5;
             rtlreg_t ZF : 1;
@@ -74,13 +68,11 @@ typedef struct
             rtlreg_t EMPTY3 : 1;
             rtlreg_t OF : 1;
             rtlreg_t EMPTY4 : 20;
-
         } eflags;
         uint32_t EFLAGS;
     };
     uint32_t cs;
-    struct
-    {
+    struct {
         rtlreg_t head;
         rtlreg_t len;
     } IDTR;
