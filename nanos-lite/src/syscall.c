@@ -6,7 +6,6 @@ void sys_yield(_Context* c)
     _yield();
     c->GPRx = 0;
 }
-
 void sys_exit(_Context* c)
 {
     _halt(c->GPR1);
