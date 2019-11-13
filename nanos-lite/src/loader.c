@@ -15,7 +15,7 @@ static uintptr_t loader(PCB* pcb, const char* filename)
 {
     uint32_t tmp;
     ramdisk_read(&tmp, 0x6000, 4);
-    printf("%u\n", tmp);
+    printf("%x\n", tmp);
     return 0;
 }
 
