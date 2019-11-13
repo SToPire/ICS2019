@@ -15,7 +15,7 @@ static uintptr_t loader(PCB* pcb, const char* filename)
 {
     Elf32_Phdr tmp;
     ramdisk_read(&tmp, 0x0, sizeof(Elf32_Phdr));
-    printf("%x\n", tmp.p_vaddr);
+    printf("%x\n", tmp.p_type);
     return 0;
 }
 
