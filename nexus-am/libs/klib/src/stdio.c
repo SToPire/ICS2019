@@ -117,6 +117,9 @@ int vsprintf(char* out, const char* fmt, va_list ap)
                         else
                             *outptr++ = ' ';
                     }
+                    for (i--; i; i--)
+                        *outptr++ = tmp_num[i];
+                    in_format = 0;
                     break;
                 case '0':
                     if (*(fmt - 1) == '%')
