@@ -7,6 +7,10 @@ void sys_yield(_Context* c)
     c->GPRx = 0;
 }
 
+void sys_exit(_Context* c)
+{
+    _halt(c->GPR1);
+}
 _Context* do_syscall(_Context* c)
 {
     uintptr_t a[4];
