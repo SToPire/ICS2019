@@ -13,7 +13,6 @@ int sys_exit(int status)
 }
 int sys_write(int fd, void* buf, size_t count)
 {
-    printf("fd:%d,buf:%p,count:%d\n", fd, buf, count);
     int i = 0;
     if (fd == 1 || fd == 2) {
         for (; i < count; i++)
