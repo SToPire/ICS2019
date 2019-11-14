@@ -74,8 +74,7 @@ int _write(int fd, void* buf, size_t count)
 
 void* _sbrk(intptr_t increment)
 {
-    int ret_val = _syscall_(SYS_brk, program_break + increment, 0, 0);
-    if (ret_val == -1) {
+    if (_syscall_(SYS_brk, program_break + increment, 0, 0) == -1) {
         return (void*)(-1);
     } else {
         intptr_t tmp = program_break;
