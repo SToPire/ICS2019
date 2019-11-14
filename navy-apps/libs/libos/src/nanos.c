@@ -81,7 +81,6 @@ void* _sbrk(intptr_t increment)
         program_break += increment;
         return (void*)tmp;
     }
-    //return _syscall_(SYS_brk, increment, 0, 0);
 }
 
 int _read(int fd, void* buf, size_t count)
