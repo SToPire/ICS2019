@@ -23,10 +23,6 @@ int sys_write(int fd, void* buf, size_t count)
 }
 int sys_brk(intptr_t increment)
 {
-    char buf[20];
-    extern char _end;
-    sprintf(buf, "%p", &_end);
-    sys_write(1, buf, 10);
     return 0;
 }
 _Context* do_syscall(_Context* c)
