@@ -29,6 +29,10 @@ int sys_open(const char* path, int flags, __mode_t mode)
 {
     return fs_open(path, flags, mode);
 }
+int sys_close(int fd)
+{
+    return 0;
+}
 _Context* do_syscall(_Context* c)
 {
     uintptr_t a[4];
@@ -42,6 +46,7 @@ _Context* do_syscall(_Context* c)
         case SYS_write: c->GPRx = sys_write((int)a[1], (void*)a[2], (size_t)a[3]); break;
         case SYS_brk: c->GPRx = sys_brk((intptr_t)a[1]); break;
         case SYS_open: c->GPRx = sys_open((const char*)a[1], (int)a[2], (__mode_t)a[3]); break;
+        case SYS_close: c->GPRx = sys_close((int)a[1]); break;
         default: panic("Unhandled syscall ID = %d", a[0]);
     }
     return NULL;
