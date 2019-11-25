@@ -1,6 +1,6 @@
 #include "common.h"
 #include "syscall.h"
-
+int fs_open(const char* pathname, int flags, int mode);
 int sys_yield()
 {
     _yield();
@@ -27,7 +27,7 @@ int sys_brk(intptr_t increment)
 
 int sys_open(const char* path, int flags, __mode_t mode)
 {
-    return 0;
+    return fs_open(path, flags, mode);
 }
 _Context* do_syscall(_Context* c)
 {
