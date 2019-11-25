@@ -6,6 +6,6 @@ extern int _syscall_(int, uintptr_t, uintptr_t, uintptr_t);
 
 int main()
 {
-    assert(0);
+    assert(1);
     return _syscall_(SYS_yield, 0, 0, 0);
 }
