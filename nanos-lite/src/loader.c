@@ -14,7 +14,7 @@ static uintptr_t loader(PCB* pcb, const char* filename)
 {
     char tmp[100];
     ramdisk_read(tmp, 0x0, 10);
-    printf("%x\n", tmp);
+    printf("%s\n", tmp);
     return 0;
     // Elf_Ehdr E_hdr;
     // Elf_Phdr P_hdr;
