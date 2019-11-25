@@ -80,7 +80,10 @@ __ssize_t fs_write(int fd, const void* buf, size_t len)
 {
     Finfo* cur_file = &file_table[fd];
     if (len > cur_file->size - cur_file->open_offset) len = cur_file->size - cur_file->open_offset;
-    ramdisk_write(buf, cur_file->disk_offset + cur_file->open_offset, len);
+    if (!cur_file->write)
+        ramdisk_write(buf, cur_file->disk_offset + cur_file->open_offset, len);
+    else
+        cur_file->write(buf, cur_file->disk_offset + cur_file->open_offset, len);
     cur_file->open_offset += len;
     return len;
 }
