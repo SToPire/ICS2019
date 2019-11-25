@@ -47,7 +47,6 @@ int fs_open(const char* pathname, int flags, int mode)
 {
     for (int i = 0; i < NR_FILES; i++) {
         if (strcmp(file_table[i].name, pathname) == 0) {
-            printf("%d", i);
             return i;
         }
     }
