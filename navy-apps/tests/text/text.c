@@ -21,6 +21,7 @@ int main()
     printf("%ld\n", ftell(fp));
     for (i = 0; i < 500; i++) {
         fprintf(fp, "%4d\n", i + 1 + 1000);
+        printf("%ld\n", ftell(fp));
     }
     printf("%ld\n", ftell(fp));
 
