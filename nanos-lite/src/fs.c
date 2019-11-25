@@ -46,7 +46,14 @@ void init_fs()
 {
     // TODO: initialize the size of /dev/fb
 }
-
+size_t get_file_size(int fd)
+{
+    return file_table[fd].size;
+}
+size_t get_file_disk_offset(int fd)
+{
+    return file_table[fd].disk_offset;
+}
 int fs_open(const char* pathname, int flags, int mode)
 {
     for (int i = 0; i < NR_FILES; i++)
@@ -60,18 +67,35 @@ int fs_close(int fd)
     return 0;
 }
 
-size_t fs_read(int fd, void* buf, size_t len)
+__ssize_t fs_read(int fd, void* buf, size_t len)
 {
     Finfo* cur_file = &file_table[fd];
-    if (len > cur_file->size) len = cur_file->size;
-    ramdisk_read(buf, cur_file->disk_offset, len);
+    if (len > cur_file->size - cur_file->open_offset) len = cur_file->size - cur_file->open_offset;
+    ramdisk_read(buf, cur_file->disk_offset + cur_file->open_offset, len);
     return len;
 }
 
-size_t fs_write(int fd, const void* buf, size_t len)
+__ssize_t fs_write(int fd, const void* buf, size_t len)
 {
     Finfo* cur_file = &file_table[fd];
-    if (len > cur_file->size) len = cur_file->size;
-    ramdisk_write(buf, cur_file->disk_offset, len);
+    if (len > cur_file->size - cur_file->open_offset) len = cur_file->size - cur_file->open_offset;
+    ramdisk_write(buf, cur_file->disk_offset + cur_file->open_offset, len);
     return len;
+}
+
+__off_t fs_lseek(int fd, size_t offset, int whence)
+{
+    Finfo* cur_file = &file_table[fd];
+    switch (whence) {
+        case SEEK_SET:
+            cur_file->open_offset = offset;
+        case SEEK_CUR:
+            cur_file->open_offset += offset;
+            break;
+        case SEEK_END:
+            cur_file->open_offset = cur_file->size + offset;
+            break;
+        default: return -1;
+    }
+    return cur_file->open_offset;
 }
