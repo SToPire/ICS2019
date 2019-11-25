@@ -35,7 +35,7 @@ int main()
 
     fclose(fp);
 
-    printf("PASS!!!");
+    printf("PASS!!!\n");
 
     return 0;
 }
