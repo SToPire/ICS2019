@@ -3,6 +3,7 @@
 
 size_t serial_write(const void* buf, size_t offset, size_t len)
 {
+    printf("fuck\n");
     for (int i = 0; i < len; i++)
         _putc(*(char*)(buf + i));
     return len;
