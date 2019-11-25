@@ -10,8 +10,13 @@
 #endif
 size_t ramdisk_read(void* buf, size_t offset, size_t len);
 size_t get_ramdisk_size();
+int fs_open(const char* pathname, int flags, int mode);
+int fs_close(int fd);
+size_t fs_read(int fd, void* buf, size_t len);
+
 static uintptr_t loader(PCB* pcb, const char* filename)
 {
+    // int fd = fs_open(filename, 'r', 0);
     Elf_Ehdr E_hdr;
     Elf_Phdr P_hdr;
     ramdisk_read(&E_hdr, 0x0, sizeof(Elf_Ehdr));

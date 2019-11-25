@@ -1,5 +1,8 @@
 #include "fs.h"
 
+size_t ramdisk_read(void* buf, size_t offset, size_t len);
+size_t ramdisk_write(const void* buf, size_t offset, size_t len);
+
 typedef size_t (*ReadFn)(void* buf, size_t offset, size_t len);
 typedef size_t (*WriteFn)(const void* buf, size_t offset, size_t len);
 
@@ -58,5 +61,16 @@ int fs_close(int fd)
 
 size_t fs_read(int fd, void* buf, size_t len)
 {
-    return 0;
+    Finfo* cur_file = &file_table[fd];
+    if (len > cur_file->size) len = cur_file->size;
+    ramdisk_read(buf, cur_file->disk_offset, len);
+    return len;
+}
+
+size_t fs_write(int fd, const void* buf, size_t len)
+{
+    Finfo* cur_file = &file_table[fd];
+    if (len > cur_file->size) len = cur_file->size;
+    ramdisk_write(buf, cur_file->disk_offset, len);
+    return len;
 }
