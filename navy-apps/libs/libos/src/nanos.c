@@ -90,7 +90,7 @@ int _read(int fd, void* buf, size_t count)
 
 int _close(int fd)
 {
-    printf("Yes");
+    printf("Yes\n");
     _exit(SYS_close);
     return 0;
 }
