@@ -13,12 +13,13 @@ int sys_exit(int status)
 }
 int sys_write(int fd, void* buf, size_t count)
 {
-    if (fd == 1 || fd == 2) {
-        for (int i = 0; i < count; i++)
-            _putc(*(char*)(buf + i));
-        return count;
-    } else
-        return 0;
+    // if (fd == 1 || fd == 2) {
+    //     for (int i = 0; i < count; i++)
+    //         _putc(*(char*)(buf + i));
+    //     return count;
+    // } else
+    //     return 0;
+    return 0;
 }
 int sys_brk(intptr_t increment)
 {
