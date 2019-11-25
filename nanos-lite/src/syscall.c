@@ -3,6 +3,7 @@
 int fs_open(const char* pathname, int flags, int mode);
 int fs_close(int fd);
 __ssize_t fs_read(int fd, void* buf, size_t len);
+__ssize_t fs_write(int fd, const void* buf, size_t len);
 __off_t fs_lseek(int fd, size_t offset, int whence);
 
 int sys_yield()
@@ -22,7 +23,7 @@ int sys_write(int fd, void* buf, size_t count)
             _putc(*(char*)(buf + i));
         return count;
     } else
-        return 0;
+        return fs_write(fd, buf, count);
 }
 int sys_brk(intptr_t increment)
 {
