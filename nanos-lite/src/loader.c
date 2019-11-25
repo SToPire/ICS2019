@@ -12,8 +12,8 @@ size_t ramdisk_read(void* buf, size_t offset, size_t len);
 size_t get_ramdisk_size();
 static uintptr_t loader(PCB* pcb, const char* filename)
 {
-    char tmp[1000];
-    ramdisk_read(tmp, 0, 500);
+    char tmp[10000];
+    ramdisk_read(tmp, 0, 5000);
     printf("%s\n", tmp);
     return 0;
     // Elf_Ehdr E_hdr;
