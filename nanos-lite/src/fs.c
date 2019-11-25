@@ -84,7 +84,7 @@ __ssize_t fs_write(int fd, const void* buf, size_t len)
     if (!cur_file->write)
         ramdisk_write(buf, cur_file->disk_offset + cur_file->open_offset, len);
     else
-        ramdisk_write(buf, cur_file->disk_offset + cur_file->open_offset, len);
+        cur_file->write(buf, cur_file->disk_offset + cur_file->open_offset, len);
     cur_file->open_offset += len;
     return len;
 }
