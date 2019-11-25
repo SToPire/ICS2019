@@ -89,6 +89,7 @@ __off_t fs_lseek(int fd, size_t offset, int whence)
     switch (whence) {
         case SEEK_SET:
             cur_file->open_offset = offset;
+            break;
         case SEEK_CUR:
             cur_file->open_offset += offset;
             break;
