@@ -33,9 +33,9 @@ int main()
         assert(n == i + 1 + 1000);
     }
 
-    // fclose(fp);
+    fclose(fp);
 
-    //printf("PASS!!!\n");
+    printf("PASS!!!\n");
 
     return 0;
 }
