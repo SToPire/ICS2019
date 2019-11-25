@@ -27,8 +27,7 @@ int sys_brk(intptr_t increment)
 
 int sys_open(const char* path, int flags, __mode_t mode)
 {
-    printf("hello\n");
-    return 0;
+    return true;
 }
 _Context* do_syscall(_Context* c)
 {
