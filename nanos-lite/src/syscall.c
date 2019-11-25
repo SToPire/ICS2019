@@ -18,12 +18,7 @@ int sys_exit(int status)
 }
 int sys_write(int fd, void* buf, size_t count)
 {
-    if (fd == 1 || fd == 2) {
-        for (int i = 0; i < count; i++)
-            _putc(*(char*)(buf + i));
-        return count;
-    } else
-        return fs_write(fd, buf, count);
+    return fs_write(fd, buf, count);
 }
 int sys_brk(intptr_t increment)
 {
