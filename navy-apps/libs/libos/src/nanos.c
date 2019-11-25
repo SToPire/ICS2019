@@ -63,6 +63,7 @@ void _exit(int status)
 
 int _open(const char* path, int flags, mode_t mode)
 {
+    printf("open\n");
     return _syscall_(SYS_open, path, flags, mode);
 }
 
@@ -90,7 +91,6 @@ int _read(int fd, void* buf, size_t count)
 
 int _close(int fd)
 {
-    printf("Yes\n");
     _exit(SYS_close);
     return 0;
 }
