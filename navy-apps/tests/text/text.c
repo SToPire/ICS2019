@@ -11,7 +11,7 @@ int main()
     assert(size == 5000);
 
     fseek(fp, 500 * 5, SEEK_SET);
-    printf("%ld  ", ftell(fp));
+    //printf("%ld  ", ftell(fp));
     int i, n;
     for (i = 500; i < 1000; i++) {
         fscanf(fp, "%d", &n);
