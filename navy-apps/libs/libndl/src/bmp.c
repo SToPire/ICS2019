@@ -24,7 +24,7 @@ int NDL_LoadBitmap(NDL_Bitmap* bmp, const char* filename)
     FILE* fp;
     int w = 0, h = 0;
     uint32_t* pixels = NULL;
-    printf("here\n");
+    // printf("here\n");
     w = h = 0;
     if (!(fp = fopen(filename, "r"))) return -1;
     struct BitmapHeader hdr;
