@@ -11,9 +11,10 @@ int main()
         while ((ch = fgetc(fp)) != -1) {
             // printf("%c", ch);
             *p++ = ch;
-            printf("%c", *(p - 1));
+            //printf("%c", *(p - 1));
             if (ch == '\n') {
                 *p = '\0';
+                printf("%s", buf);
                 break;
             }
         }
