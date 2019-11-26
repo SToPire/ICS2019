@@ -13,7 +13,7 @@ int main()
         while ((ch = fgetc(fp)) != -1) {
             printf("%c", ch);
             *p++ = ch;
-            //printf("%p:%p\n", buf, p);
+            printf("%p:%p\n", buf, p);
             //printf("%c", *(p - 1));
             if (ch == '\n') {
                 i++;
