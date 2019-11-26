@@ -45,9 +45,9 @@ static Finfo file_table[] __attribute__((used)) = {
     {"stdout", 0, 0, invalid_read, serial_write},
     {"stderr", 0, 0, invalid_read, serial_write},
     {"/dev/fb", 0, 0, invalid_read, fb_write},
-    {"/proc/dispinfo", 128, 0, dispinfo_read, invalid_write},
     {"/dev/events", 0, 0, events_read, invalid_write},
     {"/dev/fbsync", 0, 0, invalid_read, fbsync_write},
+    {"/proc/dispinfo", 128, 0, dispinfo_read, invalid_write},
 #include "files.h"
 };
 
@@ -70,6 +70,7 @@ int fs_open(const char* pathname, int flags, int mode)
     printf("open:%s %d %d ", pathname, flags, mode);
 
     for (int i = 0; i < NR_FILES; i++) {
+        printf("now in %d\n", i);
         if (strcmp(file_table[i].name, pathname) == 0) {
             file_table[i].open_offset = 0;
             printf("%d\n", i);
