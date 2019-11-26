@@ -56,6 +56,7 @@ static Finfo file_table[] __attribute__((used)) = {
 void init_fs()
 {
     file_table[FD_FB].size = screen_height() * screen_width() * 4;
+    printf("init_fs:sz %d\n", file_table[FD_FB].size);
 }
 size_t get_file_size(int fd)
 {
