@@ -172,7 +172,7 @@ int sprintf(char* out, const char* fmt, ...)
 
 int snprintf(char* out, size_t n, const char* fmt, ...)
 {
-    char tmp[1224];
+    char tmp[1024];
     va_list ap;
     va_start(ap, fmt);
     int ret = vsprintf(tmp, fmt, ap);
