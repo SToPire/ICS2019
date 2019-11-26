@@ -14,7 +14,7 @@ int main()
             //printf("%c", *(p - 1));
             if (ch == '\n') {
                 *p = '\0';
-                printf("%c", buf[0]);
+                printf("%p", buf);
                 break;
             }
         }
