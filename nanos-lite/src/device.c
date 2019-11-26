@@ -17,7 +17,6 @@ static const char* keyname[256] __attribute__((used)) = {
 
 size_t events_read(void* buf, size_t offset, size_t len)
 {
-    printf("%d len\n", len);
     int getkey = read_key();
     bool keydown = false;
     if (getkey & 0x8000) {
@@ -30,7 +29,6 @@ size_t events_read(void* buf, size_t offset, size_t len)
     } else {
         sprintf(buf, "%s %s\n", keydown ? "kd" : "ku", keyname[getkey]);
     }
-    printf("strlen: %u\n", strlen(buf));
     return strlen(buf);
 }
 

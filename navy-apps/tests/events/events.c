@@ -8,9 +8,7 @@ int main()
     while (1) {
         char buf[256];
         char *p = buf, ch;
-        int i = 0;
         while ((ch = fgetc(fp)) != -1) {
-            //printf("%d:%c\n", i, ch);
             i++;
             *p++ = ch;
             if (ch == '\n') {
@@ -18,11 +16,10 @@ int main()
                 break;
             }
         }
-        i = 0;
         int is_time = buf[0] == 't';
         time += is_time;
         if (!is_time) {
-            // printf("receive event: %s", buf);
+            printf("receive event: %s", buf);
         } else if (time % 1024 == 0) {
             printf("receive time event for the %dth time: %s", time, buf);
         }
