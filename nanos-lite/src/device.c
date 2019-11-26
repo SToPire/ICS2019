@@ -23,13 +23,10 @@ size_t events_read(void* buf, size_t offset, size_t len)
         keydown = true;
         getkey ^= 0x8000;
     }
-    if (getkey == _KEY_NONE) {
-        sprintf(buf, "t %u\n", uptime());
-        //printf("%s", buf);
-    } else {
-        sprintf(buf, "%s %s\n", keydown ? "kd" : "ku", keyname[getkey]);
-    }
-    return strlen(buf);
+    if (getkey == _KEY_NONE)
+        return snprintf(buf, len, "t %u\n", uptime());
+    else
+        return snprintf(buf, len, "%s %s\n", keydown ? "kd" : "ku", keyname[getkey]);
 }
 
 static char dispinfo[128] __attribute__((used)) = {};
