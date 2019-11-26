@@ -8,16 +8,19 @@ int main()
     while (1) {
         char buf[256];
         char *p = buf, ch;
+        int i = 0;
         while ((ch = fgetc(fp)) != -1) {
+            i++;
             // printf("%c", ch);
             *p++ = ch;
             //printf("%c", *(p - 1));
             if (ch == '\n') {
                 *p = '\0';
-                printf("%p %p\n", p, buf);
+                printf("%p %p %d\n", p, buf, i);
                 break;
             }
         }
+        i = 0;
         //printf("%s", buf);
         int is_time = buf[0] == 't';
         time += is_time;
