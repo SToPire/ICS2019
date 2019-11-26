@@ -9,7 +9,7 @@ int main()
         char buf[256];
         char *p = buf, ch;
         while ((ch = fgetc(fp)) != -1) {
-            printf("%c\n", ch);
+            //  printf("%c\n", ch);
             *p++ = ch;
             if (ch == '\n') {
                 *p = '\0';
