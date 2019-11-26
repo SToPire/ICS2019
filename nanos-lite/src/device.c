@@ -25,6 +25,7 @@ size_t events_read(void* buf, size_t offset, size_t len)
     }
     if (getkey == _KEY_NONE) {
         sprintf(buf, "t %u\n", uptime());
+        printf("%s", buf);
     } else {
         sprintf(buf, "%s %s\n", keydown ? "kd" : "ku", keyname[getkey]);
     }
