@@ -21,41 +21,40 @@ struct BitmapHeader {
 
 int NDL_LoadBitmap(NDL_Bitmap* bmp, const char* filename)
 {
-    // FILE* fp;
-    // int w = 0, h = 0;
-    // uint32_t* pixels = NULL;
-    // //printf("here\n");
-    // w = h = 0;
-    // if (!(fp = fopen(filename, "r"))) return -1;
-    // struct BitmapHeader hdr;
-    // assert(sizeof(hdr) == 54);
-    // assert(1 == fread(&hdr, sizeof(struct BitmapHeader), 1, fp));
+    FILE* fp;
+    int w = 0, h = 0;
+    uint32_t* pixels = NULL;
+    w = h = 0;
+    if (!(fp = fopen(filename, "r"))) return -1;
+    struct BitmapHeader hdr;
+    assert(sizeof(hdr) == 54);
+    assert(1 == fread(&hdr, sizeof(struct BitmapHeader), 1, fp));
 
-    // if (hdr.bitcount != 24) return -1;
-    // if (hdr.compression != 0) return -1;
-    // pixels = (uint32_t*)malloc(hdr.width * hdr.height * sizeof(uint32_t));
-    // if (!pixels) return -1;
+    if (hdr.bitcount != 24) return -1;
+    if (hdr.compression != 0) return -1;
+    pixels = (uint32_t*)malloc(hdr.width * hdr.height * sizeof(uint32_t));
+    if (!pixels) return -1;
 
-    // w = hdr.width;
-    // h = hdr.height;
-    // int line_off = (w * 3 + 3) & ~0x3;
+    w = hdr.width;
+    h = hdr.height;
+    int line_off = (w * 3 + 3) & ~0x3;
 
-    // for (int i = 0; i < h; i++) {
-    //     fseek(fp, hdr.offset + (h - 1 - i) * line_off, SEEK_SET);
-    //     int nread = fread(&pixels[w * i], 3, w, fp);
-    //     for (int j = w - 1; j >= 0; j--) {
-    //         uint8_t b = *(((uint8_t*)&pixels[w * i]) + 3 * j);
-    //         uint8_t g = *(((uint8_t*)&pixels[w * i]) + 3 * j + 1);
-    //         uint8_t r = *(((uint8_t*)&pixels[w * i]) + 3 * j + 2);
-    //         pixels[w * i + j] = (r << 16) | (g << 8) | b;
-    //     }
-    // }
+    for (int i = 0; i < h; i++) {
+        fseek(fp, hdr.offset + (h - 1 - i) * line_off, SEEK_SET);
+        int nread = fread(&pixels[w * i], 3, w, fp);
+        for (int j = w - 1; j >= 0; j--) {
+            uint8_t b = *(((uint8_t*)&pixels[w * i]) + 3 * j);
+            uint8_t g = *(((uint8_t*)&pixels[w * i]) + 3 * j + 1);
+            uint8_t r = *(((uint8_t*)&pixels[w * i]) + 3 * j + 2);
+            pixels[w * i + j] = (r << 16) | (g << 8) | b;
+        }
+    }
 
-    // fclose(fp);
-    // bmp->w = w;
-    // bmp->h = h;
-    // bmp->pixels = pixels;
-    // return 0;
+    fclose(fp);
+    bmp->w = w;
+    bmp->h = h;
+    bmp->pixels = pixels;
+    return 0;
 }
 
 int NDL_ReleaseBitmap(NDL_Bitmap* bmp)
