@@ -44,10 +44,10 @@ static Finfo file_table[] __attribute__((used)) = {
     {"stdin", 0, 0, invalid_read, invalid_write},
     {"stdout", 0, 0, invalid_read, serial_write},
     {"stderr", 0, 0, invalid_read, serial_write},
-    //{"/dev/fb", 0, 0, invalid_read, fb_write},
+    {"/dev/fb", 0, 0, invalid_read, fb_write},
     {"/dev/events", 0, 0, events_read, invalid_write},
-//{"/dev/fbsync", 0, 0, invalid_read, fbsync_write},
-//{"/proc/dispinfo", 0, 0, dispinfo_read, invalid_write},
+    {"/dev/fbsync", 0, 0, invalid_read, fbsync_write},
+    {"/proc/dispinfo", 128, 0, dispinfo_read, invalid_write},
 #include "files.h"
 };
 
@@ -55,7 +55,7 @@ static Finfo file_table[] __attribute__((used)) = {
 
 void init_fs()
 {
-    // file_table[FD_FB].size = screen_height() * screen_width() * 4;
+    file_table[FD_FB].size = screen_height() * screen_width() * 4;
 }
 size_t get_file_size(int fd)
 {
