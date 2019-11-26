@@ -16,7 +16,7 @@ int main()
                 break;
             }
         }
-
+        printf("%c", buf[0]);
         int is_time = buf[0] == 't';
         time += is_time;
         if (!is_time) {
