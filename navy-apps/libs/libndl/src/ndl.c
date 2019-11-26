@@ -28,23 +28,23 @@ int NDL_OpenDisplay(int w, int h)
         has_nwm = 0;
     }
 
-    // if (has_nwm) {
-    //     printf("\033[X%d;%ds", w, h);
-    //     fflush(stdout);
-    //     evtdev = stdin;
-    // } else {
-    //     get_display_info();
-    //     assert(screen_w >= canvas_w);
-    //     assert(screen_h >= canvas_h);
-    //     pad_x = (screen_w - canvas_w) / 2;
-    //     pad_y = (screen_h - canvas_h) / 2;
-    //     fbdev = fopen("/dev/fb", "w");
-    //     assert(fbdev);
-    //     evtdev = fopen("/dev/events", "r");
-    //     assert(evtdev);
-    //     fbsyncdev = fopen("/dev/fbsync", "w");
-    //     assert(fbsyncdev);
-    // }
+    if (has_nwm) {
+        printf("\033[X%d;%ds", w, h);
+        fflush(stdout);
+        evtdev = stdin;
+    } else {
+        // get_display_info();
+        // assert(screen_w >= canvas_w);
+        // assert(screen_h >= canvas_h);
+        // pad_x = (screen_w - canvas_w) / 2;
+        // pad_y = (screen_h - canvas_h) / 2;
+        // fbdev = fopen("/dev/fb", "w");
+        // assert(fbdev);
+        // evtdev = fopen("/dev/events", "r");
+        // assert(evtdev);
+        // fbsyncdev = fopen("/dev/fbsync", "w");
+        // assert(fbsyncdev);
+    }
 }
 
 int NDL_CloseDisplay()
