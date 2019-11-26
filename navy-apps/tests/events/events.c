@@ -13,9 +13,8 @@ int main()
             *p++ = ch;
             //printf("%c", *(p - 1));
             if (ch == '\n') {
-                printf("ss0");
                 *p = '\0';
-                printf("%s", buf);
+                printf("%c", buf[0]);
                 break;
             }
         }
