@@ -83,6 +83,8 @@ int fs_close(int fd)
 
 __ssize_t fs_read(int fd, void* buf, size_t len)
 {
+    printf("fuck\n");
+
     Finfo* cur_file = &file_table[fd];
     if (!cur_file->read) {
         if (cur_file->open_offset > cur_file->size) return 0;
@@ -97,8 +99,6 @@ __ssize_t fs_read(int fd, void* buf, size_t len)
 
 __ssize_t fs_write(int fd, const void* buf, size_t len)
 {
-    printf("lwrite\n");
-
     Finfo* cur_file = &file_table[fd];
     if (!cur_file->write) {
         if (cur_file->open_offset > cur_file->size) return 0;
