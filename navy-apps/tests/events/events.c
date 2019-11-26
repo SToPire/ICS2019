@@ -11,7 +11,7 @@ int main()
         //printf("%p:%p", buf, p);
         int i = 0;
         while ((ch = fgetc(fp)) != -1) {
-            //printf("%d", ch);
+            printf("%c", ch);
             *p++ = ch;
             printf("%p:%p\n", buf, p);
             //printf("%c", *(p - 1));
