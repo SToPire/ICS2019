@@ -9,12 +9,12 @@ int main()
         char buf[256];
         char *p = buf, ch;
         while ((ch = fgetc(fp)) != -1) {
-            printf("%d", ch);
+            //printf("%d", ch);
             *p++ = ch;
             //printf("%c", *(p - 1));
             if (ch == '\n') {
                 *p = '\0';
-                //printf("%p %p %d\n", p, buf, i);
+                printf("%p %p %d\n", p, buf, i);
                 break;
             }
         }
