@@ -85,6 +85,7 @@ __ssize_t fs_read(int fd, void* buf, size_t len)
 {
     Finfo* cur_file = &file_table[fd];
     if (!cur_file->read) {
+        if (cur_file->open_offset > cur_file->size) return 0;
         if (len > cur_file->size - cur_file->open_offset)
             len = cur_file->size - cur_file->open_offset;
         ramdisk_read(buf, cur_file->disk_offset + cur_file->open_offset, len);
@@ -98,6 +99,8 @@ __ssize_t fs_write(int fd, const void* buf, size_t len)
 {
     Finfo* cur_file = &file_table[fd];
     if (!cur_file->write) {
+        if (cur_file->open_offset > cur_file->size) return 0;
+
         if (len > cur_file->size - cur_file->open_offset)
             len = cur_file->size - cur_file->open_offset;
         ramdisk_write(buf, cur_file->disk_offset + cur_file->open_offset, len);
