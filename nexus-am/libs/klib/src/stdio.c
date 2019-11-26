@@ -178,7 +178,7 @@ int snprintf(char* out, size_t n, const char* fmt, ...)
     int ret = vsprintf(tmp, fmt, ap);
     if (ret >= n) {
         strncpy(out, tmp, n - 1);
-        *(out + n - 1) = '\0';
+        *(out + n) = '\0';
         return strlen(tmp);  //ATTENTION!
     } else {
         strcpy(out, tmp);

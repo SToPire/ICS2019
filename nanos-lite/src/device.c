@@ -25,10 +25,8 @@ size_t events_read(void* buf, size_t offset, size_t len)
     }
     if (getkey == _KEY_NONE)
         return snprintf(buf, len, "t %u\n", uptime());
-    else {
-        sprintf(buf, "%s %s\n", keydown ? "kd" : "ku", keyname[getkey]);
-        return strlen(buf);
-    }
+    else
+        return snprintf(buf, len, "%s %s\n", keydown ? "kd" : "ku", keyname[getkey]);
 }
 
 static char dispinfo[128] __attribute__((used)) = {};
