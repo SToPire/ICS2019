@@ -34,16 +34,16 @@ int NDL_OpenDisplay(int w, int h)
         evtdev = stdin;
     } else {
         get_display_info();
-        //assert(screen_w >= canvas_w);
-        //assert(screen_h >= canvas_h);
-        // pad_x = (screen_w - canvas_w) / 2;
-        // pad_y = (screen_h - canvas_h) / 2;
-        // fbdev = fopen("/dev/fb", "w");
-        // assert(fbdev);
-        // evtdev = fopen("/dev/events", "r");
-        // assert(evtdev);
-        // fbsyncdev = fopen("/dev/fbsync", "w");
-        // assert(fbsyncdev);
+        assert(screen_w >= canvas_w);
+        assert(screen_h >= canvas_h);
+        pad_x = (screen_w - canvas_w) / 2;
+        pad_y = (screen_h - canvas_h) / 2;
+        fbdev = fopen("/dev/fb", "w");
+        assert(fbdev);
+        evtdev = fopen("/dev/events", "r");
+        assert(evtdev);
+        fbsyncdev = fopen("/dev/fbsync", "w");
+        assert(fbsyncdev);
     }
 }
 
@@ -139,16 +139,16 @@ int NDL_WaitEvent(NDL_Event* event)
 static void get_display_info()
 {
     FILE* dispinfo = fopen("/proc/dispinfo", "r");
-    // assert(dispinfo);
-    // screen_w = screen_h = 0;
-    // char buf[128], key[128], value[128], *delim;
-    // while (fgets(buf, 128, dispinfo)) {
-    //     *(delim = strchr(buf, ':')) = '\0';
-    //     sscanf(buf, "%s", key);
-    //     sscanf(delim + 1, "%s", value);
-    //     if (strcmp(key, "WIDTH") == 0) sscanf(value, "%d", &screen_w);
-    //     if (strcmp(key, "HEIGHT") == 0) sscanf(value, "%d", &screen_h);
-    // }
-    // fclose(dispinfo);
-    // assert(screen_w > 0 && screen_h > 0);
+    assert(dispinfo);
+    screen_w = screen_h = 0;
+    char buf[128], key[128], value[128], *delim;
+    while (fgets(buf, 128, dispinfo)) {
+        *(delim = strchr(buf, ':')) = '\0';
+        sscanf(buf, "%s", key);
+        sscanf(delim + 1, "%s", value);
+        if (strcmp(key, "WIDTH") == 0) sscanf(value, "%d", &screen_w);
+        if (strcmp(key, "HEIGHT") == 0) sscanf(value, "%d", &screen_h);
+    }
+    fclose(dispinfo);
+    assert(screen_w > 0 && screen_h > 0);
 }

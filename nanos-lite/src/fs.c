@@ -111,6 +111,7 @@ __ssize_t fs_write(int fd, const void* buf, size_t len)
 
 __off_t fs_lseek(int fd, size_t offset, int whence)
 {
+    printf("lseek\n");
     Finfo* cur_file = &file_table[fd];
     switch (whence) {
         case SEEK_SET:
