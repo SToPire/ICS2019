@@ -10,7 +10,7 @@ int main()
         char *p = buf, ch;
         int i = 0;
         while ((ch = fgetc(fp)) != -1) {
-            printf("%d:%c\n", i.ch);
+            printf("%d:%c\n", i, ch);
             i++;
             *p++ = ch;
             if (ch == '\n') {
