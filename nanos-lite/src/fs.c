@@ -73,9 +73,12 @@ int fs_close(int fd)
 __ssize_t fs_read(int fd, void* buf, size_t len)
 {
     Finfo* cur_file = &file_table[fd];
-    if (len > cur_file->size - cur_file->open_offset)
-        len = cur_file->size - cur_file->open_offset;
-    ramdisk_read(buf, cur_file->disk_offset + cur_file->open_offset, len);
+    if (!cur_file->read) {
+        if (len > cur_file->size - cur_file->open_offset)
+            len = cur_file->size - cur_file->open_offset;
+        ramdisk_read(buf, cur_file->disk_offset + cur_file->open_offset, len);
+    } else
+        cur_file->read(buf, cur_file->disk_offset + cur_file->open_offset, len);
     cur_file->open_offset += len;
     return len;
 }
