@@ -24,10 +24,7 @@ size_t events_read(void* buf, size_t offset, size_t len)
         getkey ^= 0x8000;
     }
     if (getkey == _KEY_NONE) {
-        //printf("%u\n", uptime());
-        snprintf(buf, len, "t %u\n", uptime());
-        printf("%s", buf);
-        return len;
+        return snprintf(buf, len, "t %u\n", uptime());
     } else {
         return snprintf(buf, len, "%s %s\n", keydown ? "kd" : "ku", keyname[getkey]);
     }
