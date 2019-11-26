@@ -8,7 +8,7 @@ int printf(const char* fmt, ...)
     va_list ap;
     va_start(ap, fmt);
 
-    char out[1024];
+    char out[1124];
     int cnt = vsprintf(out, fmt, ap);
     for (char* p = out; *p; p++) _putc(*p);
     return cnt;
