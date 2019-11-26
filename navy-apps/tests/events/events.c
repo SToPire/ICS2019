@@ -12,7 +12,7 @@ int main()
             *p++ = ch;
             if (ch == '\n') {
                 *p = '\0';
-                printf("%s\n", buf);
+                printf("%d\n", p - buf);
                 break;
             }
         }
