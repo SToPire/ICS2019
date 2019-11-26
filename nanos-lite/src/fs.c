@@ -112,15 +112,21 @@ __off_t fs_lseek(int fd, size_t offset, int whence)
     Finfo* cur_file = &file_table[fd];
     switch (whence) {
         case SEEK_SET:
-            cur_file->open_offset = offset;
+            if (offset >= 0 && offset <= cur_file->size)
+                cur_file->open_offset = offset;
+            else
+                return -1;
             break;
         case SEEK_CUR:
-            cur_file->open_offset += offset;
+            if (cur_file->open_offset + offset >= 0 && cur_file->open_offset + offset <= cur_file->size)
+                cur_file->open_offset += offset;
+            else
+                return -1;
             break;
         case SEEK_END:
             cur_file->open_offset = cur_file->size + offset;
             break;
-        default: return -1;
+        default: return (__off_t)(-1);
     }
     return cur_file->open_offset;
 }
