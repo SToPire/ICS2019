@@ -67,7 +67,7 @@ size_t get_file_disk_offset(int fd)
 }
 int fs_open(const char* pathname, int flags, int mode)
 {
-    printf("open\n");
+    printf("open:%s %d %d\n", pathname, flags, mode);
 
     for (int i = 0; i < NR_FILES; i++) {
         if (strcmp(file_table[i].name, pathname) == 0) {
