@@ -70,7 +70,7 @@ int fs_open(const char* pathname, int flags, int mode)
     printf("open:%s %d %d ", pathname, flags, mode);
 
     for (int i = 0; i < NR_FILES; i++) {
-        printf("filetable[%d]:%s\n", i, file_table[i].name);
+        printf("filetable[%d]:%p\n", i, &file_table[i].name);
         if (strcmp(file_table[i].name, pathname) == 0) {
             file_table[i].open_offset = 0;
             printf("%d\n", i);
