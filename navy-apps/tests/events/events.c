@@ -9,18 +9,18 @@ int main()
         char buf[256];
         char *p = buf, ch;
         while ((ch = fgetc(fp)) != -1) {
-            // printf("%c", ch);
+            printf("%c", ch);
             *p++ = ch;
             if (ch == '\n') {
                 *p = '\0';
                 break;
             }
         }
-        printf("%s", buf);
+        //printf("%s", buf);
         int is_time = buf[0] == 't';
         time += is_time;
         if (!is_time) {
-            printf("receive event: %s", buf);
+            // printf("receive event: %s", buf);
         } else if (time % 1024 == 0) {
             printf("receive time event for the %dth time: %s", time, buf);
         }
