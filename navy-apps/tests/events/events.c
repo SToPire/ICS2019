@@ -19,6 +19,7 @@ int main()
         printf("%c", buf[0]);
         int is_time = buf[0] == 't';
         time += is_time;
+        printf("%u\n", time);
         if (!is_time) {
             // printf("receive event: %s", buf);
         } else if (time % 1024 == 0) {
