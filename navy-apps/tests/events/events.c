@@ -8,6 +8,7 @@ int main()
     while (1) {
         char buf[256];
         char *p = buf, ch;
+        printf("%p:%p", buf, p);
         int i = 0;
         while ((ch = fgetc(fp)) != -1) {
             //printf("%d", ch);
@@ -16,7 +17,7 @@ int main()
             if (ch == '\n') {
                 i++;
                 *p = '\0';
-                printf("%p %p %d\n", p, buf, i);
+                // printf("%p %p %d\n", p, buf, i);
                 break;
             }
         }
