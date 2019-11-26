@@ -18,13 +18,13 @@ static const char* keyname[256] __attribute__((used)) = {
 size_t events_read(void* buf, size_t offset, size_t len)
 {
     int getkey = read_key();
-    printf("%d\n", getkey);
     bool keydown = false;
     if (getkey & 0x8000) {
         keydown = true;
         getkey ^= 0x8000;
     }
     if (getkey == _KEY_NONE) {
+        printf("came");
         return snprintf(buf, len, "t %u\n", uptime());
     } else {
         return snprintf(buf, len, "%s %s\n", keydown ? "kd" : "ku", keyname[getkey]);
