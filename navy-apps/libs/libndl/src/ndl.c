@@ -138,7 +138,6 @@ int NDL_WaitEvent(NDL_Event* event)
 
 static void get_display_info()
 {
-    assert(0);
     FILE* dispinfo = fopen("/proc/dispinfo", "r");
     // assert(dispinfo);
     // screen_w = screen_h = 0;
