@@ -13,34 +13,38 @@ static int canvas_w, canvas_h, screen_w, screen_h, pad_x, pad_y;
 
 int NDL_OpenDisplay(int w, int h)
 {
-    // if (!canvas) {
-    //     NDL_CloseDisplay();
-    // }
+    if (!canvas) {
+        NDL_CloseDisplay();
+    }
 
-    // canvas_w = w;
-    // canvas_h = h;
-    // canvas = malloc(sizeof(uint32_t) * w * h);
-    // assert(canvas);
+    canvas_w = w;
+    canvas_h = h;
+    canvas = malloc(sizeof(uint32_t) * w * h);
+    assert(canvas);
 
-    // if (getenv("NWM_APP")) {
-    //   has_nwm = 1;
-    // } else {
-    //   has_nwm = 0;
-    // }
+    if (getenv("NWM_APP")) {
+        has_nwm = 1;
+    } else {
+        has_nwm = 0;
+    }
 
-    // if (has_nwm) {
-    //   printf("\033[X%d;%ds", w, h); fflush(stdout);
-    //   evtdev = stdin;
-    // } else {
-    //   get_display_info();
-    //   assert(screen_w >= canvas_w);
-    //   assert(screen_h >= canvas_h);
-    //   pad_x = (screen_w - canvas_w) / 2;
-    //   pad_y = (screen_h - canvas_h) / 2;
-    //   fbdev = fopen("/dev/fb", "w"); assert(fbdev);
-    //   evtdev = fopen("/dev/events", "r"); assert(evtdev);
-    //   fbsyncdev = fopen("/dev/fbsync", "w"); assert(fbsyncdev);
-    // }
+    if (has_nwm) {
+        printf("\033[X%d;%ds", w, h);
+        fflush(stdout);
+        evtdev = stdin;
+    } else {
+        get_display_info();
+        assert(screen_w >= canvas_w);
+        assert(screen_h >= canvas_h);
+        pad_x = (screen_w - canvas_w) / 2;
+        pad_y = (screen_h - canvas_h) / 2;
+        fbdev = fopen("/dev/fb", "w");
+        assert(fbdev);
+        evtdev = fopen("/dev/events", "r");
+        assert(evtdev);
+        fbsyncdev = fopen("/dev/fbsync", "w");
+        assert(fbsyncdev);
+    }
 }
 
 int NDL_CloseDisplay()
