@@ -67,6 +67,8 @@ size_t get_file_disk_offset(int fd)
 }
 int fs_open(const char* pathname, int flags, int mode)
 {
+    printf("fuck\n");
+
     for (int i = 0; i < NR_FILES; i++) {
         if (strcmp(file_table[i].name, pathname) == 0) {
             file_table[i].open_offset = 0;
@@ -83,8 +85,6 @@ int fs_close(int fd)
 
 __ssize_t fs_read(int fd, void* buf, size_t len)
 {
-    printf("fuck\n");
-
     Finfo* cur_file = &file_table[fd];
     if (!cur_file->read) {
         if (cur_file->open_offset > cur_file->size) return 0;
