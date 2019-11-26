@@ -8,11 +8,12 @@ int main()
     while (1) {
         char buf[256];
         char *p = buf, ch;
-        printf("%p:%p", buf, p);
+        //printf("%p:%p", buf, p);
         int i = 0;
         while ((ch = fgetc(fp)) != -1) {
             //printf("%d", ch);
             *p++ = ch;
+            printf("%p:%p\n", buf, p);
             //printf("%c", *(p - 1));
             if (ch == '\n') {
                 i++;
