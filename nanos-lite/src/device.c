@@ -42,7 +42,9 @@ size_t dispinfo_read(void* buf, size_t offset, size_t len)
 
 size_t fb_write(const void* buf, size_t offset, size_t len)
 {
-    printf("%d %d", offset, len);
+    int height = screen_height();
+    int width = screen_width();
+    printf("%d %d", height, width);
     return 0;
 }
 
