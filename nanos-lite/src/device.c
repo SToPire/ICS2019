@@ -36,21 +36,19 @@ static char dispinfo[128] __attribute__((used)) = {};
 
 size_t dispinfo_read(void* buf, size_t offset, size_t len)
 {
-    printf("dispinfo_read\n");
-    strncpy(buf, dispinfo + offset, len);
-    return len;
+    // strncpy(buf, dispinfo + offset, len);
+    // return len;
+    return 0;
 }
 
 size_t fb_write(const void* buf, size_t offset, size_t len)
 {
-    printf("fb_write\n");
     return 0;
 }
 
 size_t fbsync_write(const void* buf, size_t offset, size_t len)
 {
-    printf("fbsync_write\n");
-    draw_sync();
+    // draw_sync();
     return 0;
 }
 
@@ -58,5 +56,5 @@ void init_device()
 {
     Log("Initializing devices...");
     _ioe_init();
-    sprintf(dispinfo, "WIDTH:%d\nHEIGHT:%d", screen_width(), screen_height());
+    // sprintf(dispinfo, "WIDTH:%d\nHEIGHT:%d", screen_width(), screen_height());
 }
