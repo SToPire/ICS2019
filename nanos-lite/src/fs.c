@@ -67,9 +67,12 @@ size_t get_file_disk_offset(int fd)
 }
 int fs_open(const char* pathname, int flags, int mode)
 {
-    for (int i = 0; i < NR_FILES; i++)
-        if (strcmp(file_table[i].name, pathname) == 0)
+    for (int i = 0; i < NR_FILES; i++) {
+        if (strcmp(file_table[i].name, pathname) == 0) {
+            file_table[i].open_offset = 0;
             return i;
+        }
+    }
     assert(0);
 }
 
