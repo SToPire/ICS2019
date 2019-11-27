@@ -117,8 +117,12 @@ make_EHelper(movs)
 {
     rtl_lr(&t0, R_SI, 2);
     rtl_lm(&t1, &t0, 1);
+    rtl_addi(&t0, &t0, 1);
+    rtl_sr(R_SI, &t0, 2);
     rtl_lr(&t0, R_DI, 2);
     rtl_sm(&t0, &t1, 1);
+    rtl_addi(&t0, &t0, 1);
+    rtl_sr(R_DI, &t0, 2);
 
     print_asm_template2(movs);
 }
