@@ -10,7 +10,7 @@ int main()
     NDL_DrawRect(bmp->pixels, 0, 0, bmp->w, bmp->h);
     NDL_Render();
     NDL_CloseDisplay();
-    while (1)
-        ;
+    // while (1)
+    //     ;
     return 0;
 }
