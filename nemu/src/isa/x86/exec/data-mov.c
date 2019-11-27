@@ -115,7 +115,8 @@ make_EHelper(lea)
 
 make_EHelper(movs)
 {
-    rtl_lr(&s0, R_SI, 2);
-    printf("%x\n", s0);
+    rtl_lr(&t0, R_SI, 2);
+    rtl_lm(&t1, &t0, 1);
+    printf("%x\n", t1);
     print_asm_template2(movs);
 }
