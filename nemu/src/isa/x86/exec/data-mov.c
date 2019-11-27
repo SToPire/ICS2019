@@ -113,12 +113,28 @@ make_EHelper(lea)
     print_asm_template2(lea);
 }
 
-make_EHelper(movs)
+make_EHelper(movsb)
 {
     rtl_lm(&s0, &cpu.esi, 1);
     rtl_sm(&cpu.edi, &s0, 1);
     ++cpu.esi;
     ++cpu.edi;
+
+    print_asm_template2(movsb);
+}
+make_EHelper(movs)
+{
+    if (decinfo.isa.is_operand_size_16) {
+        rtl_lm(&s0, &cpu.esi, 2);
+        rtl_sm(&cpu.edi, &s0, 2);
+        cpu.esi += 2;
+        cpu.edi += 2;
+    } else {
+        rtl_lm(&s0, &cpu.esi, 4);
+        rtl_sm(&cpu.edi, &s0, 4);
+        cpu.esi += 4;
+        cpu.edi += 4;
+    }
 
     print_asm_template2(movs);
 }
