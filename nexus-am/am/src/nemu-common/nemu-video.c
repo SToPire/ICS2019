@@ -7,8 +7,6 @@ void draw_sync();
 int printf(const char* fmt, ...);
 size_t __am_video_read(uintptr_t reg, void* buf, size_t size)
 {
-    printf("read\n");
-
     switch (reg) {
         case _DEVREG_VIDEO_INFO: {
             _DEV_VIDEO_INFO_t* info = (_DEV_VIDEO_INFO_t*)buf;
@@ -22,8 +20,6 @@ size_t __am_video_read(uintptr_t reg, void* buf, size_t size)
 
 size_t __am_video_write(uintptr_t reg, void* buf, size_t size)
 {
-    printf("write\n");
-
     switch (reg) {
         case _DEVREG_VIDEO_FBCTL: {
             _DEV_VIDEO_FBCTL_t* ctl = (_DEV_VIDEO_FBCTL_t*)buf;
@@ -45,8 +41,6 @@ size_t __am_video_write(uintptr_t reg, void* buf, size_t size)
 
 void __am_vga_init()
 {
-    printf("init\n");
-
     int i;
     int size = screen_width() * screen_height();
     uint32_t* fb = (uint32_t*)(uintptr_t)FB_ADDR;
