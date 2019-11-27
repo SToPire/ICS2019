@@ -10,6 +10,7 @@ make_EHelper(add)
     rtl_is_add_carry(&s1, &s0, &id_dest->val);
     rtl_set_CF(&s1);
     rtl_update_ZFSF(&s0, id_dest->width);
+    operand_write(id_dest, &s0);
 
     print_asm_template2(add);
 }
@@ -37,6 +38,7 @@ make_EHelper(sub)
     rtl_is_sub_carry(&s1, &s0, &id_dest->val);
     rtl_set_CF(&s1);
     rtl_update_ZFSF(&s0, id_dest->width);
+    operand_write(id_dest, &s0);
 
     print_asm_template2(sub);
 }
