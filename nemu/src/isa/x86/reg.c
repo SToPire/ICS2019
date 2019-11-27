@@ -52,10 +52,10 @@ void isa_reg_display() {
 }
 
 uint32_t isa_reg_str2val(const char *s, bool *success) {
-	int i=strlen(s);
+	int i,l=strlen(s);
 	*success = true;
 	char tmp[10]="";strcpy(tmp,s);
-	//for(i=0;i<l;i++) tmp[i]=tolower(s[i]);
+	for(i=0;i<l;i++) tmp[i]=tolower(s[i]);
 	if(strcmp(tmp,"pc")==0) return cpu.pc;
 	else if(strcmp(tmp,"cf")==0) return cpu.eflags.CF; 
 	else if(strcmp(tmp,"zf")==0) return cpu.eflags.ZF;
