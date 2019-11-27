@@ -12,7 +12,7 @@ endif
 FSIMG_PATH = $(NAVY_HOME)/fsimg
 RAMDISK_FILE = build/ramdisk.img
 
-SINGLE_APP = $(NAVY_HOME)/tests/text
+SINGLE_APP = $(NAVY_HOME)/tests/hello
 SINGLE_APP_FILE = $(FSIMG_PATH)/bin/$(notdir $(SINGLE_APP))
 
 .PHONY: update update-ramdisk-single update-ramdisk-fsimg update-fsimg
@@ -35,3 +35,4 @@ src/syscall.h: $(NAVY_HOME)/libs/libos/src/syscall.h
 
 update: update-ramdisk-fsimg src/syscall.h
 	@touch src/initrd.S
+
