@@ -13,11 +13,13 @@ extern int fs_open(const char* pathname, int flags, int mode);
 extern int fs_close(int fd);
 extern size_t fs_read(int fd, void* buf, size_t len);
 extern size_t fs_lseek(int fd, size_t offset, int whence);
+size_t get_file_size(int fd);
 
 static uintptr_t loader(PCB* pcb, const char* filename)
 {
     int fd = fs_open(filename, 'r', 0);
-    //int file_sz = get_file_size(fd);
+    int file_sz = get_file_size(fd);
+    printf("filefilefilesz:%d", file_sz);
     Elf_Ehdr E_hdr;
     Elf_Phdr P_hdr;
     fs_read(fd, &E_hdr, sizeof(Elf_Ehdr));
@@ -26,7 +28,7 @@ static uintptr_t loader(PCB* pcb, const char* filename)
         fs_lseek(fd, E_hdr.e_phoff + i * E_hdr.e_phentsize, SEEK_SET);
         fs_read(fd, &P_hdr, E_hdr.e_phentsize);
         if (P_hdr.p_type == PT_LOAD) {
-            uint32_t tmp[0x999];
+            uint32_t tmp[file_sz];
             fs_lseek(fd, P_hdr.p_offset, SEEK_SET);
             //fs_read(fd, (uintptr_t*)P_hdr.p_vaddr, P_hdr.p_filesz);
             fs_read(fd, tmp, P_hdr.p_filesz);

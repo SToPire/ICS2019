@@ -57,6 +57,14 @@ void init_fs()
 {
     file_table[FD_FB].size = screen_height() * screen_width() * 4;
 }
+size_t get_file_size(int fd)
+{
+    return file_table[fd].size;
+}
+size_t get_file_disk_offset(int fd)
+{
+    return file_table[fd].disk_offset;
+}
 int fs_open(const char* pathname, int flags, int mode)
 {
     for (int i = 0; i < NR_FILES; i++)
