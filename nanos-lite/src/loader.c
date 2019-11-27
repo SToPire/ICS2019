@@ -28,7 +28,7 @@ static uintptr_t loader(PCB* pcb, const char* filename)
         fs_lseek(fd, E_hdr.e_phoff + i * E_hdr.e_phentsize, SEEK_SET);
         fs_read(fd, &P_hdr, E_hdr.e_phentsize);
         if (P_hdr.p_type == PT_LOAD) {
-            uint32_t tmp[64448];
+            uint32_t tmp[40000];
             fs_lseek(fd, P_hdr.p_offset, SEEK_SET);
             //fs_read(fd, (uintptr_t*)P_hdr.p_vaddr, P_hdr.p_filesz);
             fs_read(fd, tmp, P_hdr.p_filesz);
