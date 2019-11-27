@@ -64,3 +64,5 @@ make_EHelper(iret);
 
 make_EHelper(inv);
 make_EHelper(nemu_trap);
+
+make_EHelper(movs);
