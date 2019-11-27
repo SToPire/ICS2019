@@ -19,27 +19,14 @@ make_EHelper(add)
 
 make_EHelper(sub)
 {
-    // if (id_src->width != id_dest->width)
-    //     rtl_sext(&s2, &id_src->val, id_src->width);
-    // else
-    //     rtl_mv(&s2, &id_src->val);
-    // rtl_sub(&s0, &id_dest->val, &s2);
-    // rtl_is_sub_overflow(&s1, &s0, &id_dest->val, &s2, id_dest->width);
-    // rtl_set_OF(&s1);
-    // rtl_is_sub_carry(&s1, &s0, &id_dest->val);
-    // rtl_set_CF(&s1);
-    // rtl_update_ZFSF(&s0, id_dest->width);
-    // operand_write(id_dest, &s0);
-
-    rtl_sext(&t0, &id_dest->val, id_dest->width);
-    rtl_sext(&t1, &id_src->val, id_src->width);
-    rtl_sub(&s0, &t0, &t1);
-    rtl_is_sub_overflow(&s1, &s0, &t0, &t1, id_dest->width);
+    rtl_sext(&id_src->val, &id_src->val, id_src->width);
+    rtl_sext(&id_dest->val, &id_dest->val, id_dest->width);
+    rtl_sub(&s0, &id_dest->val, &id_src->val);
+    rtl_is_sub_overflow(&s1, &s0, &id_dest->val, &id_src->val, id_dest->width);
     rtl_set_OF(&s1);
-    rtl_is_sub_carry(&s1, &s0, &t0);
+    rtl_is_sub_carry(&s1, &s0, &id_dest->val);
     rtl_set_CF(&s1);
     rtl_update_ZFSF(&s0, id_dest->width);
-
     operand_write(id_dest, &s0);
 
     print_asm_template2(sub);
