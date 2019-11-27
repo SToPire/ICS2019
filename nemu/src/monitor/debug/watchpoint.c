@@ -5,127 +5,88 @@
 
 static WP wp_pool[NR_WP] = {};
 static WP *head = NULL, *free_ = NULL;
+static int head_len=0;
 
 void init_wp_pool() {
   int i;
   for (i = 0; i < NR_WP; i ++) {
     wp_pool[i].NO = i;
     wp_pool[i].next = &wp_pool[i + 1];
-    wp_pool[i].used=0;
-    wp_pool[i].now=0;
   }
   wp_pool[NR_WP - 1].next = NULL;
 
   head = NULL;
   free_ = wp_pool;
 }
-WP* new_wp()
-{   
-    if((free_)==NULL)
-    {
-      assert(0);
-    }
-    else
-    {  
-      WP *m1;
-      m1=free_;
-      if((free_->next)==NULL)
-      {
-	free_=NULL;
-      }
-      else free_=free_->next;
-      if(head==NULL)
-      head=m1;
-      else
-      {      
-        m1->next=head;
-	head=m1;
-      }
-      m1->used=1;
-      return m1;
-    }
-} 
-void free_wp(WP *wp)
-{
-    if(head ==NULL)
-    {
-      assert(0);
-    }
-    else
-    {  
-      WP *m1;
-      wp->used=0;
-      if(wp==head)
-      {
-	if(head->next==NULL)
-	{
-          head=NULL;
-	}
-      }
-      else
-      {
-        m1=head;
-        while((m1->next!=wp)&&(m1->next!=NULL)) m1=m1->next;
-        if(m1->next!=wp) assert(0);
-        m1->next=wp->next;
-      }
-      if(free_==NULL)
-      free_=wp;
-      else
-      {       
-          wp->next=free_;
-	  free_=wp;
-      }
-    }
-}
-void free1(int now)
-{
-	if((now<32) && (now>=0)) 
-	{
-	  if(wp_pool[now].used==1)
-	  {
-	    free_wp(&wp_pool[now]);
-	    printf("NOW watchpoint %d release,%d",now,wp_pool[now].used);
-	  }
-        }
-}
-void issert(char *args,uint32_t ans)
-{
-	WP* wp1;
-	wp1=new_wp();
-	strcpy(wp1->expr,args);
-	wp1->now=ans;
-	printf("watchpoint NO.%d used and now is %d\n",wp1->NO,wp1->now);
-}
-void show()
-{
-	for(int i=0;i<NR_WP;i++)
-	{
-          if(wp_pool[i].used==1)
-	  {
-		  printf("%d %s %d\n",wp_pool[i].NO,wp_pool[i].expr,wp_pool[i].now);
-	  }
-	}
-}
-bool check1()
-{
-	bool bj=false;
-	for(int i=0;i<=31;i++)
-	{
-		if(wp_pool[i].used==1)
-		{
-                  bool success=true;
-		  uint32_t new=expr(wp_pool[i].expr,&success);
-		  if(wp_pool[i].now!=new)
-		  {
-			  bj=true;
-			  wp_pool[i].now=new;
-			  printf("watchpoint%d change to %u\n",i,new);
-		  }
-		}
-	}
-	return(bj);
-}
+
 /* TODO: Implement the functionality of watchpoint */
 
+WP* new_wp(){
+	if(free_==NULL){
+		printf("No free space for watchpoints!\n");
+		assert(0);
+	}
+	++head_len;
+	if(head==NULL){
+		head=free_;
+		free_=free_->next;
+		head->next=NULL;
+		head->NO=head_len;
+		return head;
+	}
+	else{
+		WP* tmp=head;
+		while(tmp->next != NULL) tmp=tmp->next;
+		tmp->next=free_;
+		free_=free_->next;
+		tmp->next->next=NULL;
+		tmp->next->NO=head_len;
+		return tmp->next;
+	}	
+}
 
+void free_wp(int n){
+	if(!n){printf("Illegal watchpoint number.\n");return;}
+	if(head==NULL){printf("No watchpoints.\n");return;}
+	WP* wp=head;
+	while(wp != NULL && wp->NO != n) wp=wp->next;
+	if(wp==NULL){printf("Illegal watchpoint number.\n");return;}
+	--head_len;
+	if(wp==head){
+		head=wp->next;
+	}
+	else{
+		WP* tmp=head;
+		while(tmp->next != wp) tmp=tmp->next;
+		tmp->next=wp->next;
+	}
+	wp->next=free_;
+	wp->val=0;
+	memset(wp->what,'\0',128);
+	free_=wp;
+	printf("Watchpoint %d has been successfully deleted.\n",n);
+}
+void WP_disp(){
+	if(!head_len) {printf("No watchpoints.\n"); return;}
+	printf("%-12s %-32s %-8s\n","Watchpoint","What","Value");
+	WP *ip=head;
+	while(ip!=NULL){
+		printf("%-12d %-32s %-8d\n",ip->NO,ip->what,ip->val);
+		ip=ip->next;
+	}	
+}
+bool WP_check(){
+	WP* tmp=head;
+	bool changed=false;
+	while(tmp != NULL){
+		bool succ;
+		uint32_t newVal=expr(tmp->what,&succ);
+		if(tmp->val != newVal){
+			printf("Watchpoints %d:%s changed.\nNew value:%u Old value:%u\n",tmp->NO,tmp->what,newVal,tmp->val);
+			tmp->val=newVal;
+			changed=true;
+		}
+		tmp=tmp->next;
+	}
+	return changed;
+}

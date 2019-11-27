@@ -29,4 +29,3 @@ void paddr_write(paddr_t, uint32_t, int);
 #define PG_ALIGN __attribute((aligned(PAGE_SIZE)))
 
 #endif
-
