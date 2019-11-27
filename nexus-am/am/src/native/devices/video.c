@@ -28,8 +28,6 @@ static Uint32 texture_sync(Uint32 interval, void* param)
 
 void __am_video_init()
 {
-    printf("tt");
-
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
     SDL_CreateWindowAndRenderer(W * 2, H * 2, 0, &window, &renderer);
     SDL_SetWindowTitle(window, "Native Application");
