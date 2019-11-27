@@ -35,6 +35,11 @@ int vsprintf(char* out, const char* fmt, va_list ap)
     while (*fmt != '\0') {
         if (in_format) {
             switch (*fmt) {
+                case 'c':
+                    d = va_arg(ap, int);
+                    *outptr++ = d;
+                    in_format = 0;
+                    break;
                 case 's':  //string
                     s = va_arg(ap, char*);
                     int count_s = width_now - strlen(s);
