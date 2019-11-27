@@ -36,19 +36,41 @@ static char dispinfo[128] __attribute__((used)) = {};
 
 size_t dispinfo_read(void* buf, size_t offset, size_t len)
 {
+    if (len + offset > 128)
+        len = 128 - offset;
     strncpy(buf, dispinfo + offset, len);
     return len;
 }
 
 size_t fb_write(const void* buf, size_t offset, size_t len)
 {
-    return 0;
+    int offset_B = offset / 4;
+    int len_B = len / 4;
+    int w = screen_width();
+
+    int x = offset_B % w;
+    int y = offset_B / w;
+
+    int len_first_line = (len_B > w - x) ? (w - x) : len_B;
+    draw_rect((uint32_t*)buf, x, y, len_first_line, 1);
+
+    int len_middle_line = 0;
+    if (len_first_line + w < len_B) {
+        draw_rect((uint32_t*)buf + len_first_line, 0, y + 1, w, (len_B - len_first_line) / w);
+        len_middle_line = w * (len_B - len_first_line) / w;
+        y += (len_B - len_first_line) / w;
+    }
+
+    if (len_first_line + len_middle_line < len_B) {
+        draw_rect((uint32_t*)buf + len_first_line + len_middle_line, 0, y + 1, len_B - len_first_line - len_middle_line, 1);
+    }
+    return len;
 }
 
 size_t fbsync_write(const void* buf, size_t offset, size_t len)
 {
     draw_sync();
-    return 0;
+    return len;
 }
 
 void init_device()
