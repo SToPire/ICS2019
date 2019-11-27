@@ -72,10 +72,6 @@ $(BINARY): $(OBJS)
 
 run-env: $(BINARY) $(QEMU_SO)
 
-count: 
-	echo "$$(find . -name "*.h"|xargs cat|wc -l)"
-	echo "$$(find . -name "*.c"|xargs cat|wc -l)"
-	
 run: run-env
 	$(call git_commit, "run")
 	$(NEMU_EXEC)
@@ -88,3 +84,9 @@ clean:
 	-rm -rf $(BUILD_DIR)
 	$(MAKE) -C tools/gen-expr clean
 	$(MAKE) -C tools/qemu-diff clean
+
+count: 
+	find . -name *.c -or -name *.h|xargs wc -l
+
+
+        	

@@ -6,111 +6,125 @@
 #include <string.h>
 
 // this should be enough
-static char buf[10000];
-static int now=0;
-
-uint32_t choose(uint32_t n){
-	return rand()%n;
+static char buf[65536];
+int mark;
+static int choose(int n)
+{
+	return(rand()%n);
 }
-
-static inline void gen_space(){
-	switch(choose(4)){
-		case 0:buf[now++]=' ';break;
-		default:break;
-	}
-}
-
-static inline void gen(char c){
-	buf[now++]=c;
-}
-static inline void gen_num(){
-	buf[now++]=choose(9)+'1';//avoid 0 prefix
-	int len=choose(8)+1;
-	int i;
-	for(i=1;i<=len;i++){
-		uint32_t t=choose(10);
-		buf[now++]=t+'0';
-	}
-	buf[now++]='u'; //unsigned 
-}
-
 static inline void gen_rand_op(){
 	switch(choose(4)){
-		case 0:buf[now++]='+';break;
-		case 1:buf[now++]='-';break;
-		case 2:buf[now++]='*';break;
-		case 3:buf[now++]='/';break;
-	}
+		case 0:{
+	          strcat(buf,"+");
+		  break;
+		}
+		case 1:{
+                 strcat(buf,"-");		  
+                 break;
+		}
+		case 2:{
+	         strcat(buf,"*");	
+		  break;
+		}
+		case 3:{
+	           strcat(buf,"/");	
+		  break;
+		}
+	} 
 }
-
-static inline void gen_rand_expr(int i) {
-	if(i>=10) return;
-  	switch(choose(3)){
-		case 0:gen_space();gen_num();gen_space();break;
-		case 1:if(i<9){gen_space();gen('(');gen_space();gen_rand_expr(i+1);gen_space();gen(')');gen_space();break;}else{gen_space();gen_num();gen_space();break;}
-		case 2:if(i<9){gen_space();gen_rand_expr(i+1);gen_space();gen_rand_op();gen_space();gen_rand_expr(i+1);gen_space();break;}else{gen_space();gen_num();gen_space();break;}
-  	}
+        
+static inline void gen_rand_expr() {
+   if(mark>10)
+   {
+      unsigned num1=choose(20);
+      char number1[5];
+      sprintf(number1,"%d",num1);
+      strcat(buf,number1);
+      strcat(buf,"u");
+   }
+   else
+   switch(choose(3)){
+	  case 0: {
+	    unsigned num1=choose(20);
+	    char number1[5];
+	    sprintf(number1,"%d",num1);
+	    strcat(buf,number1);
+	    strcat(buf,"u");
+	    break;
+	  }
+	  case 1: {
+	    strcat(buf,"(");
+	    gen_rand_expr();
+	    strcat(buf,")");
+	    mark++;
+	    break;
+          }
+	  default: {
+            gen_rand_expr();
+	    gen_rand_op();
+	    gen_rand_expr();
+	    break;
+	  }
+  }
 }
 
 static char code_buf[65536];
 static char *code_format =
 "#include <stdio.h>\n"
 "int main() { "
-"  FILE *fp = fopen(\"/tmp/log\",\"w\");"  //log file, 1 will be written if exception, else 12 will be written
-"  fprintf(fp,\"0\");"
-"  fclose(fp);"  
-                                       	
-"  unsigned result = %s; "	
-"  fp = fopen(\"/tmp/log\",\"w\");"									
-"  fprintf(fp,\"1\");"											
-"  fclose(fp);"
-
-"  printf(\"%%u\", result); "
+"  unsigned result = %s;"
+"  unsigned mr=0;  "
+"  printf(\"%%u \",mr); "
+"  printf(\"%%u\",result); "
 "  return 0; "
 "}";
 
 int main(int argc, char *argv[]) {
-  int seed = time(0);
+  unsigned seed = time(0);
   srand(seed);
   int loop = 1;
   if (argc > 1) {
     sscanf(argv[1], "%d", &loop);
   }
-  printf("%d\n",loop);
   int i;
-  for (i = 0; i < loop; i ++) {
-	now = 0;
-    gen_rand_expr(0);
-	buf[now]='\0';
-
+  for (i = 0; i < loop; i ++) { 
+    mark=0;
+    memset(buf,0,sizeof(buf));
+    gen_rand_expr();
     sprintf(code_buf, code_format, buf);
-
     FILE *fp = fopen("/tmp/.code.c", "w");
     assert(fp != NULL);
     fputs(code_buf, fp);
     fclose(fp);
-
+    int mark1=1;
     int ret = system("gcc /tmp/.code.c -o /tmp/.expr");
     if (ret != 0) continue;
 
     fp = popen("/tmp/.expr", "r");
     assert(fp != NULL);
-    uint32_t result;
-    fscanf(fp, "%u", &result);
-	FILE *fp2 = fopen("/tmp/log","r");
-	
-	int NoERROR;
-	fscanf(fp2,"%d",&NoERROR);
-	fclose(fp2);
 
-	if(NoERROR){                     //No exception
-		pclose(fp);
-    	printf("%u %s\n" , result, buf);
-	}
-	else{                 //exception happened. Run one more iteration.
-		--i;
-		pclose(fp);
-	}
-  }
-  return 0;
+    unsigned result;
+    fscanf(fp, "%d%u",&mark1, &result);
+    pclose(fp);
+    if(mark1==0)
+    {
+      printf("%u ", result);
+      for(int ii=0;ii<strlen(buf);ii++)
+      {
+	      if((buf[ii]=='+') || (buf[ii]=='-') || (buf[ii]=='*') || (buf[ii]=='/'))
+              {
+		  int kk=choose(2);
+		  for(int jj=1;jj<=kk;jj++) printf(" ");
+		  printf("%c",buf[ii]);
+	          kk=choose(2);
+                  for(int jj=1;jj<=kk;jj++) printf(" ");
+	      }
+	      else 
+              if(buf[ii]!='u')
+              printf("%c",buf[ii]);
+      }
+      printf("\n");
+    }
+   }
+    return 0;
 }
