@@ -23,22 +23,20 @@ static uintptr_t loader(PCB* pcb, const char* filename)
     int fd = fs_open(filename, 'r', 0);
     //int file_sz = get_file_size(fd);
     Elf_Ehdr E_hdr;
-    //Elf_Phdr P_hdr;
+    Elf_Phdr P_hdr;
     fs_read(fd, &E_hdr, sizeof(Elf_Ehdr));
 
-    // for (int i = 0; i < E_hdr.e_phnum; i++) {
-    //     fs_lseek(fd, E_hdr.e_phoff + i * E_hdr.e_phentsize, SEEK_SET);
-    //     fs_read(fd, &P_hdr, E_hdr.e_phentsize);
-    //     if (P_hdr.p_type == PT_LOAD) {
-    //         uint32_t tmp[file_sz];
-    //         fs_lseek(fd, P_hdr.p_offset, SEEK_SET);
-    //         fs_read(fd, tmp, P_hdr.p_filesz);
-    //         //memcpy((uintptr_t*)P_hdr.p_vaddr, tmp, P_hdr.p_filesz);
-    //         memset((uintptr_t*)(P_hdr.p_vaddr + P_hdr.p_filesz), 0, P_hdr.p_memsz - P_hdr.p_filesz);
-    //     }
-    // }
+    for (int i = 0; i < E_hdr.e_phnum; i++) {
+        fs_lseek(fd, E_hdr.e_phoff + i * E_hdr.e_phentsize, SEEK_SET);
+        fs_read(fd, &P_hdr, E_hdr.e_phentsize);
+        if (P_hdr.p_type == PT_LOAD) {
+            fs_lseek(fd, P_hdr.p_offset, SEEK_SET);
+            fs_read(fd, (uintptr_t*)P_hdr.p_vaddr, P_hdr.p_filesz);
+            //memcpy((uintptr_t*)P_hdr.p_vaddr, tmp, P_hdr.p_filesz);
+            memset((uintptr_t*)(P_hdr.p_vaddr + P_hdr.p_filesz), 0, P_hdr.p_memsz - P_hdr.p_filesz);
+        }
+    }
     fs_close(fd);
-    printf("%p", E_hdr.e_entry);
     return E_hdr.e_entry;
 }
 
