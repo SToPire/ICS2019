@@ -65,15 +65,21 @@ size_t get_file_disk_offset(int fd)
 {
     return file_table[fd].disk_offset;
 }
+int is_str_equal(const char* a, const char* b)
+{
+    int l = strlen(a);
+    if (l != strlen(b)) return 0;
+    for (int i = 0; i < l; i++) {
+        if (a[i] != b[i]) return 0;
+    }
+    return 1;
+}
 int fs_open(const char* pathname, int flags, int mode)
 {
-    printf("open:%s %d %d ", pathname, flags, mode);
-
+    // printf("file name: %s\n", pathname);
     for (int i = 0; i < NR_FILES; i++) {
-        printf("filetable[%d]:%p\n", i, &file_table[i].name);
-        if (strcmp(file_table[i].name, pathname) == 0) {
+        if (is_str_equal(file_table[i].name, pathname)) {
             file_table[i].open_offset = 0;
-            printf("%d\n", i);
             return i;
         }
     }
