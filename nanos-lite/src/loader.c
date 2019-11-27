@@ -38,8 +38,8 @@ static uintptr_t loader(PCB* pcb, const char* filename)
     //     }
     // }
     fs_close(fd);
-    // return E_hdr.e_entry;
-    return 0;
+    printf("%p", E_hdr.e_entry);
+    return E_hdr.e_entry;
 }
 
 void naive_uload(PCB* pcb, const char* filename)
