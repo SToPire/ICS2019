@@ -27,7 +27,7 @@ void init_proc()
 
     Log("Initializing processes...");
 
-    naive_uload(NULL, "/bin/pal");
+    naive_uload(NULL, "/bin/bmptest");
 }
 
 _Context* schedule(_Context* prev)
