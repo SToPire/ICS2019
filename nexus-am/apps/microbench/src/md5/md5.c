@@ -131,6 +131,7 @@ static void md5(uint8_t *msg, size_t initial_len, uint8_t *digest) {
     }
  
     //var char digest[16] := h0 append h1 append h2 append h3 //(Output is in little-endian)
+    
     to_bytes(h0, digest);
     to_bytes(h1, digest + 4);
     to_bytes(h2, digest + 8);
@@ -148,12 +149,15 @@ void bench_md5_prepare() {
     str[i] = bench_rand();
   }
   digest = bench_alloc(16);
+  //printf("%d\n",setting->checksum);
 }
 
 void bench_md5_run() {
+  //printf("%d\n",setting->checksum);
   md5(str, N, digest);
 }
 
 int bench_md5_validate() {
+	//printf("**%d* %d\n",checksum(digest, digest + 16),setting->checksum);
   return checksum(digest, digest + 16) == setting->checksum;
 }
