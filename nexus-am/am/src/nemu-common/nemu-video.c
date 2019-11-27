@@ -45,7 +45,7 @@ size_t __am_video_write(uintptr_t reg, void* buf, size_t size)
 
 void __am_vga_init()
 {
-    printf("ss");
+    printf("init\n");
 
     int i;
     int size = screen_width() * screen_height();
