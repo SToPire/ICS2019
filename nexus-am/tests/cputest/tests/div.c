@@ -13,7 +13,7 @@ int main() {
   for(i = 0; i < N; i ++)
     for(j = 1; j < N + 1; j ++)
       a[i] /= j;
-  
+
   for(i = 0; i < N; i ++)
     nemu_assert(a[i] == i);
 
