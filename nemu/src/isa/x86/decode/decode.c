@@ -21,20 +21,18 @@ static inline make_DopHelper(I) {
  */
 /* sign immediate */
 static inline make_DopHelper(SI) {
- assert(op->width == 1 || op->width == 4);
-//printf("%x\n",*pc);
+  assert(op->width == 1 || op->width == 4);
+
   op->type = OP_TYPE_IMM;
-  if(op->width==1)
-  	op->simm=(int32_t)(int8_t)instr_fetch(pc,1);
-  else
-  	op->simm=(int32_t)instr_fetch(pc, 4);
+
   /* TODO: Use instr_fetch() to read `op->width' bytes of memory
    * pointed by 'pc'. Interpret the result as a signed immediate,
    * and assign it to op->simm.
    *
    op->simm = ???
    */
-  //TODO();
+  if(op->width==1) op->simm = (int32_t)(int8_t)instr_fetch(pc, 1);
+  else op->simm = (int32_t)instr_fetch(pc, 4);
 
   rtl_li(&op->val, op->simm);
 
@@ -116,10 +114,6 @@ make_DHelper(mov_E2G) {
   decode_op_rm(pc, id_src, true, id_dest, false);
 }
 
-make_DHelper(xor_G2E) {
-  decode_op_rm(pc, id_dest, true, id_src, true);
-}
-
 make_DHelper(lea_M2G) {
   decode_op_rm(pc, id_src, false, id_dest, false);
 }
@@ -174,6 +168,7 @@ make_DHelper(I) {
 make_DHelper(r) {
   decode_op_r(pc, id_dest, true);
 }
+
 make_DHelper(E) {
   decode_op_rm(pc, id_dest, true, NULL, false);
 }
@@ -209,7 +204,6 @@ make_DHelper(SI_E2G) {
   if (id_dest->width == 2) {
     id_src->val &= 0xffff;
   }
-  
 }
 
 make_DHelper(gp2_1_E) {
@@ -269,7 +263,10 @@ make_DHelper(J) {
   decode_op_SI(pc, id_dest, false);
   // the target address can be computed in the decode stage
   decinfo.jmp_pc = id_dest->simm + *pc;
-  //printf("***%x\n",id_dest->simm);
+}
+
+make_DHelper(push_SI) {
+  decode_op_SI(pc, id_dest, true);
 }
 
 make_DHelper(in_I2a) {
@@ -302,18 +299,6 @@ make_DHelper(out_a2dx) {
   rtl_lr(&id_dest->val, R_DX, 2);
 
   print_Dop(id_dest->str, OP_STR_SIZE, "(%%dx)");
-}
-
-make_DHelper(call_I){
-	decode_op_SI(pc, id_dest, true);
-	decinfo.jmp_pc =id_dest->simm + *pc;
-}
-
-make_DHelper(push_I){
-	decode_op_I(pc, id_dest, true);
-}
-make_DHelper(push_SI){
-	decode_op_SI(pc, id_dest, true);
 }
 
 void operand_write(Operand *op, rtlreg_t* src) {
