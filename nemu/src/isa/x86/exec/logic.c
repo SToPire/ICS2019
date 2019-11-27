@@ -88,7 +88,7 @@ make_EHelper(rol) {
   if(id_src->val==1)
   {
     uint32_t kb=s0>>(id_dest->width-1)&0x1;
-    if(kb==cpu.eflags.CF)  s1=0;
+    if(kb==cpu.EFLAGS.CF)  s1=0;
     else s1=1;
     rtl_set_OF(&s1);
   }
@@ -108,7 +108,7 @@ make_EHelper(ror) {
   if(id_src->val==1)
   {
     uint32_t kb=s0>>(id_dest->width-1)&0x1;
-    if(kb==cpu.eflags.CF)  s1=0;
+    if(kb==cpu.EFLAGS.CF)  s1=0;
     else s1=1;
     rtl_set_OF(&s1);
   }
