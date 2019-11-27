@@ -1,21 +1,18 @@
 #include "rtl/rtl.h"
-
-void raise_intr(uint32_t NO, vaddr_t ret_addr)
-{
-    /* TODO: Trigger an interrupt/exception with ``NO''.
+#include<stdio.h>
+void raise_intr(uint8_t NO, vaddr_t ret_addr) {
+  /* TODO: Trigger an interrupt/exception with ``NO''.
    * That is, use ``NO'' to index the IDT.
    */
-    rtl_push(&cpu.eflags);
-    rtl_push(&cpu.cs);
-    rtl_push(&ret_addr);
-    uint32_t index = NO * 8;
-    vaddr_t target_address =
-        (vaddr_read(cpu.idtr.addr + index + 4, 4) & 0xFFFF0000) |
-        (vaddr_read(cpu.idtr.addr + index, 4) & 0x0000FFFF);
-    rtl_j(target_address);
+  rtl_push(&cpu.EFLAGS);
+  rtl_push(&cpu.cs);
+  rtl_push(&ret_addr);
+  vaddr_t a=vaddr_read(cpu.IDTR.head+8*NO,4);
+  vaddr_t b=vaddr_read(cpu.IDTR.head+8*NO+4,4);
+  vaddr_t entry_addr=(a&0x0000ffff)|(b&0xffff0000);
+  rtl_j(entry_addr);
 }
 
-bool isa_query_intr(void)
-{
-    return false;
+bool isa_query_intr(void) {
+  return false;
 }

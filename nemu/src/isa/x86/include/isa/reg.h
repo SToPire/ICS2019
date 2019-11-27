@@ -48,14 +48,14 @@ typedef struct {
   	unsigned : 1;  
   	bool RF,VM,AC,VIF,VIP;
         unsigned : 10;
-    }EFLAGS;
-   uint32_t eflags;
+    }eflags;
+   uint32_t EFLAGS;
    };
   uint32_t cs;
   struct{
      uint16_t len;
-     uint32_t addr;
-  }idtr;
+     uint32_t head;
+  }IDTR;
 } CPU_state;
 
 static inline int check_reg_index(int index ) {
