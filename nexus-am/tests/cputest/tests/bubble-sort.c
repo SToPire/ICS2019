@@ -25,9 +25,10 @@ int main() {
 		nemu_assert(a[i] == i);
 	}
 
-	nemu_assert(i == N);//qreturn 0;
+	nemu_assert(i == N);
+
 	bubble_sort();
-	//return 0;
+
 	for(i = 0; i < N; i ++) {
 		nemu_assert(a[i] == i);
 	}

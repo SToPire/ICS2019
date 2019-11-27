@@ -39,7 +39,6 @@ int ans[] = {38270, 218, 20};
 
 int main() {
   int x = func[0](14371, 0);
-  //return 0;
   nemu_assert(x == ans[0]);   // answer
   nemu_assert(rec == ans[1]); // # recursions
   nemu_assert(lvl == ans[2]); // max depth

@@ -28,6 +28,7 @@ int main() {
 	for(i = 0; i < ARR_SIZE(mem); i ++) {
 		nemu_assert((short)mem[i] == lh_ans[i]);
 	}
+
 	for(i = 0; i < ARR_SIZE(mem); i ++) {
 		nemu_assert(mem[i] == lhu_ans[i]);
 	}

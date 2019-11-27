@@ -5,10 +5,9 @@
 #include <assert.h>
 #include <time.h>
 #include "syscall.h"
-extern char _end;
-intptr_t pbr=(intptr_t)&(_end);
+
 // helper macros
-#define _concat(x, y) x ## y
+#define _concat(x, y) x##y
 #define concat(x, y) _concat(x, y)
 #define _args(n, list) concat(_arg, n) list
 #define _arg0(a0, ...) a0
@@ -19,7 +18,7 @@ intptr_t pbr=(intptr_t)&(_end);
 #define _arg5(a0, a1, a2, a3, a4, a5, ...) a5
 
 // extract an arguments from the macro array
-#define SYSCALL  _args(0, ARGS_ARRAY)
+#define SYSCALL _args(0, ARGS_ARRAY)
 #define GPR1 _args(1, ARGS_ARRAY)
 #define GPR2 _args(2, ARGS_ARRAY)
 #define GPR3 _args(3, ARGS_ARRAY)
@@ -28,112 +27,136 @@ intptr_t pbr=(intptr_t)&(_end);
 
 // ISA-depedent definitions
 #if defined(__ISA_X86__)
-# define ARGS_ARRAY ("int $0x80", "eax", "ebx", "ecx", "edx", "eax")
+#    define ARGS_ARRAY ("int $0x80", "eax", "ebx", "ecx", "edx", "eax")
 #elif defined(__ISA_MIPS32__)
-# define ARGS_ARRAY ("syscall", "v0", "a0", "a1", "a2", "v0")
+#    define ARGS_ARRAY ("syscall", "v0", "a0", "a1", "a2", "v0")
 #elif defined(__ISA_RISCV32__)
-# define ARGS_ARRAY ("ecall", "a7", "a0", "a1", "a2", "a0")
+#    define ARGS_ARRAY ("ecall", "a7", "a0", "a1", "a2", "a0")
 #elif defined(__ISA_AM_NATIVE__)
-# define ARGS_ARRAY ("call *0x100000", "rax", "rdi", "rsi", "rdx", "rax")
+#    define ARGS_ARRAY ("call *0x100000", "rax", "rdi", "rsi", "rdx", "rax")
 #else
-#error syscall is not supported
+#    error syscall is not supported
 #endif
 
-intptr_t _syscall_(intptr_t type, intptr_t a0, intptr_t a1, intptr_t a2) {
-  register intptr_t _gpr1 asm (GPR1) = type;
-  register intptr_t _gpr2 asm (GPR2) = a0;
-  register intptr_t _gpr3 asm (GPR3) = a1;
-  register intptr_t _gpr4 asm (GPR4) = a2;
-  register intptr_t ret asm (GPRx);
-  asm volatile (SYSCALL : "=r" (ret) : "r"(_gpr1), "r"(_gpr2), "r"(_gpr3), "r"(_gpr4));
-  return ret;
-}
+extern char _end;
+intptr_t program_break = (intptr_t)(&_end);
 
-void _exit(int status) {
-  _syscall_(SYS_exit, status, 0, 0);
-  while (1);
-}
-
-int _open(const char *path, int flags, mode_t mode) {
-  return _syscall_(SYS_open,path,flags,mode);
-}
-
-int _write(int fd, void *buf, size_t count) {
-  return _syscall_(SYS_write,fd,buf,count);
-   
-}
-
-void *_sbrk(intptr_t increment) {
-  void* ret=(void*)pbr;
-  if(_syscall_(SYS_brk,pbr+increment,0,0)==0){
-    pbr+=increment;
+intptr_t _syscall_(intptr_t type, intptr_t a0, intptr_t a1, intptr_t a2)
+{
+    register intptr_t _gpr1 asm(GPR1) = type;
+    register intptr_t _gpr2 asm(GPR2) = a0;
+    register intptr_t _gpr3 asm(GPR3) = a1;
+    register intptr_t _gpr4 asm(GPR4) = a2;
+    register intptr_t ret asm(GPRx);
+    asm volatile(SYSCALL
+                 : "=r"(ret)
+                 : "r"(_gpr1), "r"(_gpr2), "r"(_gpr3), "r"(_gpr4));
     return ret;
-  }
-  else return (void *)-1;
-}
-int _read(int fd, void *buf, size_t count) {
-  return _syscall_(SYS_read,fd,buf,count);
 }
 
-int _close(int fd) {
-  //_exit(SYS_close);
-  return _syscall_(SYS_close,fd,0,0);
+void _exit(int status)
+{
+    _syscall_(SYS_exit, status, 0, 0);
+    while (1)
+        ;
 }
 
-off_t _lseek(int fd, off_t offset, int whence) {
-  return _syscall_(SYS_lseek,fd,offset,whence);
+int _open(const char* path, int flags, mode_t mode)
+{
+    return _syscall_(SYS_open, path, flags, mode);
 }
 
-int _execve(const char *fname, char * const argv[], char *const envp[]) {
-  _exit(SYS_execve);
-  return 0;
+int _write(int fd, void* buf, size_t count)
+{
+    return _syscall_(SYS_write, fd, buf, count);
+}
+
+void* _sbrk(intptr_t increment)
+{
+    if (_syscall_(SYS_brk, program_break + increment, 0, 0) == -1) {
+        return (void*)(-1);
+    } else {
+        intptr_t tmp = program_break;
+        program_break += increment;
+        return (void*)tmp;
+    }
+}
+
+int _read(int fd, void* buf, size_t count)
+{
+    return _syscall_(SYS_read, fd, buf, count);
+}
+
+int _close(int fd)
+{
+    return _syscall_(SYS_close, fd, 0, 0);
+}
+
+off_t _lseek(int fd, off_t offset, int whence)
+{
+    return _syscall_(SYS_lseek, fd, offset, whence);
+}
+
+int _execve(const char* fname, char* const argv[], char* const envp[])
+{
+    _exit(SYS_execve);
+    return 0;
 }
 
 // The code below is not used by Nanos-lite.
 // But to pass linking, they are defined as dummy functions
 
-int _fstat(int fd, struct stat *buf) {
-  return 0;
+int _fstat(int fd, struct stat* buf)
+{
+    return 0;
 }
 
-int _kill(int pid, int sig) {
-  _exit(-SYS_kill);
-  return -1;
+int _kill(int pid, int sig)
+{
+    _exit(-SYS_kill);
+    return -1;
 }
 
-pid_t _getpid() {
-  _exit(-SYS_getpid);
-  return 1;
+pid_t _getpid()
+{
+    _exit(-SYS_getpid);
+    return 1;
 }
 
-pid_t _fork() {
-  assert(0);
-  return -1;
+pid_t _fork()
+{
+    assert(0);
+    return -1;
 }
 
-int _link(const char *d, const char *n) {
-  assert(0);
-  return -1;
+int _link(const char* d, const char* n)
+{
+    assert(0);
+    return -1;
 }
 
-int _unlink(const char *n) {
-  assert(0);
-  return -1;
+int _unlink(const char* n)
+{
+    assert(0);
+    return -1;
 }
 
-pid_t _wait(int *status) {
-  assert(0);
-  return -1;
+pid_t _wait(int* status)
+{
+    assert(0);
+    return -1;
 }
 
-clock_t _times(void *buf) {
-  assert(0);
-  return 0;
+clock_t _times(void* buf)
+{
+    assert(0);
+    return 0;
 }
 
-int _gettimeofday(struct timeval *tv) {
-  assert(0);
-  tv->tv_sec = 0;
-  tv->tv_usec = 0;
-  return 0;
+int _gettimeofday(struct timeval* tv)
+{
+    assert(0);
+    tv->tv_sec = 0;
+    tv->tv_usec = 0;
+    return 0;
 }
