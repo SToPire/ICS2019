@@ -37,7 +37,7 @@ static uintptr_t loader(PCB* pcb, const char* filename)
             fs_lseek(fd, P_hdr.p_offset, SEEK_SET);
             fs_read(fd, tmp, P_hdr.p_filesz);
             //ramdisk_read(tmp, file_offset + P_hdr.p_offset, P_hdr.p_filesz);
-            memcpy((uintptr_t*)P_hdr.p_vaddr, tmp, P_hdr.p_filesz);
+            //memcpy((uintptr_t*)P_hdr.p_vaddr, tmp, P_hdr.p_filesz);
             memset((uintptr_t*)(P_hdr.p_vaddr + P_hdr.p_filesz), 0, P_hdr.p_memsz - P_hdr.p_filesz);
         }
     }
