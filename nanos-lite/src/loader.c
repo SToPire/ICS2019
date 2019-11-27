@@ -1,64 +1,53 @@
 #include "proc.h"
 #include <elf.h>
-#include <stdio.h>
+
 #ifdef __ISA_AM_NATIVE__
-#    define Elf_Ehdr Elf64_Ehdr
-#    define Elf_Phdr Elf64_Phdr
+# define Elf_Ehdr Elf64_Ehdr
+# define Elf_Phdr Elf64_Phdr
 #else
-#    define Elf_Ehdr Elf32_Ehdr
-#    define Elf_Phdr Elf32_Phdr
+# define Elf_Ehdr Elf32_Ehdr
+# define Elf_Phdr Elf32_Phdr
 #endif
-
-extern int fs_open(const char* pathname, int flags, int mode);
-extern int fs_close(int fd);
-extern size_t fs_read(int fd, void* buf, size_t len);
-extern size_t fs_lseek(int fd, size_t offset, int whence);
-size_t get_file_size(int fd);
-
-static uintptr_t loader(PCB* pcb, const char* filename)
-{
-    int fd = fs_open(filename, 'r', 0);
-    Elf_Ehdr E_hdr;
-    Elf_Phdr P_hdr;
-    fs_read(fd, &E_hdr, sizeof(Elf_Ehdr));
-
-    for (int i = 0; i < E_hdr.e_phnum; i++) {
-        fs_lseek(fd, E_hdr.e_phoff + i * E_hdr.e_phentsize, SEEK_SET);
-        fs_read(fd, &P_hdr, E_hdr.e_phentsize);
-        if (P_hdr.p_type == PT_LOAD) {
-            fs_lseek(fd, P_hdr.p_offset, SEEK_SET);
-            fs_read(fd, (uintptr_t*)P_hdr.p_vaddr, P_hdr.p_filesz);
-            memset((uintptr_t*)(P_hdr.p_vaddr + P_hdr.p_filesz), 0, P_hdr.p_memsz - P_hdr.p_filesz);
-        }
-    }
-    fs_close(fd);
-    return E_hdr.e_entry;
+size_t ramdisk_read(void *buf, size_t offset, size_t len);
+__ssize_t fs_read(int fd, void *buf, size_t len);
+size_t fs_offset(int fd);
+int fs_open(const char *pathname, int flags, int mode);
+static uintptr_t loader(PCB *pcb, const char *filename) {
+  Elf_Ehdr head;Elf_Phdr segment;
+ int fd=fs_open(filename,0,0);
+  int fileoffset=fs_offset(fd);
+  ramdisk_read(&head,fileoffset,sizeof(Elf_Ehdr));
+  for(int i=1;i<=head.e_phnum;i++){
+    //printf("%d\n",i);
+    ramdisk_read(&segment,fileoffset+sizeof(Elf_Ehdr)+(i-1)*sizeof(Elf_Phdr),sizeof(Elf_Phdr));
+    if(segment.p_type!=1) continue;
+    ramdisk_read((void*)segment.p_vaddr,segment.p_offset+fileoffset,segment.p_filesz);
+    void *addr=(void*)segment.p_vaddr+segment.p_filesz;
+    memset(addr,0,segment.p_memsz-segment.p_filesz);
+  }
+  return head.e_entry;
 }
 
-void naive_uload(PCB* pcb, const char* filename)
-{
-    uintptr_t entry;
-    entry = loader(pcb, filename);
-    Log("Jump to entry = %x", entry);
-    ((void (*)())entry)();
+void naive_uload(PCB *pcb, const char *filename) {
+  uintptr_t entry = loader(pcb, filename);
+  Log("Jump to entry = %d", entry);
+  ((void(*)())entry) ();
 }
 
-void context_kload(PCB* pcb, void* entry)
-{
-    _Area stack;
-    stack.start = pcb->stack;
-    stack.end = stack.start + sizeof(pcb->stack);
+void context_kload(PCB *pcb, void *entry) {
+  _Area stack;
+  stack.start = pcb->stack;
+  stack.end = stack.start + sizeof(pcb->stack);
 
-    pcb->cp = _kcontext(stack, entry, NULL);
+  pcb->cp = _kcontext(stack, entry, NULL);
 }
 
-void context_uload(PCB* pcb, const char* filename)
-{
-    uintptr_t entry = loader(pcb, filename);
+void context_uload(PCB *pcb, const char *filename) {
+  uintptr_t entry = loader(pcb, filename);
 
-    _Area stack;
-    stack.start = pcb->stack;
-    stack.end = stack.start + sizeof(pcb->stack);
+  _Area stack;
+  stack.start = pcb->stack;
+  stack.end = stack.start + sizeof(pcb->stack);
 
-    pcb->cp = _ucontext(&pcb->as, stack, stack, (void*)entry, NULL);
+  pcb->cp = _ucontext(&pcb->as, stack, stack, (void *)entry, NULL);
 }
