@@ -65,21 +65,12 @@ size_t get_file_disk_offset(int fd)
 {
     return file_table[fd].disk_offset;
 }
-int is_str_equal(const char* a, const char* b)
-{
-    int l = strlen(a);
-    if (l != strlen(b)) return 0;
-    for (int i = 0; i < l; i++) {
-        if (a[i] != b[i]) return 0;
-    }
-    return 1;
-}
 int fs_open(const char* pathname, int flags, int mode)
 {
-    // printf("file name: %s\n", pathname);
     for (int i = 0; i < NR_FILES; i++) {
-        if (is_str_equal(file_table[i].name, pathname)) {
+        if (strcmp(file_table[i].name, pathname) == 0) {
             file_table[i].open_offset = 0;
+            printf("%d\n", i);
             return i;
         }
     }
@@ -91,72 +82,60 @@ int fs_close(int fd)
     return 0;
 }
 
-size_t fs_read(int fd, void* buf, size_t len)
+__ssize_t fs_read(int fd, void* buf, size_t len)
 {
-    // assert(fd>=0 && fd<NR_FILES);
-    if (!(fd >= 0 && fd < NR_FILES)) return -1;
+    printf("read\n");
 
-    if (file_table[fd].read != NULL) {
-        len = file_table[fd].read(buf, file_table[fd].open_offset, len);
-        file_table[fd].open_offset += len;
-        return len;
-    }
-
-    if (file_table[fd].open_offset + len > file_table[fd].size)
-        len = file_table[fd].size - file_table[fd].open_offset;
-
-    if (len <= 0 || fd < FD_FB)  //stdin, stdout, stderr
-        return 0;
-
-    ramdisk_read(buf, file_table[fd].open_offset + file_table[fd].disk_offset, len);
-    file_table[fd].open_offset += len;
+    Finfo* cur_file = &file_table[fd];
+    if (!cur_file->read) {
+        if (cur_file->open_offset > cur_file->size) return 0;
+        if (len > cur_file->size - cur_file->open_offset)
+            len = cur_file->size - cur_file->open_offset;
+        ramdisk_read(buf, cur_file->disk_offset + cur_file->open_offset, len);
+    } else
+        len = cur_file->read(buf, cur_file->disk_offset + cur_file->open_offset, len);
+    cur_file->open_offset += len;
     return len;
 }
 
-size_t fs_write(int fd, const void* buf, size_t len)
+__ssize_t fs_write(int fd, const void* buf, size_t len)
 {
-    // assert(fd>=0 && fd<NR_FILES);
-    if (!(fd >= 0 && fd < NR_FILES)) return -1;
+    printf("write\n");
 
-    if (file_table[fd].write != NULL) {  //have a write function
-                                         // printf("write fd=%d\n",fd);
-        len = file_table[fd].write(buf, file_table[fd].open_offset, len);
-        file_table[fd].open_offset += len;
-        return len;
-    }
-
-    if (file_table[fd].open_offset + len > file_table[fd].size)
-        len = file_table[fd].size - file_table[fd].open_offset;
-
-    if (len <= 0)
-        return 0;
-
-    ramdisk_write(buf, file_table[fd].open_offset + file_table[fd].disk_offset, len);
-    file_table[fd].open_offset += len;
+    Finfo* cur_file = &file_table[fd];
+    if (!cur_file->write) {
+        if (cur_file->open_offset > cur_file->size) return 0;
+        if (len > cur_file->size - cur_file->open_offset)
+            len = cur_file->size - cur_file->open_offset;
+        ramdisk_write(buf, cur_file->disk_offset + cur_file->open_offset, len);
+    } else
+        len = cur_file->write(buf, cur_file->disk_offset + cur_file->open_offset, len);
+    cur_file->open_offset += len;
     return len;
 }
 
-size_t fs_lseek(int fd, size_t offset, int whence)
+__off_t fs_lseek(int fd, size_t offset, int whence)
 {
-    // assert(fd>=0 && fd<NR_FILES);
-    // printf("fd = %d Call lseek! offset = %d whence = %d\n",fd,offset,whence);
-    if (!(fd >= 0 && fd < NR_FILES)) return -1;
+    printf("lseek\n");
 
-    if (fd < FD_FB) return 0;  //stdin, stdout, stderr
-
+    Finfo* cur_file = &file_table[fd];
     switch (whence) {
-        case SEEK_SET: {
-            if (offset < 0) return -1;  //error
-            file_table[fd].open_offset = offset;
-        } break;
-        case SEEK_CUR: file_table[fd].open_offset += offset; break;
-        case SEEK_END: file_table[fd].open_offset = file_table[fd].size + offset; break;
-        default: assert(0);
+        case SEEK_SET:
+            if (offset >= 0 && offset <= cur_file->size)
+                cur_file->open_offset = offset;
+            else
+                return -1;
+            break;
+        case SEEK_CUR:
+            if (cur_file->open_offset + offset >= 0 && cur_file->open_offset + offset <= cur_file->size)
+                cur_file->open_offset += offset;
+            else
+                return -1;
+            break;
+        case SEEK_END:
+            cur_file->open_offset = cur_file->size + offset;
+            break;
+        default: return (__off_t)(-1);
     }
-
-    //TODO: ???
-    if (file_table[fd].open_offset < 0) file_table[fd].open_offset = 0;
-    if (file_table[fd].open_offset > file_table[fd].size) file_table[fd].open_offset = file_table[fd].size;
-
-    return file_table[fd].open_offset;
+    return cur_file->open_offset;
 }
