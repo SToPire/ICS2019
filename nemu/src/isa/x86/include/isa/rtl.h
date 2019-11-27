@@ -1,8 +1,7 @@
-  #ifndef __X86_RTL_H__
+#ifndef __X86_RTL_H__
 #define __X86_RTL_H__
 
 #include "rtl/rtl.h"
-
 /* RTL pseudo instructions */
 
 static inline void rtl_lr(rtlreg_t* dest, int r, int width) {
@@ -12,7 +11,6 @@ static inline void rtl_lr(rtlreg_t* dest, int r, int width) {
     case 2: rtl_host_lm(dest, &reg_w(r), 2); return;
     default: assert(0);
   }
-  //printf("||yes\n");
 }
 
 static inline void rtl_sr(int r, const rtlreg_t* src1, int width) {
@@ -26,54 +24,48 @@ static inline void rtl_sr(int r, const rtlreg_t* src1, int width) {
 
 static inline void rtl_push(const rtlreg_t* src1) {
   // esp <- esp - 4
-  //rtl_lr(esp,4,4);
-  //printf("**yes\n");
-  reg_l(4)-=4;
-  rtlreg_t *esp=&reg_l(4);
-  vaddr_write(*esp, *src1,4);// M[esp] <- src1
-  //printf("!!\n");
- // TODO();
+  // M[esp] <- src1
+  reg_l(R_ESP)-=4;
+  rtl_sm(&reg_l(R_ESP), src1,4);
 }
 
 static inline void rtl_pop(rtlreg_t* dest) {
-  rtlreg_t* esp=&reg_l(4);;// dest <- M[esp]
+  // dest <- M[esp]
   // esp <- esp + 4
- // printf("!!\n");
-  *dest=vaddr_read(*esp,4);
-  //printf("**%d\n",*dest);
-  reg_l(4)+=4;
-  //printf("!!\n");
-  //TODO();
+  rtl_lm(dest,&reg_l(R_ESP),4);
+  reg_l(R_ESP)+=4;
 }
 
 static inline void rtl_is_sub_overflow(rtlreg_t* dest,
     const rtlreg_t* res, const rtlreg_t* src1, const rtlreg_t* src2, int width) {
-  s1=1<<(width*8-1);
-  *dest=(((*src1&s1)^(*src2&s1))>>(width*8-1))&(((*src1&s1)^(*res&s1))>>(width*8-1));
   // dest <- is_overflow(src1 - src2)
-  //TODO();
+  if((*src1)>>(width*8-1) != (*src2)>>(width*8-1) && (*src1)>>(width*8-1) != (*res)>>(width*8-1))
+  	*dest=1;
+  else
+  	*dest=0;
 }
 
 static inline void rtl_is_sub_carry(rtlreg_t* dest,
     const rtlreg_t* res, const rtlreg_t* src1) {
-    *dest=(*res>*src1);
   // dest <- is_carry(src1 - src2)
-  //TODO();
+  if(*res>*src1) *dest=1;
+  else *dest=0;
 }
 
 static inline void rtl_is_add_overflow(rtlreg_t* dest,
     const rtlreg_t* res, const rtlreg_t* src1, const rtlreg_t* src2, int width) {
-    s1=1<<(width*8-1);
-    *dest=(((*src1&s1)&(*src2&s1))>>(width*8-1))&(((*src1&s1)^(*res&s1))>>(width*8-1));
   // dest <- is_overflow(src1 + src2)
-  //TODO();
+  if((*src1)>>(width*8-1) == (*src2)>>(width*8-1) && (*src1)>>(width*8-1) != (*res)>>(width*8-1))
+  	*dest=1;
+  else
+  	*dest=0;
 }
 
 static inline void rtl_is_add_carry(rtlreg_t* dest,
     const rtlreg_t* res, const rtlreg_t* src1) {
-    *dest=(*res<*src1);
   // dest <- is_carry(src1 + src2)
-  //TODO();
+  if(*res<*src1) *dest=1;
+  else *dest=0;
 }
 
 #define make_rtl_setget_eflags(f) \
@@ -90,24 +82,18 @@ make_rtl_setget_eflags(ZF)
 make_rtl_setget_eflags(SF)
 
 static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
+  // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
   switch (width) {
-    case 4: cpu.eflags.ZF=!(*result & 0xffffffff);return;
-    case 2: cpu.eflags.ZF=!(*result & 0x0000ffff); return;
-    case 1: cpu.eflags.ZF=!(*result & 0x000000ff); return;
+    case 4: cpu.eflags.ZF = ~(((*result) && (0xffffffff)) | 0); return;
+    case 1: cpu.eflags.ZF = ~(((*result) && (0x000000ff)) | 0); return;
+    case 2: cpu.eflags.ZF = ~(((*result) && (0x0000ffff)) | 0); return;
     default: assert(0);
   }
-  //TODO();
 }
 
 static inline void rtl_update_SF(const rtlreg_t* result, int width) {
   // eflags.SF <- is_sign(result[width * 8 - 1 .. 0])
-  switch (width) {
-    case 4: cpu.eflags.SF=(*result & 0x80000000)>>31;return;
-    case 2: cpu.eflags.SF=(*result & 0x00008000)>>15; return;
-    case 1: cpu.eflags.SF=(*result & 0x00000080)>>7; return;
-    default: assert(0);
-  }
-  //TODO();
+  cpu.eflags.SF=((*result) >> (width*8-1));
 }
 
 static inline void rtl_update_ZFSF(const rtlreg_t* result, int width) {
