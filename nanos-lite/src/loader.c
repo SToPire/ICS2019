@@ -1,64 +1,70 @@
 #include "proc.h"
 #include <elf.h>
-#include <stdio.h>
+#include<stdio.h>
 #ifdef __ISA_AM_NATIVE__
-#    define Elf_Ehdr Elf64_Ehdr
-#    define Elf_Phdr Elf64_Phdr
+# define Elf_Ehdr Elf64_Ehdr
+# define Elf_Phdr Elf64_Phdr
 #else
-#    define Elf_Ehdr Elf32_Ehdr
-#    define Elf_Phdr Elf32_Phdr
+# define Elf_Ehdr Elf32_Ehdr
+# define Elf_Phdr Elf32_Phdr
 #endif
-
-extern int fs_open(const char* pathname, int flags, int mode);
+extern size_t ramdisk_read(void *buf, size_t offset, size_t len);
+extern size_t ramdisk_write(const void *buf, size_t offset, size_t len);
+extern size_t get_ramdisk_size();
 extern int fs_close(int fd);
-extern size_t fs_read(int fd, void* buf, size_t len);
-extern size_t fs_lseek(int fd, size_t offset, int whence);
-size_t get_file_size(int fd);
-
-static uintptr_t loader(PCB* pcb, const char* filename)
+extern size_t fs_read(int fd,void *buf,size_t len);
+extern int fs_open(const char *pathname,int flags,int mode);
+extern size_t fs_write(int fd,const void *buf,size_t len);
+extern size_t fs_lseek(int fd,size_t offset,int whence);
+static uintptr_t loader(PCB *pcb, const char *filename) 
 {
-    int fd = fs_open(filename, 'r', 0);
-    Elf_Ehdr E_hdr;
-    Elf_Phdr P_hdr;
-    fs_read(fd, &E_hdr, sizeof(Elf_Ehdr));
-
-    for (int i = 0; i < E_hdr.e_phnum; i++) {
-        fs_lseek(fd, E_hdr.e_phoff + i * E_hdr.e_phentsize, SEEK_SET);
-        fs_read(fd, &P_hdr, E_hdr.e_phentsize);
-        if (P_hdr.p_type == PT_LOAD) {
-            fs_lseek(fd, P_hdr.p_offset, SEEK_SET);
-            fs_read(fd, (uintptr_t*)P_hdr.p_vaddr, P_hdr.p_filesz);
-            memset((uintptr_t*)(P_hdr.p_vaddr + P_hdr.p_filesz), 0, P_hdr.p_memsz - P_hdr.p_filesz);
-        }
+  Elf_Ehdr elf_header;
+  Elf_Phdr pro_header;
+  int fd=fs_open(filename,0,0);
+  fs_read(fd,&elf_header,sizeof(Elf_Ehdr));
+  size_t phoffset=elf_header.e_phoff;
+  size_t offset=phoffset;
+  size_t phnum=elf_header.e_phnum;
+  size_t phentsize=elf_header.e_phentsize;
+  fs_lseek(fd,offset,SEEK_SET);
+  for(int i=0;i<phnum;i++)
+  {
+    fs_read(fd,&pro_header,phentsize);
+    if(pro_header.p_type==PT_LOAD)
+    {
+       fs_lseek(fd,pro_header.p_offset,SEEK_SET);
+       fs_read(fd,(uintptr_t *)pro_header.p_vaddr,pro_header.p_filesz);
+       memset((uintptr_t *)(pro_header.p_vaddr+pro_header.p_filesz),0,pro_header.p_memsz-pro_header.p_filesz);
     }
-    fs_close(fd);
-    return E_hdr.e_entry;
+    offset+=phentsize;
+    if(i<phnum-1)
+    fs_lseek(fd,offset,SEEK_SET);
+  }
+  fs_close(fd);
+  return elf_header.e_entry;
 }
 
-void naive_uload(PCB* pcb, const char* filename)
-{
-    uintptr_t entry;
-    entry = loader(pcb, filename);
-    Log("Jump to entry = %x", entry);
-    ((void (*)())entry)();
+void naive_uload(PCB *pcb, const char *filename) {
+   uintptr_t entry;
+   entry = loader(pcb, filename);
+   Log("Jump to entry = %x", entry);
+  ((void(*)())entry) ();
 }
 
-void context_kload(PCB* pcb, void* entry)
-{
-    _Area stack;
-    stack.start = pcb->stack;
-    stack.end = stack.start + sizeof(pcb->stack);
+void context_kload(PCB *pcb, void *entry) {
+  _Area stack;
+  stack.start = pcb->stack;
+  stack.end = stack.start + sizeof(pcb->stack);
 
-    pcb->cp = _kcontext(stack, entry, NULL);
+  pcb->cp = _kcontext(stack, entry, NULL);
 }
 
-void context_uload(PCB* pcb, const char* filename)
-{
-    uintptr_t entry = loader(pcb, filename);
+void context_uload(PCB *pcb, const char *filename) {
+  uintptr_t entry = loader(pcb, filename);
 
-    _Area stack;
-    stack.start = pcb->stack;
-    stack.end = stack.start + sizeof(pcb->stack);
+  _Area stack;
+  stack.start = pcb->stack;
+  stack.end = stack.start + sizeof(pcb->stack);
 
-    pcb->cp = _ucontext(&pcb->as, stack, stack, (void*)entry, NULL);
+  pcb->cp = _ucontext(&pcb->as, stack, stack, (void *)entry, NULL);
 }
