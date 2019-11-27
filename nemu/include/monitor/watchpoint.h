@@ -6,9 +6,11 @@
 typedef struct watchpoint {
   int NO;
   struct watchpoint *next;
-  uint32_t val;
-  char what[128];
+  char s[211];
+  uint32_t ans;
+  int num;
   /* TODO: Add more members if necessary */
+
 
 } WP;
 
