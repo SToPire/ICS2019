@@ -6,7 +6,6 @@ void hal_init();
 int main(void)
 {
     Log("game start!");
-    Log("ss");
     hal_init();
     main_loop();
 
