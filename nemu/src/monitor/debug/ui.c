@@ -8,13 +8,10 @@
 #include <readline/history.h>
 
 void cpu_exec(uint64_t);
-void isa_reg_display(void);
-uint32_t vaddr_read(uint32_t add,int len);
-uint32_t expr(char *e, bool *success);
+void isa_reg_display();
 WP* new_wp();
-void isa_watch_display();
-void free_wp(WP *wp);
-void delete(int num);
+void free_wp(int n);
+void WP_disp();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -43,123 +40,105 @@ static int cmd_q(char *args) {
   return -1;
 }
 
-static int cmd_x(char *args){
-  if(args==NULL){
-    printf("using info N Address to display the value of 4 bytes in hexadecimal form\n");
-    return 0;
+static int cmd_si(char *args){
+  char *arg = strtok(NULL, " ");
+  if (arg == NULL){
+		/* no arguments given, with default value 1 */
+		cpu_exec(1);	
   }
-   char *args_end=args+strlen(args),*now=args;
-   while((now<args_end)&&((*now)==' ')) ++now;
-   if(now==args_end){
-    printf("using info N Address to display the value of 4 bytes in hexadecimal form\n");
-    return 0;
-   }
-   char *token=strtok(now," ");
-   int num=atoi(token);
-   token=strtok(NULL," ");
-   uint32_t add;sscanf(token,"%x",&add);
-   token=strtok(NULL," ");
-   if(token!=NULL){
-     printf("There are too many parameters in your command\n");
-     return 0;
-   }
-   while(num--){
-   	printf("0x%08x ",vaddr_read(add,4));
-	add+=4;   
-   }   
-   printf("\n");
-   return 0; 
-}
-static int cmd_info(char *args){
-  if(args==NULL){
-    printf("using info r to get the value of all registers\n");
-    printf("using info w to get the value of all watches\n");
-    return 0;
+  else{
+		int num = atoi(arg);
+		if(!num) printf("Invalid argument! Only positive integer allowed.\n");
+		else cpu_exec(num);
   }
-  char *args_end=args+strlen(args),*now=args;
-   while((now<args_end)&&((*now)==' ')) ++now;
-   if(now==args_end){
-    printf("using info r to get the value of all registers\n");
-    return 0;
-   }
-   char *i=now,*last=i;
-   while(i<args_end){
-     if(((*i)!=' ')) last=i;
-     ++i;
-   }
-   if(last-now>1){
-     printf("There exist illegal expressions in your parameters!!!\n");
-     return 0;
-  }
-  if((*now)=='r'){
-    isa_reg_display();
-    return 0;
-  }
-  if((*now)=='w'){
-  	isa_watch_display();
-  	return 0;
-  }
-  printf("There exist illegal expressions in your parameters!!!\n");
   return 0;
 }
 
-static int cmd_si(char *args){
-   if(args==NULL){
-     cpu_exec(1);
-     return 0;
-   }
-   char *args_end=args+strlen(args),*now=args;
-   while((now<args_end)&&((*now)==' ')) ++now;
-   if(now==args_end){
-    cpu_exec(1);
-    return 0;
-   }
-   char *i=now,*last=i;
-   while(i<args_end){
-     if(((*i)>='0')&&((*i)<='9')) last=i;
-     ++i;
-   }
-   long long n=0;
-   while(now<=last){
-     if((*now)<'0'||(*now)>'9'){
-       printf("There exit illegal expressions in your parameters!!!\n");
-       return 0;
-     }
-     n=n*10+(*now)-48;
-     if(n>1e9) n=1e9;
-     ++now;
-   }
-   cpu_exec(n);
-   return 0;
+static int cmd_info(char *args){
+  char *arg = strtok(NULL, " ");
+  if (arg == NULL){
+  		/* no arguments given, print a message */
+		printf("Usage: info [r][w]\n");
+  }
+  else if(strcmp(arg,"r")==0){
+		isa_reg_display();
+  }
+  else if(strcmp(arg,"w")==0){
+		WP_disp();
+  }
+  else{
+		printf("Usage: info [r][w]\n");
+  }
+  return 0;
 }
-static int cmd_p(char *args){
-   bool okay=1;
-   uint32_t ans=expr(args, &okay);
-   if(okay)
-		printf("Ans=%u\n",ans);
-   else
-		printf("There is something wrong in your expression!!!\n");
-	return 0;   	
+
+static int cmd_x(char *args){
+	/*partially finished, only 0x number acceptable */
+  char *arg1 = strtok(NULL," ");
+  char *arg2 = strtok(NULL," ");
+  if(arg1==NULL){
+		printf("Usage: x [n][address]\n");
+  }
+  else if (arg2==NULL){
+		printf("Usage: x [n][address]\n");
+  }
+  else{
+		uint32_t times=atoi(arg1);
+		uint32_t addr_head=0;
+		sscanf(arg2,"0x%x",&addr_head);
+		if(!times || !addr_head) printf("Usage: x [n][address]\n");
+		else{
+			uint32_t i;
+			for(i=0;i<times;i++){
+				printf("0x%x: 0x%08x\n",addr_head+4*i,vaddr_read(addr_head+4*i,4));
+			}
+		}
+  }
+  return 0;
 }
-static int cmd_w(char *args){
-	bool okay=1;
-	uint32_t ans=expr(args, &okay);
-	if(okay)
-		printf("Ans=%u\n",ans);
-   else{
-		printf("There is something wrong in your expression!!!\n");
-		return 0;
-	}
-	WP *x=new_wp();
-	int len=strlen(args);
-	for(int i=0;i<=len;++i)
-		(*x).s[i]=*(args+i);
-	(*x).ans=ans;
-	return 0;
+
+static int cmd_p(char *args)
+{
+  if(args==NULL){
+	  printf("Usage: p [expr]\n");
+  }
+  else{
+	  bool success=true;
+	  uint32_t tmp=expr(args,&success);
+	  if(success) printf("%u\n",tmp);
+	  else printf("Error in evaluation.\n");
+  }
+  return 0;
 }
-static int cmd_d(char *args){
-	delete(atoi(args));
-	return 0;
+
+static int cmd_w(char *args)
+{
+  if(args==NULL){
+	  printf("Usage: w [expr]\n");	
+  }
+  else{
+   	  bool success=true;
+  	  uint32_t tmp=expr(args,&success);
+  	  if(success){	
+		  WP* newWP=new_wp();
+		  newWP->val=tmp;
+		  strcpy(newWP->what,args);
+		  printf("Watchpoint:%d What:%s Value:%u\n",newWP->NO,newWP->what,newWP->val);
+	  } 
+	  else printf("Error in evaluation.\n");
+  }	
+  return 0;
+}
+static int cmd_d(char *args)
+{
+  if(args==NULL){
+	  printf("Usage: d [expr]\n");
+  }
+  else{
+  	  int i=atoi(args);
+  	  free_wp(i);
+  }
+  return 0;
 }
 static int cmd_help(char *args);
 
@@ -168,15 +147,15 @@ static struct {
   char *description;
   int (*handler) (char *);
 } cmd_table [] = {
-  { "help", "Display informations about all supported commands", cmd_help },
+  { "help", "Display informations about all supported commands", cmd_help 	 },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  { "si", "Let the program stop after running N operations",cmd_si},
-  { "info", "Display the information what you requires", cmd_info},
-  { "x", "Display a continuous range of N 4 bytes in hexadecimal form",cmd_x},
-  { "p", "Display the result of an expression",cmd_p},
-  { "w", "Set a watch of expressions you give",cmd_w},
-  { "d", "Delete a watch of expressions you give",cmd_d}
+  { "si","Usage: si [n]\nStep N instructions.",cmd_si },
+  { "info","Usage: info [r][w]\nGeneric command for showing things about the program being debugged.", cmd_info  },
+  { "x","Usage: x [n][address]\nExamine memory. ",cmd_x },
+  { "p","Usage: p [expr]\nprint the value of a expression.",cmd_p},
+  { "w","Usage: w [expr]\nset a watchpoint.",cmd_w},
+  { "d","Usage: d [expr]\ndelete a watchpoint.",cmd_d},
   /* TODO: Add more commands */
 
 };
@@ -192,7 +171,7 @@ static int cmd_help(char *args) {
     /* no argument given */
     for (i = 0; i < NR_CMD; i ++) {
       printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
-   }
+    }
   }
   else {
     for (i = 0; i < NR_CMD; i ++) {

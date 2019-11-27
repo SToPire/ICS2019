@@ -45,6 +45,7 @@ void send_key(uint8_t scancode, bool is_keydown) {
     Assert(key_r != key_f, "key queue overflow!");
   }
 }
+
 static void i8042_data_io_handler(uint32_t offset, int len, bool is_write) {
   assert(!is_write);
   assert(offset == 0);
