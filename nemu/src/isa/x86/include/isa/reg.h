@@ -16,59 +16,49 @@ enum { R_AL, R_CL, R_DL, R_BL, R_AH, R_CH, R_DH, R_BH };
  * For more details about the register encoding scheme, see i386 manual.
  */
 
-typedef struct { 
-  union{
-   union {
-     uint32_t _32;
-     uint16_t _16;
-     uint8_t _8[2];
-   } gpr[8];
 
+typedef struct {
+  union {
+  union {
+    uint32_t _32;
+    uint16_t _16;
+    uint8_t _8[2];
+  } gpr[8];
+  struct{
+  rtlreg_t eax,ecx,edx,ebx,esp,ebp,esi,edi;
+  };
+  };
+ 
   /* Do NOT change the order of the GPRs' definitions. */
-
   /* In NEMU, rtlreg_t is exactly uint32_t. This makes RTL instructions
    * in PA2 able to directly access these registers.
    */
-   struct{
-     rtlreg_t eax,ecx,edx, ebx, esp, ebp, esi, edi;
-   };  
-  }; 
   vaddr_t pc;
-  union{
-    struct{
-      rtlreg_t CF:1;
-      rtlreg_t EMPTY1:1;
-      rtlreg_t PF:1;
-      rtlreg_t EMPTY2:1;
-      rtlreg_t AF:1;
-      rtlreg_t EMPTY3:1;
-      rtlreg_t ZF:1;
-      rtlreg_t SF:1;
-      rtlreg_t TF:1;
-      rtlreg_t IF:1;
-      rtlreg_t DF:1;
-      rtlreg_t OF:1;
-      rtlreg_t TOPL:2;
-      rtlreg_t NT:1;
-      rtlreg_t EMPTY4:1;
-      rtlreg_t RF:1;
-      rtlreg_t VM:1;
-      rtlreg_t AC:1;
-      rtlreg_t VIF:1;
-      rtlreg_t VIP:1;
-      rtlreg_t ID:1;
-      rtlreg_t EMPTY5:10;
-    }eflags;
-    rtlreg_t Eflags;
-  };
-  rtlreg_t cs;
+  union {
+  struct {
+        bool CF;
+        unsigned : 1; 
+  	bool PF;
+  	unsigned : 1;
+  	bool AF;
+  	unsigned : 1; 
+  	bool ZF,SF,TF,IF,DF,OF;
+  	unsigned IOPL : 3;
+  	bool NT;
+  	unsigned : 1;  
+  	bool RF,VM,AC,VIF,VIP;
+        unsigned : 10;
+    }EFLAGS;
+   uint32_t eflags;
+   };
+  uint32_t cs;
   struct{
-    uint16_t limit;
-    rtlreg_t base;
+     uint16_t len;
+     uint32_t addr;
   }idtr;
 } CPU_state;
 
-static inline int check_reg_index(int index) {
+static inline int check_reg_index(int index ) {
   assert(index >= 0 && index < 8);
   return index;
 }

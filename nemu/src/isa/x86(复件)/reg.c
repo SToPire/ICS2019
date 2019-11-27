@@ -29,7 +29,6 @@ void reg_test() {
   assert(reg_b(R_DH) == ((sample[R_EDX] >> 8) & 0xff));
 
   assert(sample[R_EAX] == cpu.eax);
-  assert(sample[R_ECX] == cpu.ecx);
   assert(sample[R_EDX] == cpu.edx);
   assert(sample[R_EBX] == cpu.ebx);
   assert(sample[R_ESP] == cpu.esp);
@@ -41,37 +40,44 @@ void reg_test() {
 }
 
 void isa_reg_display() {
-  printf("*cpu.eax = %d = 0x%08x\n",cpu.eax,cpu.eax);
-  printf("*cpu.ecx = %d = 0x%08x\n",cpu.ecx,cpu.ecx);
-  printf("*cpu.edx = %d = 0x%08x\n",cpu.edx,cpu.edx);
-  printf("*cpu.ebx = %d = 0x%08x\n",cpu.ebx,cpu.ebx);
-  printf("*cpu.esp = %d = 0x%08x\n",cpu.esp,cpu.esp);
-  printf("*cpu.ebp = %d = 0x%08x\n",cpu.ebp,cpu.ebp);
-  printf("*cpu.esi = %d = 0x%08x\n",cpu.esi,cpu.esi);
-  printf("*cpu.edi = %d = 0x%08x\n",cpu.edi,cpu.edi);
+  int i;
+  for(i=R_EAX;i<=R_EDI;i++)
+  {
+    printf("%s %d\n",regsl[i],reg_l(i));
+  }
+  printf("CF %d\n",cpu.EFLAGS.CF);
+  printf("OF %d\n",cpu.EFLAGS.OF);
+  printf("SF %d\n",cpu.EFLAGS.SF);
+  printf("ZF %d\n",cpu.EFLAGS.ZF);
 }
 
 uint32_t isa_reg_str2val(const char *s, bool *success) {
-	int len=strlen(s);char s1[10];
-  for(int i=1;i<len;++i){
-		s1[i]=*(s+i);
-		//printf("%c",s[i]);
-	}
-	//printf("%d\n",len);
-	for(int i=1;i<len;++i)
-		if(s1[i]>='A'&&s1[i]<='Z')
-			s1[i]=s1[i]-'A'+'a';
-	for(int i=1;i<len;++i){
-		if(s1[i]<'a'||s1[i]>'z'){
-			*success=0;return 0;
-		}
-	}
-	while(s1[len-1]==' '&&len>=3) len--;
-  if(len==3&&s1[1]=='p'&&s1[2]=='c') return cpu.pc;
-	for(int i=0;i<8;++i){
-		if(strcmp(s1+1,reg_name(i,1))==0) return reg_b(i); 
-		if(strcmp(s1+1,reg_name(i,2))==0) return reg_w(i); 
-		if(strcmp(s1+1,reg_name(i,4))==0) return reg_l(i); 
-	}
-	*success=0;return 0;
+  int bj=0;
+  uint32_t re;
+  for(int i=R_EAX;i<=R_EDI;i++)
+  {  
+    if(strcmp(regsl[i],s)==0)
+    {
+      bj=1;
+      re=reg_l(i);
+    }
+    else
+    if(strcmp(regsw[i],s)==0)
+    {
+      bj=1;
+      re=reg_w(i);
+    }
+    else
+    if(strcmp(regsb[i],s)==0)
+    {
+      bj=1;
+      re=reg_b(i);
+    }
+  }
+  if(bj==0) 
+  {
+    *success=false;
+    return 1;
+  }
+  else return re;
 }
