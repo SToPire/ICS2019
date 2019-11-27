@@ -15,11 +15,13 @@ extern int fs_close(int fd);
 extern size_t fs_read(int fd, void* buf, size_t len);
 extern int fs_open(const char* pathname, int flags, int mode);
 extern size_t fs_write(int fd, const void* buf, size_t len);
-size_t get_file_size(int fd);
 extern size_t fs_lseek(int fd, size_t offset, int whence);
+size_t get_file_disk_offset(int fd);
+size_t get_file_size(int fd);
 static uintptr_t loader(PCB* pcb, const char* filename)
 {
     int fd = fs_open(filename, 'r', 0);
+    //int file_offset = get_file_disk_offset(fd);
     int file_sz = get_file_size(fd);
     Elf_Ehdr E_hdr;
     Elf_Phdr P_hdr;
@@ -35,8 +37,8 @@ static uintptr_t loader(PCB* pcb, const char* filename)
             fs_lseek(fd, P_hdr.p_offset, SEEK_SET);
             fs_read(fd, tmp, P_hdr.p_filesz);
             //ramdisk_read(tmp, file_offset + P_hdr.p_offset, P_hdr.p_filesz);
-            memcpy((void*)P_hdr.p_vaddr, tmp, P_hdr.p_filesz);
-            memset((void*)(P_hdr.p_vaddr + P_hdr.p_filesz), 0, P_hdr.p_memsz - P_hdr.p_filesz);
+            memcpy((uintptr_t*)P_hdr.p_vaddr, tmp, P_hdr.p_filesz);
+            memset((uintptr_t*)(P_hdr.p_vaddr + P_hdr.p_filesz), 0, P_hdr.p_memsz - P_hdr.p_filesz);
         }
     }
     fs_close(fd);
