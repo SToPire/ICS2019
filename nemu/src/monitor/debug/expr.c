@@ -5,14 +5,10 @@
  */
 #include <sys/types.h>
 #include <regex.h>
-#include <stdlib.h>
 
 uint32_t isa_reg_str2val(const char *s, bool *success);
-
 enum {
-  TK_NOTYPE = 256, DEREF, TK_EQ, TK_NEQ, TK_AND, 
-  TK_NUM, TK_ZERO, TK_HEX_NUM, TK_HEX_ZERO, TK_REG, 
-
+  TK_NOTYPE = 256, TK_EQ,TK_NUM,TK_REG,TK_UEQ,TK_AND,TK_HNUM
   /* TODO: Add more token types */
 
 };
@@ -25,26 +21,25 @@ static struct rule {
   /* TODO: Add more rules.
    * Pay attention to the precedence level of different rules.
    */
-  {"u", TK_NOTYPE},		// u(unsigned)
+
   {" +", TK_NOTYPE},    // spaces
+  {"0x[0-9A-Fa-f]+",TK_HNUM},   //num
+  {"[0-9]+",TK_NUM},   //num
+  
+  {"\\(", '('},         //left 
+  {"\\*", '*'},         //multiply
+  {"\\)", ')'},         //right 
+  {"\\/", '/'},         //div
   {"\\+", '+'},         // plus
-  {"-" , '-'},			// sub
-  {"\\*", '*'},  		// multiply
-  {"/", '/'},			// divide
-  {"\\(", '(' },		// left bracket
-  {"\\)", ')' },		// right bracket
+  {"\\-", '-'},         // minus
+  {"\\$[a-zA-Z]*",TK_REG}, //resgi
   {"==", TK_EQ},        // equal
-  {"!=", TK_NEQ},		// nonequal
-  {"&&", TK_AND},		// and
-  {"0x0*[1-9a-fA-F][0-9a-fA-F]*",TK_HEX_NUM},//hex_num
-  {"0x0+",TK_HEX_ZERO}, 		//hex_zero	
-  {"0*[1-9][0-9]*",TK_NUM},		// num
-  {"0+",TK_ZERO},				//zero
-  {"\\$[a-zA-Z]+",TK_REG},		//reg	
+  {"!=", TK_UEQ},        // unequal
+  {"&&",TK_AND}
+  
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
-
 static regex_t re[NR_REGEX] = {};
 
 /* Rules are used for many times.
@@ -56,22 +51,21 @@ void init_regex() {
   int ret;
 
   for (i = 0; i < NR_REGEX; i ++) {
+  	//printf("%d\n",i);
     ret = regcomp(&re[i], rules[i].regex, REG_EXTENDED);
     if (ret != 0) {
       regerror(ret, &re[i], error_msg, 128);
       panic("regex compilation failed: %s\n%s", error_msg, rules[i].regex);
     }
   }
-
-  
 }
 
 typedef struct token {
   int type;
-  char str[32];
+  char str[64];
 } Token;
 
-static Token tokens[1024] __attribute__((used)) = {};
+static Token tokens[2000] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
 static bool make_token(char *e) {
@@ -80,16 +74,21 @@ static bool make_token(char *e) {
   regmatch_t pmatch;
 
   nr_token = 0;
-
+  //printf("yes\n");
+  init_regex();
   while (e[position] != '\0') {
     /* Try all rules one by one. */
     for (i = 0; i < NR_REGEX; i ++) {
+      //int len=strlen(e);
+      //printf("%s\n",e);
+      //e[len]='\0';
+      //regexec(&re[i], e + position, 1, &pmatch, 0) ;
+      //printf("%d\n",pmatch.rm_so);printf("yes\n");
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
-
-       /*Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-            i, rules[i].regex, position, substr_len, substr_len, substr_start);*/
+       //Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+           // i, rules[i].regex, position, substr_len, substr_len, substr_start);
         position += substr_len;
 
         /* TODO: Now a new token is recognized with rules[i]. Add codes
@@ -97,68 +96,37 @@ static bool make_token(char *e) {
          * of tokens, some extra actions should be performed.
          */
         switch (rules[i].token_type) {
-			case TK_NOTYPE: break;
-			case '+': 	tokens[nr_token].type='+';
-					  	strcpy(tokens[nr_token].str,"+");
-					  	++nr_token;
-					  	break;
-			case '-': 	tokens[nr_token].type='-';
-						strcpy(tokens[nr_token].str,"-");
-						++nr_token;
-						break;
-			case '*': 	tokens[nr_token].type='*';
-						strcpy(tokens[nr_token].str,"*");
-						++nr_token;
-						break;
-			case '/': 	tokens[nr_token].type='/';
-						strcpy(tokens[nr_token].str,"/");
-						++nr_token;
-						break;
-			case '(': 	tokens[nr_token].type='(';
-						strcpy(tokens[nr_token].str,"(");
-						++nr_token;
-						break;
-			case ')': 	tokens[nr_token].type=')';
-						strcpy(tokens[nr_token].str,")");
-						++nr_token;
-						break;
-			case TK_EQ: tokens[nr_token].type=TK_EQ;
-					  	strcpy(tokens[nr_token].str,"==");
-					  	++nr_token;
-					  	break;
-			case TK_NEQ:tokens[nr_token].type=TK_NEQ;
-					  	strcpy(tokens[nr_token].str,"!=");
-					  	++nr_token;
-					  	break;
-			case TK_AND:tokens[nr_token].type=TK_AND;
-					  	strcpy(tokens[nr_token].str,"&&");
-					  	++nr_token;
-					  	break;
-			case TK_REG:		tokens[nr_token].type=TK_REG;
-								++substr_start;--substr_len;
-								sprintf(tokens[nr_token].str,"%.*s",substr_len,substr_start);
-								++nr_token;
-						 		break;							
-			case TK_NUM:		tokens[nr_token].type=TK_NUM;
-							 	while(*substr_start=='0' && substr_len>1){ ++substr_start; --substr_len; } //delete 0 in prefix
-						 		sprintf(tokens[nr_token].str,"%.*s",substr_len,substr_start);
-						 		++nr_token;
-						 		break;
-			case TK_ZERO:
-			case TK_HEX_ZERO:	tokens[nr_token].type=TK_NUM;
-							 	strcpy(tokens[nr_token].str,"0");
-						 		++nr_token;
-						 		break;
-			case TK_HEX_NUM: 	tokens[nr_token].type=TK_NUM;
-								substr_start+=2;substr_len-=2;
-						 		while(*substr_start=='0' && substr_len>1){ ++substr_start; --substr_len; } //delete 0 in prefix
-								unsigned tmp;
-						 		sscanf(substr_start,"%x",&tmp);
-							 	sprintf(tokens[nr_token].str,"%d",tmp);
-							 	++nr_token;
-							 	break;
-								
+            case '+':tokens[++nr_token].type='+';break;
+	    	case '-':tokens[++nr_token].type='-';break;
+	   		 case '*':tokens[++nr_token].type='*';break;
+	    	case '/':tokens[++nr_token].type='/';break;
+	    	 case '(':tokens[++nr_token].type='(';break;
+	    	case ')':tokens[++nr_token].type=')';break;
+	    	case TK_EQ:tokens[++nr_token].type=TK_EQ;break;
+	    	case TK_UEQ:tokens[++nr_token].type=TK_UEQ;break;
+	    	case TK_AND:tokens[++nr_token].type=TK_AND;break;
+	    	case TK_REG:tokens[++nr_token].type=TK_REG;
+	    	for(int i=0;i<substr_len;++i)
+	   			tokens[nr_token].str[i]=*(substr_start+i);
+		     	tokens[nr_token].str[substr_len]='\0';
+				
+	    	break;
+	    	case TK_NUM:tokens[++nr_token].type=TK_NUM;
+			for(int i=0;i<substr_len;++i)
+	   			tokens[nr_token].str[i]=*(substr_start+i);
+		     	tokens[nr_token].str[substr_len]='\0';
+				
+	    	break;
+	    	case TK_HNUM:tokens[++nr_token].type=TK_HNUM;
+			for(int i=0;i<substr_len;++i)
+	   			tokens[nr_token].str[i]=*(substr_start+i);
+		     	tokens[nr_token].str[substr_len]='\0';
+				
+	    	break;
+	    	case TK_NOTYPE:break;
+	    default: TODO();
         }
+
         break;
       }
     }
@@ -168,125 +136,213 @@ static bool make_token(char *e) {
       return false;
     }
   }
+
   return true;
 }
-
-int check_parentheses(int p, int q){
-		/*
-		 *	return 0: illegal expression
-		 *	return 1: legal expression, and brackets match in begin and end
-		 *	return -1:legal expression, but brackets don't match in begin ane end
-		 */
-	while(tokens[p].type=='-') ++p; // delete '-' in prefix
-	if(p==q && tokens[p].type==TK_NUM) return -1;// a single number is legal
-	int i;
-	int cnt=0;
-	bool flag=false;
-	for(i=p;i<=q;i++){
-		if(tokens[i].type=='(') ++cnt;
-		else if(tokens[i].type==')') --cnt;
-		if(cnt<0) return 0;
-		if((cnt==0 && (i!=p && i!=q))) flag=true;
-	}
-	if(cnt) return 0;
-	else if(flag) return -1;
-	else if(tokens[p].type=='(' && tokens[q].type==')') return 1;
-	else return 0;
-}
-
-int find_main_operator(int p,int q){
-		/*
-		 *	return -1:	no main operator found in the expression
-		 *	return i: 	main operator found in tokens[i]
-		 */
-	int in_brackets=0; 	// wrapped in how many levels of brackets
-	int now=4; 			// priority of matched operator now. 4:'*','/'; 3:'+','-'; 2:'==','!='; 1:'&&'
-	int ans=-1;
-	int i;
-	for(i=p;i<=q;i++){
-		if(tokens[i].type=='(') ++in_brackets;
-		else if(tokens[i].type==')') --in_brackets;
-		else if((tokens[i].type=='*' || tokens[i].type=='/')
-				&& now>=4 && !in_brackets)  
-					{ans=i;now=4;}
-		else if((tokens[i].type=='+')
-				&& now>=3 && !in_brackets)
-					{ans=i;now=3;}
-		else if(tokens[i].type=='-' && now>=3 && !in_brackets && i!=p 
-				&& tokens[i-1].type!='+'
-				&& tokens[i-1].type!='-'
-				&& tokens[i-1].type!='*'
-				&& tokens[i-1].type!='/')
-					{ans=i;now=3;}
-		else if(tokens[i].type==TK_EQ 
-				&& now>=2 && !in_brackets)
-					{ans=i;now=2;}
-		else if(tokens[i].type==TK_NEQ 
-				&& now>=2 && !in_brackets)
-					{ans=i;now=2;}
-		else if(tokens[i].type==TK_AND
-				&& now>=1 && !in_brackets)
-					{ans=i;now=1;}
-	}
-	return ans;
-}
-
-uint32_t eval(int p,int q){
-	if(p>q){
-		printf("Bad Expression!\n");
+bool okay=0;
+bool check_parentheses(int p,int q){
+	if((tokens[p].type!='(')||(tokens[q].type!=')'))
 		return 0;
+	int sum=0;
+	for(int i=p+1;i<=q-1;++i){
+		if(tokens[i].type=='(') ++sum;
+		if(tokens[i].type==')') --sum;
+		if(sum<0) return 0;
 	}
-	else if(p==q){
-		if(tokens[p].type==TK_NUM) return (uint32_t)atoi(tokens[p].str);
-		else{
-			printf("Bad Expression!\n");
-			return 0;
-		}
-	}
-	else if(tokens[p].type=='-' && ((q-p==1 || ( check_parentheses(p+1,q)!=0 && find_main_operator(p+1,q)==-1)))) return -eval(p+1,q);
-	else if(tokens[p].type==DEREF && ((q-p==1 || ( check_parentheses(p+1,q)!=0 && find_main_operator(p+1,q)==-1)))) return vaddr_read(eval(p+1,q),4);
-	else{
-		int v=check_parentheses(p,q);
-		if(v==1) return eval(p+1,q-1); 			// match brackets
-		else if(v==0){
-			printf("Bad Expression!\n");
-			return 0;
-		}										// illegal expression
-		else if(v==-1){
-			int op=find_main_operator(p,q);		// legal, but p & q don't match
-			uint32_t val1=eval(p,op-1);
-			uint32_t val2=eval(op+1,q);
-			switch(tokens[op].type){
-				case '+':return (uint32_t)((uint32_t)val1 + val2);
-				case '-':return (uint32_t)((uint32_t)val1 - val2);
-				case '*':return (uint32_t)((uint32_t)val1 * val2);
-				case '/':return (uint32_t)((uint32_t)val1 / val2);
-				case TK_EQ:return val1 == val2;
-				case TK_NEQ:return val1 != val2;
-				case TK_AND:return val1 && val2;
-			}
-		}
-	}
-	return 23333; //will not be executed forever, just for pass the compliation.
+	if(sum!=0) return 0;
+	return 1;
 }
-
+int eval(int p, int q) {
+  //printf("%d %d\n",p,q);
+  if (p > q) {
+    /* Bad expression */
+    okay=0;return 0;
+  }
+  else if (p == q) {
+	if(tokens[p].type==TK_NUM){
+		int len=strlen(tokens[p].str),v=0;
+		for(int i=0;i<len;++i)
+			v=v*10+tokens[p].str[i]-'0';
+		return v;
+	}
+	else{
+		okay=0;return 0;
+	}
+    /* Single token.
+     * For now this token should be a number.
+     * Return the value of the number.
+     */
+  }
+  else if (check_parentheses(p, q) == true) {
+    /* The expression is surrounded by a matched pair of parentheses.
+     * If that is the case, just throw away the parentheses.
+     */
+    return eval(p + 1, q - 1);
+  }
+  else {
+  	//printf("yes\n");
+  	if(tokens[p].type=='-'&&tokens[p+1].type=='-') return eval(p+2,q);
+  	if((tokens[p].type=='-')&&(check_parentheses(p+1, q) == true)&&q>p+1)
+  		return -eval(p+2,q-1);
+  	if((tokens[p].type=='*')&&(check_parentheses(p+1, q) == true)&&q>p+1)
+  		return vaddr_read(eval(p+2,q-1),4);
+  	if((tokens[p].type=='-')&&p==q-1) return -eval(q,q);
+  	if((tokens[p].type=='*')&&p==q-1) return vaddr_read(eval(q,q),4);
+  	int op=0;
+  	//printf("yes\n");
+  	int sum=0;
+  	for(int i=q;i>p;--i){
+  		if(tokens[i].type==TK_AND){
+  			if(sum==0){
+  				op=i;
+  				break;
+  			}
+  		}
+  		if(tokens[i].type=='('){
+  			++sum;
+  		}
+  		if(tokens[i].type==')'){
+  			--sum;
+  		}
+  	}
+  	sum=0;
+  	for(int i=q;i>p;--i){
+  		if(op) break;
+  		if(tokens[i].type==TK_UEQ){
+  			if(sum==0){
+  				op=i;
+  				break;
+  			}
+  		}
+  		if(tokens[i].type=='('){
+  			++sum;
+  		}
+  		if(tokens[i].type==')'){
+  			--sum;
+  		}
+  	}
+  	sum=0;
+  	for(int i=q;i>p;--i){
+  		if(op) break;
+  		if(tokens[i].type==TK_EQ){
+  			if(sum==0){
+  				op=i;
+  				break;
+  			}
+  		}
+  		if(tokens[i].type=='('){
+  			++sum;
+  		}
+  		if(tokens[i].type==')'){
+  			--sum;
+  		}
+  	}
+  	sum=0;
+  	for(int i=q;i>p;--i){
+  		if(op) break;
+  		if((tokens[i].type=='-'&&tokens[i-1].type!='-'&&tokens[i-1].type!='+'&&tokens[i-1].type!='*'&&tokens[i-1].type!='/')||(tokens[i].type=='+')){
+  			if(sum==0){
+  				op=i;
+  				break;
+  			}
+  		}
+  		if(tokens[i].type=='('){
+  			++sum;
+  		}
+  		if(tokens[i].type==')'){
+  			--sum;
+  		}
+  	}
+  	sum=0;
+  	if(!op){
+  		for(int i=q;i>p;--i){
+  			if(tokens[i].type=='/'||(tokens[i].type=='*'&&tokens[i-1].type!='-'&&tokens[i-1].type!='+'&&tokens[i-1].type!='*'&&tokens[i-1].type!='/')){
+  				if(sum==0){op=i;break;}
+  			}
+  			if(tokens[i].type=='('){
+  				++sum;
+  			}
+  			if(tokens[i].type==')'){
+  				--sum;
+  			}
+  		}
+  	}
+  	if(!op){
+  		okay=0;
+  		return 0;
+    }
+    int val1;
+    if(tokens[p].type=='-'){
+    	val1=-eval(p+1,op-1);
+    }
+    else val1=eval(p,op-1);
+    int val2 = eval(op + 1, q);
+    //printf("%d %d %d %d\n",p,q,val1,val2);
+    switch (tokens[op].type) {
+   	  case TK_AND:return val1&&val2;
+   	  case TK_EQ:return val1==val2;
+   	  case TK_UEQ:return val1!=val2;
+      case '+': return val1 + val2;
+      case '-': return val1-val2;
+      case '*': return val1*val2;
+      case '/': return val1/val2;
+      default: okay=0;
+     }
+     return 0;
+    /* We should do more things here. */
+  }
+}
 uint32_t expr(char *e, bool *success) {
+  //printf("%s\n",e);
   if (!make_token(e)) {
     *success = false;
     return 0;
   }
-  int i;
-  for(i=0;i<nr_token;i++){
-  	if(tokens[i].type==TK_REG){			//寄存器，用值替换
-  		uint32_t t=isa_reg_str2val(tokens[i].str,success);
-  		if(*success){tokens[i].type=TK_NUM;sprintf(tokens[i].str,"%u",t);}
-  		else return 0;
+  okay=1;//printf("yes\n");
+  for(int i=1;i<=nr_token;++i){
+  	if(tokens[i].type==TK_REG){
+  		tokens[i].type=TK_NUM;
+  		bool ok=1;
+  		int ans=isa_reg_str2val(tokens[i].str,&ok);
+  		//printf("%d\n",ans);
+  		if(!ok){
+  			*success=false;
+  			return 0;
+  		}
+  		//printf("%d\n",ans);
+  		sprintf(tokens[i].str,"%d",ans);
   	}
-  	else if(tokens[i].type=='*'){
-  		int j=i;
-  		do{ --j;} while(tokens[j].type=='(' || tokens[j].type==')');
-  		if(!(tokens[j].type==TK_NUM) || i==0) tokens[i].type=DEREF;
+  	if(tokens[i].type==TK_HNUM){
+  		tokens[i].type=TK_NUM;
+  		int ans=0,len=strlen(tokens[i].str);
+  		for(int j=2;j<len;++j){
+  			char c=tokens[i].str[j];
+  			//printf("**%c\n",c);
+  			if(c>='0'&&c<='9')
+  				ans=ans*16+c-'0';
+  			else
+  				if(c>='A'&&c<='F')
+  					ans=ans*16+c-'A'+9;
+  				else
+  					if(c>='a'&&c<='f')
+  						ans=ans*16+c-'a'+9;
+  					else{
+  						*success=0;
+  						return 0;
+  					}
+   		}
+  		//printf("%d\n",ans);
+  		sprintf(tokens[i].str,"%d",ans);
   	}
   }
-  return eval(0,nr_token-1);
+  uint32_t x=eval(1,nr_token);
+  if(okay) return x;
+  else{
+  	*success=false;
+  	return 0;
+  }
+  /* TODO: Insert codes to evaluate the expression. */
+  TODO();
+
+  return 0;
 }
