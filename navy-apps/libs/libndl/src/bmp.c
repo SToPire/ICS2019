@@ -21,7 +21,7 @@ struct BitmapHeader {
 
 int NDL_LoadBitmap(NDL_Bitmap* bmp, const char* filename)
 {
-    printf("s");
+    printf("ssssssssssssssssssss\n");
     FILE* fp;
     int w = 0, h = 0;
     uint32_t* pixels = NULL;
