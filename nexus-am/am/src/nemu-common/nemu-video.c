@@ -4,7 +4,7 @@
 int screen_width();
 int screen_height();
 void draw_sync();
-
+int printf(const char* fmt, ...);
 size_t __am_video_read(uintptr_t reg, void* buf, size_t size)
 {
     switch (reg) {
@@ -41,6 +41,8 @@ size_t __am_video_write(uintptr_t reg, void* buf, size_t size)
 
 void __am_vga_init()
 {
+    printf("ss");
+
     int i;
     int size = screen_width() * screen_height();
     uint32_t* fb = (uint32_t*)(uintptr_t)FB_ADDR;
