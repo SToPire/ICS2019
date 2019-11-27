@@ -84,8 +84,6 @@ int fs_close(int fd)
 
 __ssize_t fs_read(int fd, void* buf, size_t len)
 {
-    printf("read\n");
-
     Finfo* cur_file = &file_table[fd];
     if (!cur_file->read) {
         if (cur_file->open_offset > cur_file->size) return 0;
@@ -100,8 +98,6 @@ __ssize_t fs_read(int fd, void* buf, size_t len)
 
 __ssize_t fs_write(int fd, const void* buf, size_t len)
 {
-    printf("write\n");
-
     Finfo* cur_file = &file_table[fd];
     if (!cur_file->write) {
         if (cur_file->open_offset > cur_file->size) return 0;
@@ -116,8 +112,6 @@ __ssize_t fs_write(int fd, const void* buf, size_t len)
 
 __off_t fs_lseek(int fd, size_t offset, int whence)
 {
-    printf("lseek\n");
-
     Finfo* cur_file = &file_table[fd];
     switch (whence) {
         case SEEK_SET:
