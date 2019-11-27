@@ -21,7 +21,6 @@ size_t get_file_size(int fd);
 static uintptr_t loader(PCB* pcb, const char* filename)
 {
     int fd = fs_open(filename, 'r', 0);
-    //int file_offset = get_file_disk_offset(fd);
     //int file_sz = get_file_size(fd);
     Elf_Ehdr E_hdr;
     //Elf_Phdr P_hdr;
@@ -38,9 +37,8 @@ static uintptr_t loader(PCB* pcb, const char* filename)
     //         memset((uintptr_t*)(P_hdr.p_vaddr + P_hdr.p_filesz), 0, P_hdr.p_memsz - P_hdr.p_filesz);
     //     }
     // }
-    // fs_close(fd);
-    // return E_hdr.e_entry;
-    return 0;
+    fs_close(fd);
+    return E_hdr.e_entry;
 }
 
 void naive_uload(PCB* pcb, const char* filename)
