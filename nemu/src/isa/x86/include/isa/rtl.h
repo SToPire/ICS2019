@@ -94,9 +94,9 @@ make_rtl_setget_eflags(CF)
 {
     // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
     switch (width) {
-        case 4: cpu.eflags.ZF = ~(((*result) & (0xffffffff)) | 0); return;
-        case 1: cpu.eflags.ZF = ~(((*result) & (0x000000ff)) | 0); return;
-        case 2: cpu.eflags.ZF = ~(((*result) & (0x0000ffff)) | 0); return;
+        case 1: cpu.eflags.ZF = !(*result & 0x000000ff); return;
+        case 2: cpu.eflags.ZF = !(*result & 0x0000ffff); return;
+        case 4: cpu.eflags.ZF = !(*result & 0xffffffff); return;
         default: assert(0);
     }
 }
