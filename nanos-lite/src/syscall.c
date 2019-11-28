@@ -41,6 +41,10 @@ __off_t sys_lseek(int fd, __off_t offset, int whence)
 {
     return fs_lseek(fd, offset, whence);
 }
+int sys_execve(const char* fname, char* const argv[], char* const envp[])
+{
+    return 0;
+}
 _Context* do_syscall(_Context* c)
 {
     uintptr_t a[4];
@@ -57,6 +61,7 @@ _Context* do_syscall(_Context* c)
         case SYS_close: c->GPRx = sys_close((int)a[1]); break;
         case SYS_read: c->GPRx = sys_read((int)a[1], (void*)a[2], (size_t)a[3]); break;
         case SYS_lseek: c->GPRx = sys_lseek((int)a[1], (__off_t)a[2], (int)a[3]); break;
+        case SYS_execve: c->GPRx = sys_execve((const char*)a[1], (char** const)a[2], (char** const)a[3]); break;
         default: panic("Unhandled syscall ID = %d", a[0]);
     }
     return NULL;
