@@ -104,7 +104,8 @@ make_rtl_setget_eflags(CF)
 static inline void rtl_update_SF(const rtlreg_t* result, int width)
 {
     // eflags.SF <- is_sign(result[width * 8 - 1 .. 0])
-    cpu.eflags.SF = ((*result) >> (width * 8 - 1));
+    t0 = ((*result) >> (width * 8 - 1)) & 1;
+    rtl_set_SF(&t0);
 }
 
 static inline void rtl_update_ZFSF(const rtlreg_t* result, int width)
