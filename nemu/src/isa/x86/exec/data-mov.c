@@ -73,23 +73,6 @@ make_EHelper(cltd)
     print_asm(decinfo.isa.is_operand_size_16 ? "cwtl" : "cltd");
 }
 
-make_EHelper(cwtl)
-{
-    if (decinfo.isa.is_operand_size_16) {
-        if (((reg_b(R_AL) >> 7) & 1) == 1)
-            reg_b(R_AH) = 0xFF;
-        else
-            reg_b(R_AH) = 0x00;
-    } else {
-        if (((reg_w(R_AX) >> 15) & 1) == 1)
-            reg_l(R_EAX) = 0xFFFF0000 | reg_l(R_EAX);
-        else
-            reg_l(R_EAX) = 0x00000000 | reg_l(R_EAX);
-    }
-
-    print_asm(decinfo.isa.is_operand_size_16 ? "cbtw" : "cwtl");
-}
-
 // make_EHelper(cltd)
 // {
 //     if (decinfo.isa.is_operand_size_16) {
@@ -107,23 +90,23 @@ make_EHelper(cwtl)
 //     print_asm(decinfo.isa.is_operand_size_16 ? "cwtl" : "cltd");
 // }
 
-// make_EHelper(cwtl)
-// {
-//     rtl_mv(&s0, &ZERO);
-//     if (decinfo.isa.is_operand_size_16) {
-//         rtl_lr(&s0, R_AL, 1);
-//         if (reg_b(R_AL) < 0)
-//             rtl_ori(&s0, &s0, 0xFF00);
-//         rtl_sr(R_AX, &s0, 2);
-//     } else {
-//         rtl_lr(&s0, R_AX, 2);
-//         if (reg_w(R_AX) < 0)
-//             rtl_ori(&s0, &s0, 0xFFFF0000);
-//         rtl_sr(R_EAX, &s0, 4);
-//     }
+make_EHelper(cwtl)
+{
+    rtl_mv(&s0, &ZERO);
+    if (decinfo.isa.is_operand_size_16) {
+        rtl_lr(&s0, R_AL, 1);
+        if (reg_b(R_AL) < 0)
+            rtl_ori(&s0, &s0, 0xFF00);
+        rtl_sr(R_AX, &s0, 2);
+    } else {
+        rtl_lr(&s0, R_AX, 2);
+        if (reg_w(R_AX) < 0)
+            rtl_ori(&s0, &s0, 0xFFFF0000);
+        rtl_sr(R_EAX, &s0, 4);
+    }
 
-//     print_asm(decinfo.isa.is_operand_size_16 ? "cbtw" : "cwtl");
-// }
+    print_asm(decinfo.isa.is_operand_size_16 ? "cbtw" : "cwtl");
+}
 
 make_EHelper(movsx)
 {
