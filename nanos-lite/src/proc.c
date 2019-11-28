@@ -34,3 +34,8 @@ _Context* schedule(_Context* prev)
 {
     return NULL;
 }
+
+void load_for_execve(const char* filename)
+{
+    naive_uload(NULL, filename);
+}

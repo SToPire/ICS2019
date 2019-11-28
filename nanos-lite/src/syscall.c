@@ -5,6 +5,7 @@ int fs_close(int fd);
 __ssize_t fs_read(int fd, void* buf, size_t len);
 __ssize_t fs_write(int fd, const void* buf, size_t len);
 __off_t fs_lseek(int fd, size_t offset, int whence);
+void load_for_execve(const char* filename);
 
 int sys_yield()
 {
@@ -43,7 +44,8 @@ __off_t sys_lseek(int fd, __off_t offset, int whence)
 }
 int sys_execve(const char* fname, char* const argv[], char* const envp[])
 {
-    return 0;
+    load_for_execve(fname);
+    return -1;
 }
 _Context* do_syscall(_Context* c)
 {
