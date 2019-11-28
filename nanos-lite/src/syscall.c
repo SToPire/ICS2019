@@ -6,6 +6,7 @@ __ssize_t fs_read(int fd, void* buf, size_t len);
 __ssize_t fs_write(int fd, const void* buf, size_t len);
 __off_t fs_lseek(int fd, size_t offset, int whence);
 void load_for_execve(const char* filename);
+int sys_execve(const char* fname, char* const argv[], char* const envp[]);
 
 int sys_yield()
 {
@@ -14,7 +15,7 @@ int sys_yield()
 }
 int sys_exit(int status)
 {
-    _halt(status);
+    sys_execve("/bin/init", NULL, NULL);
     return 0;
 }
 int sys_write(int fd, void* buf, size_t count)
