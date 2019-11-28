@@ -2,8 +2,8 @@
 #define __X86_RTL_H__
 
 #include "rtl/rtl.h"
-
 /* RTL pseudo instructions */
+
 static inline void rtl_lr(rtlreg_t* dest, int r, int width)
 {
     switch (width) {
@@ -28,84 +28,18 @@ static inline void rtl_push(const rtlreg_t* src1)
 {
     // esp <- esp - 4
     // M[esp] <- src1
-    cpu.esp -= 4;
-    rtl_sm(&cpu.esp, src1, 4);
+    reg_l(R_ESP) -= 4;
+    rtl_sm(&reg_l(R_ESP), src1, 4);
 }
 
 static inline void rtl_pop(rtlreg_t* dest)
 {
     // dest <- M[esp]
     // esp <- esp + 4
-    rtl_lm(dest, &cpu.esp, 4);
-    cpu.esp += 4;
+    rtl_lm(dest, &reg_l(R_ESP), 4);
+    reg_l(R_ESP) += 4;
 }
 
-// static inline void rtl_is_sub_overflow(rtlreg_t* dest,
-//     const rtlreg_t* res, const rtlreg_t* src1, const rtlreg_t* src2, int width) {
-//   // dest <- is_overflow(src1 - src2)
-//   rtlreg_t k=*res;
-//   rtlreg_t k1,k2;
-//   k1=*src1;k2=*src2;
-//   k=(k>>(width*8-1))&1;
-//   k1=(k1>>(width*8-1))&1;
-//   k2=(k2>>(width*8-1))&1;
-//   if(k==1)
-//   {
-
-// 	 if((k1==0)&&(k2==1))
-// 	 {
-// 	   *dest=1;
-// 	 }else *dest=0;
-//   }
-//   else
-//   {
-// 	 if((k1==1)&&(k2==0))
-// 	 {
-// 	   *dest=1;
-// 	 }else  *dest=0;
-//   }
-// }
-
-// static inline void rtl_is_sub_carry(rtlreg_t* dest,
-//     const rtlreg_t* res, const rtlreg_t* src1) {
-//   //	dest <- is_carry(src1 - src2)
-//   if(*res>*src1) *dest=1;
-//   else *dest=0;
-// }
-
-// static inline void rtl_is_add_overflow(rtlreg_t* dest,
-//     const rtlreg_t* res, const rtlreg_t* src1, const rtlreg_t* src2, int width) {
-//   // dest <- is_overflow(src1 + src2)
-//   rtlreg_t k=*res;
-//   rtlreg_t k1,k2;
-//   k1=*src1;k2=*src2;
-//   k=(k>>(width*8-1))&1;
-//   k1=(k1>>(width*8-1))&1;
-//   k2=(k2>>(width*8-1))&1;
-//   if(k==1)
-//   {
-
-// 	 if((k1==0)&&(k2==0))
-// 	 {
-// 	   *dest=1;
-// 	 }else *dest=0;
-//   }
-//   else
-//   {
-// 	 if((k1==1)&&(k2==1))
-// 	 {
-// 	   *dest=1;
-// 	 }else  *dest=0;
-//   }
-
-// }
-
-// static inline void rtl_is_add_carry(rtlreg_t* dest,
-//     const rtlreg_t* res, const rtlreg_t* src1) {
-//   // dest <- is_carry(src1 + src2)
-//   if(*res<*src1) *dest=1;
-//   else *dest=0;
-// }
 static inline void rtl_is_sub_overflow(rtlreg_t* dest,
                                        const rtlreg_t* res,
                                        const rtlreg_t* src1,
