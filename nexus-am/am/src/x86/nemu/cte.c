@@ -54,11 +54,11 @@ int _cte_init(_Context* (*handler)(_Event, _Context*))
 
 _Context* _kcontext(_Area stack, void (*entry)(void*), void* arg)
 {
-    printf("%p %p\n", stack.start, stack.end);
+    //printf("%p %p\n", stack.start, stack.end);
     _Context* tmp = stack.end - sizeof(_Context);
     printf("%p\n", entry);
     tmp->cs = 0x8;
-    tmp->eip = entry;
+    //tmp->eip = entry;
     return tmp;
 }
 
