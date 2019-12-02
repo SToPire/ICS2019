@@ -55,6 +55,8 @@ int _cte_init(_Context* (*handler)(_Event, _Context*))
 _Context* _kcontext(_Area stack, void (*entry)(void*), void* arg)
 {
     printf("%p %p\n", stack.start, stack.end);
+    _Context tmp;
+    printf("%p\n", &tmp);
     return NULL;
 }
 
