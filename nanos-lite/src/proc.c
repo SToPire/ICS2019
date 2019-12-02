@@ -35,7 +35,9 @@ void init_proc()
 
 _Context* schedule(_Context* prev)
 {
-    //current->cp = prev;
+    current->cp = prev;
+    Log("%d", current == &pcb[0]);
+
     current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
     Log("%d", current == &pcb[0]);
     Log("%x", current->cp->eip);
