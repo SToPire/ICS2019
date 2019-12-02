@@ -42,5 +42,5 @@ _Context* schedule(_Context* prev)
 
 void load_for_execve(const char* filename)
 {
-    naive_uload(NULL, filename);
+    context_uload(current, filename);
 }
