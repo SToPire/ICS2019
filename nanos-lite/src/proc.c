@@ -38,7 +38,7 @@ _Context* schedule(_Context* prev)
     current->cp = prev;
     Log("%d", current == &pcb[0]);
 
-    current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+    current = (current == &pcb[1] ? &pcb[0] : &pcb[1]);
     Log("%d", current == &pcb[0]);
     Log("%x", pcb[1].cp->eip);
     return current->cp;
