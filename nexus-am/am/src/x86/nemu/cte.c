@@ -1,6 +1,5 @@
 #include <am.h>
 #include <x86.h>
-int printf(const char* fmt, ...);
 
 static _Context* (*user_handler)(_Event, _Context*) = NULL;
 
