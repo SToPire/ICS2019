@@ -1,5 +1,6 @@
 #include <am.h>
 #include <x86.h>
+int printf(const char* fmt, ...);
 
 static _Context* (*user_handler)(_Event, _Context*) = NULL;
 
@@ -53,6 +54,7 @@ int _cte_init(_Context* (*handler)(_Event, _Context*))
 
 _Context* _kcontext(_Area stack, void (*entry)(void*), void* arg)
 {
+    printf("%p %p\n", stack.start, stack.end);
     return NULL;
 }
 
