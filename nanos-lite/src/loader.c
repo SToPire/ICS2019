@@ -55,7 +55,7 @@ void context_kload(PCB* pcb, void* entry)
 void context_uload(PCB* pcb, const char* filename)
 {
     uintptr_t entry = loader(pcb, filename);
-
+    Log("filename:%s\n", filename);
     _Area stack;
     stack.start = pcb->stack;
     stack.end = stack.start + sizeof(pcb->stack);
