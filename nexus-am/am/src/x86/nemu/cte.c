@@ -57,6 +57,7 @@ _Context* _kcontext(_Area stack, void (*entry)(void*), void* arg)
     printf("%p %p\n", stack.start, stack.end);
     _Context* tmp = stack.end - sizeof(_Context);
     printf("%p\n", tmp);
+    printf("%x\n", sizeof(_Context));
     return NULL;
 }
 
