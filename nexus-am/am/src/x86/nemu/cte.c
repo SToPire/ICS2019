@@ -58,7 +58,7 @@ _Context* _kcontext(_Area stack, void (*entry)(void*), void* arg)
     _Context* tmp = stack.end - sizeof(_Context);
     printf("%p\n", entry);
     tmp->cs = 0x8;
-    //tmp->eip = entry;
+    tmp->eip = entry;
     return tmp;
 }
 
