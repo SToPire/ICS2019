@@ -18,6 +18,8 @@ void isa_vaddr_write(vaddr_t addr, uint32_t data, int len) {
 
 paddr_t page_translate(vaddr_t addr)
 {
-    printf("%x\n", cpu.cr3.page_directory_base);
+    PDE t_pde;
+    printf("ddd:%p\n",&t_pde);
+    printf("dire base:%x\n", cpu.cr3.page_directory_base);
     return addr;
 }
