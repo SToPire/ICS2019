@@ -141,12 +141,13 @@ make_EHelper(movs)
 
 make_EHelper(mov_spe2reg)
 {
-    printf("dest:%u src:%u\n", id_dest->reg,id_src->reg);
+    if(id_src->reg==0)
+        operand_write(id_dest, &cpu.cr0);
+    else if(id_src->reg==3)
+        operand_write(id_dest, &cpu.cr3);
 }
 make_EHelper(mov_reg2spe)
 {
-    printf("dest:%u src:%u\n", id_dest->reg, id_src->reg);
-
     if(id_dest->reg==0)
         cpu.cr0 = id_src->val;
     else if(id_dest->reg==3)
