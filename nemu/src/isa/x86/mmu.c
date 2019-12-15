@@ -36,10 +36,11 @@ void isa_vaddr_write(vaddr_t addr, uint32_t data, int len)
 {
     if (cpu.cr0.paging) {
         if (get_OFFSET(addr) + len > PAGE_SIZE) {
-            int s1 = PAGE_SIZE - get_OFFSET(addr);
-            int s2 = len - s1;
-            paddr_write(page_translate(addr), data >> (8 * s2), s1);
-            paddr_write(page_translate(addr + s1), data << (8 * s1) >> (8 * s1), s2);
+            // int s1 = PAGE_SIZE - get_OFFSET(addr);
+            // int s2 = len - s1;
+            // paddr_write(page_translate(addr), data >> (8 * s2), s1);
+            // paddr_write(page_translate(addr + s1), data << (8 * s1) >> (8 * s1), s2);
+            assert(0);
         } else {
             paddr_t paddr = page_translate(addr);
             paddr_write(paddr, data, len);
