@@ -20,11 +20,17 @@ uint32_t get_DIR(vaddr_t addr)
 {
     return addr >> 22;
 }
+uint32_t get_PAGE(vaddr_t addr)
+{
+    return (addr >> 12) & 0x1FF;
+}
 paddr_t page_translate(vaddr_t addr)
 {
     PDE pde;
-    //PTE pte;
+    PTE pte;
     pde.val = paddr_read((cpu.cr3.page_directory_base << 12) + get_DIR(addr) * sizeof(PDE), sizeof(PDE));
     assert(pde.present == 1);
+    pte.val = paddr_read((pde.page_frame << 12) + get_PAGE(addr) * sizeof(PTE), sizeof(PTE));
+    assert(pte.present == 1);
     return addr;
 }
