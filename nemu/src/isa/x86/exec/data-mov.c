@@ -141,6 +141,9 @@ make_EHelper(movs)
 
 make_EHelper(mov_spe2reg)
 {
-
     printf("dest:%u src:%u\n", id_dest->reg,id_src->reg);
+}
+make_EHelper(mov_reg2spe)
+{
+    printf("dest:%u src:%u\n", id_dest->reg, id_src->reg);
 }
