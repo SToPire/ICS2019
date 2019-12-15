@@ -141,5 +141,5 @@ make_EHelper(movs)
 
 make_EHelper(mov_spe)
 {
-    printf("dest:%u\n", id_dest->reg);
+    printf("dest:%u\n", id_dest->val);
 }
