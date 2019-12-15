@@ -18,6 +18,7 @@ uint32_t isa_vaddr_read(vaddr_t addr, int len)
 {
     if (cpu.cr0.paging) {
         if (get_OFFSET(addr) + len > PAGE_SIZE) {
+            printf("%d\n", get_OFFSET(addr) + len - PAGE_SIZE);
             assert(0);
         } else {
             paddr_t paddr = page_translate(addr);
@@ -51,5 +52,4 @@ paddr_t page_translate(vaddr_t addr)
     pte.val = paddr_read((pde.page_frame << 12) + get_PAGE(addr) * sizeof(PTE), sizeof(PTE));
     assert(pte.present == 1);
     return (pte.page_frame << 12) + get_OFFSET(addr);
-    //return addr;
 }
