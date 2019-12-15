@@ -8,7 +8,7 @@ uint32_t get_DIR(vaddr_t addr)
 }
 uint32_t get_PAGE(vaddr_t addr)
 {
-    return (addr >> 12) & 0x1FF;
+    return (addr >> 12) & 0x3FF;
 }
 uint32_t get_OFFSET(vaddr_t addr)
 {
