@@ -24,6 +24,10 @@ uint32_t get_PAGE(vaddr_t addr)
 {
     return (addr >> 12) & 0x1FF;
 }
+uint32_t get_OFFSET(vaddr_t addr)
+{
+    return addr & 0xFFF;
+}
 paddr_t page_translate(vaddr_t addr)
 {
     PDE pde;
@@ -32,5 +36,5 @@ paddr_t page_translate(vaddr_t addr)
     assert(pde.present == 1);
     pte.val = paddr_read((pde.page_frame << 12) + get_PAGE(addr) * sizeof(PTE), sizeof(PTE));
     assert(pte.present == 1);
-    return addr;
+    return (pte.page_frame<<12)+get_OFFSET(addr);
 }
