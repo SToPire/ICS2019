@@ -1,7 +1,7 @@
 #include "nemu.h"
 #include <stdio.h>
 uint32_t isa_vaddr_read(vaddr_t addr, int len) {
-    if (cpu.CR0.PG) printf("cr3:%x\n",cpu.cr3);
+    if (cpu.cr0.paging) printf("cr3:%x\n",cpu.cr3.page_directory_base);
     return paddr_read(addr, len);
 }
 

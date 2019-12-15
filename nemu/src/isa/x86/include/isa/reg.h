@@ -76,14 +76,8 @@ typedef struct {
         rtlreg_t head;
         rtlreg_t len;
     } IDTR;
-    union{
-        struct{
-            rtlreg_t EMPTY : 31;
-            rtlreg_t PG : 1;
-        } CR0;
-        rtlreg_t cr0;
-    };
-    rtlreg_t cr3;
+    CR0 cr0;
+    CR3 cr3;
 } CPU_state;
 
 static inline int check_reg_index(int index)
