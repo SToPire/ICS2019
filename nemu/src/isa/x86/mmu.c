@@ -30,9 +30,17 @@ uint32_t isa_vaddr_read(vaddr_t addr, int len)
 
 void isa_vaddr_write(vaddr_t addr, uint32_t data, int len)
 {
-    paddr_write(addr, data, len);
+    if (cpu.cr0.paging) {
+        if (get_OFFSET(addr) + len > PAGE_SIZE) {
+            assert(0);
+        } else {
+            paddr_t paddr = page_translate(addr);
+            return paddr_write(paddr, data, len);
+        }
+    } else {
+        return paddr_write(addr, data, len);
+    }
 }
-
 
 paddr_t page_translate(vaddr_t addr)
 {
