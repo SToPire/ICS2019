@@ -22,8 +22,8 @@ uint32_t isa_vaddr_read(vaddr_t addr, int len)
             int s2 = len - s1;
             uint32_t t1 = paddr_read(page_translate(addr), s1);
             uint32_t t2 = paddr_read(page_translate(addr + s1), s2);
-            printf("%x %x\n", t1, t2);
-            return (t1 << (8 * s2)) | t2;
+
+            return (t2 << (8 * s1)) | t1;
         } else {
             paddr_t paddr = page_translate(addr);
             return paddr_read(paddr, len);
@@ -39,9 +39,8 @@ void isa_vaddr_write(vaddr_t addr, uint32_t data, int len)
         if (get_OFFSET(addr) + len > PAGE_SIZE) {
             int s1 = PAGE_SIZE - get_OFFSET(addr);
             int s2 = len - s1;
-            paddr_write(page_translate(addr), data >> (8 * s2), s1);
-            paddr_write(page_translate(addr + s1), data << (8 * s1) >> (8 * s1), s2);
-//            assert(0);
+            paddr_write(page_translate(addr), data << (8 * s2) >> (8 * s2), s1);
+            paddr_write(page_translate(addr + s1), data >> (8 * s1), s2);
         } else {
             paddr_t paddr = page_translate(addr);
             paddr_write(paddr, data, len);
