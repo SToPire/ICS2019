@@ -138,3 +138,8 @@ make_EHelper(movs)
 
     print_asm_template2(movs);
 }
+
+make_EHelper(mov_spe)
+{
+    printf("dest:%u\n", id_dest->reg);
+}
