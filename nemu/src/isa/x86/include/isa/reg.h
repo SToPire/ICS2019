@@ -78,8 +78,8 @@ typedef struct {
     } IDTR;
     union{
         struct{
-            rtlreg_t PG : 1;
             rtlreg_t EMPTY : 31;
+            rtlreg_t PG : 1;
         } CR0;
         rtlreg_t cr0;
     };
