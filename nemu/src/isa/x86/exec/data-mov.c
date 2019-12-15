@@ -145,7 +145,6 @@ make_EHelper(mov_spe2reg)
         operand_write(id_dest, &cpu.cr0);
     else if(id_src->reg==3)
         operand_write(id_dest, &cpu.cr3);
-    printf("%x %x %x\n", cpu.eax, cpu.cr0, cpu.cr3);
 }
 make_EHelper(mov_reg2spe)
 {
@@ -153,5 +152,4 @@ make_EHelper(mov_reg2spe)
         cpu.cr0 = id_src->val;
     else if(id_dest->reg==3)
         cpu.cr3 = id_src->val;
-    printf("%x %x %x\n", cpu.eax, cpu.cr0,cpu.cr3);
 }
