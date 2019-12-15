@@ -17,13 +17,14 @@ uint32_t get_OFFSET(vaddr_t addr)
 uint32_t isa_vaddr_read(vaddr_t addr, int len)
 {
     if (cpu.cr0.paging) {
+        paddr_t paddr = page_translate(addr);
         if (get_OFFSET(addr) + len > PAGE_SIZE) {
             int s1 = PAGE_SIZE - get_OFFSET(addr);
             int s2 = len - s1;
-            printf("%d %d\n", s1,s2);
-            assert(0);
+            uint32_t t1 = paddr_read(paddr, s1);
+            uint32_t t2 = paddr_read(page_translate(addr + len), s2);
+            return (t1 << (8 * s2)) | t2;
         } else {
-            paddr_t paddr = page_translate(addr);
             return paddr_read(paddr, len);
         }
     } else {
