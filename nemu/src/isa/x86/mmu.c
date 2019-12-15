@@ -21,7 +21,7 @@ uint32_t isa_vaddr_read(vaddr_t addr, int len)
             int s1 = PAGE_SIZE - get_OFFSET(addr);
             int s2 = len - s1;
             uint32_t t1 = paddr_read(page_translate(addr), s1);
-            uint32_t t2 = paddr_read(page_translate(addr + s1), s2);
+            uint32_t t2 = paddr_read(page_translate(addr + len), s2);
             return (t1 << (8 * s2)) | t2;
         } else {
             paddr_t paddr = page_translate(addr);
