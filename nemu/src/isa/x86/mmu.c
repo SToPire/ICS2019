@@ -16,11 +16,15 @@ void isa_vaddr_write(vaddr_t addr, uint32_t data, int len) {
   paddr_write(addr, data, len);
 }
 
+uint32_t get_DIR(vaddr_t addr)
+{
+    return addr >> 22;
+}
 paddr_t page_translate(vaddr_t addr)
 {
-    PDE base;
-    base.val = paddr_read(cpu.cr3.val, 4);
-    printf("ddd:%x\n", base.val);
-    printf("dire base:%x\n", cpu.cr3.page_directory_base);
+    PDE pde;
+    //PTE pte;
+    pde.val = paddr_read((cpu.cr3.page_directory_base << 12) + get_DIR(addr) * sizeof(PDE), sizeof(PDE));
+    assert(pde.present == 1);
     return addr;
 }
