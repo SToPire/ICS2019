@@ -101,7 +101,7 @@ int is_present(uint32_t pg)
 }
 int _map(_AddressSpace* as, void* va, void* pa, int prot)
 {
-    //printf("%x %x %x\n", as->ptr,va,pa);
+    printf("%x %x %x\n", as->ptr,va,pa);
     PDE t_pde = ((PDE*)as->ptr)[get_DIR(va)];
     if (!is_present(t_pde)) {
         t_pde = ((PDE*)as->ptr)[get_DIR(va)] = (uint32_t)pgalloc_usr(1) | 0x80000000;
