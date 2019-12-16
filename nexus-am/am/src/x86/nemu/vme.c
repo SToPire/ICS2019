@@ -85,7 +85,7 @@ void __am_switch(_Context* c)
 #include<stdio.h>
 int _map(_AddressSpace* as, void* va, void* pa, int prot)
 {
-    printf("%x\n", as->ptr);
+    printf("%x %x %x\n", as->ptr,va,pa);
     return 0;
 }
 
