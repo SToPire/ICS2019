@@ -148,7 +148,8 @@ make_EHelper(mov_spe2reg)
 }
 make_EHelper(mov_reg2spe)
 {
-    if(id_dest->reg==0)
+    assert(id_dest->reg == 0 || id_dest->reg == 3);
+    if (id_dest->reg == 0)
         cpu.cr0.val = id_src->val;
     else if(id_dest->reg==3)
         cpu.cr3.val = id_src->val;
