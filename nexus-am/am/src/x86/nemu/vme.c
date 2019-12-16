@@ -82,7 +82,7 @@ void __am_switch(_Context* c)
         cur_as = c->as;
     }
 }
-
+#include<stdio.h>
 int _map(_AddressSpace* as, void* va, void* pa, int prot)
 {
     // PDE t_pde = ((PDE*)as->ptr)[PDX(va)];
@@ -92,6 +92,7 @@ int _map(_AddressSpace* as, void* va, void* pa, int prot)
     // if (!((PTE*)PTE_ADDR(t_pde))[PTX(va)] & PTE_P) {
     //     ((PTE*)PTE_ADDR(t_pde))[PTX(va)] = PTE_ADDR(pa) | PTE_P;
     // }
+    printf("%x\n", as->ptr);
     uint32_t pdx = PDX(va);
     uint32_t ptx = PTX(va);
     PDE pde = ((PDE*)as->ptr)[pdx];
