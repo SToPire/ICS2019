@@ -88,9 +88,7 @@ int _map(_AddressSpace* as, void* va, void* pa, int prot)
     if (!(t_pde & PTE_P)) {
         t_pde = ((PDE*)as->ptr)[PDX(va)] = (uint32_t)pgalloc_usr(1) | PTE_P;
     }
-    if (!((PTE*)PTE_ADDR(t_pde))[PTX(va)] & PTE_P) {
-        ((PTE*)PTE_ADDR(t_pde))[PTX(va)] = PTE_ADDR(pa) | PTE_P;
-    }
+    ((PTE*)PTE_ADDR(t_pde))[PTX(va)] = PTE_ADDR(pa) | PTE_P;
     return 0;
 }
 
