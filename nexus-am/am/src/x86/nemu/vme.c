@@ -105,5 +105,6 @@ _Context* _ucontext(_AddressSpace* as, _Area ustack, _Area kstack, void* entry, 
     _Context* tmp = ustack.end - 3 * sizeof(uintptr_t) - sizeof(_Context);
     tmp->cs = 0x8;
     tmp->eip = (uintptr_t)entry;
+    tmp->as = as;
     return tmp;
 }
