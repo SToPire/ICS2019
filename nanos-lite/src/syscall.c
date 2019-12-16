@@ -7,6 +7,7 @@ __ssize_t fs_write(int fd, const void* buf, size_t len);
 __off_t fs_lseek(int fd, size_t offset, int whence);
 void load_for_execve(const char* filename);
 int sys_execve(const char* fname, char* const argv[], char* const envp[]);
+int mm_brk(uintptr_t brk, intptr_t increment);
 
 int sys_yield()
 {
@@ -25,7 +26,8 @@ int sys_write(int fd, void* buf, size_t count)
 }
 int sys_brk(intptr_t increment)
 {
-    return 0;
+    uintptr_t tmp=0;
+    return mm_brk(tmp, increment);
 }
 
 int sys_open(const char* path, int flags, __mode_t mode)
