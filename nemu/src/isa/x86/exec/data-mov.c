@@ -153,4 +153,5 @@ make_EHelper(mov_reg2spe)
         cpu.cr0.val = id_src->val;
     else if(id_dest->reg==3)
         cpu.cr3.val = id_src->val;
+    printf("sssss:%x\n", cpu.cr3.val);
 }
