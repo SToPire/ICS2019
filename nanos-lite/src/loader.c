@@ -27,13 +27,15 @@ static uintptr_t loader(PCB* pcb, const char* filename)
         fs_read(fd, &P_hdr, E_hdr.e_phentsize);
         if (P_hdr.p_type == PT_LOAD) {
             fs_lseek(fd, P_hdr.p_offset, SEEK_SET);
-            void *vaddr = (void*)P_hdr.p_vaddr;
-            for (size_t i = 0, sz = P_hdr.p_filesz; i < sz;i+=PGSIZE,vaddr+=PGSIZE){
-                size_t read_bytes = ((sz - i) >= PGSIZE) ? PGSIZE : (sz - i);
-                void *paddr = new_page(1);
+            void* vaddr = (void*)P_hdr.p_vaddr;
+            for (int i = 0; i < P_hdr.p_filesz; i += PGSIZE, vaddr += PGSIZE) {
+                void* paddr = new_page(1);
+                uint32_t sz = (P_hdr.p_filesz - i >= PGSIZE) ? PGSIZE : (P_hdr.p_filesz - i);
                 _map(&pcb->as, vaddr, paddr, 0);
-                fs_read(fd, paddr, read_bytes);
+                fs_read(fd, paddr, sz);
             }
+            //fs_read(fd, (uintptr_t*)P_hdr.p_vaddr, P_hdr.p_filesz);
+            //memset((uintptr_t*)(P_hdr.p_vaddr + P_hdr.p_filesz), 0, P_hdr.p_memsz - P_hdr.p_filesz);
         }
     }
     fs_close(fd);
@@ -61,7 +63,7 @@ void context_uload(PCB* pcb, const char* filename)
 {
     _protect(&pcb->as);
     uintptr_t entry = loader(pcb, filename);
-    Log("filename:%s", filename);
+    Log("filename:%s\n", filename);
     _Area stack;
     stack.start = pcb->stack;
     stack.end = stack.start + sizeof(pcb->stack);
