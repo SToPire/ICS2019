@@ -83,28 +83,16 @@ void __am_switch(_Context* c)
     }
 }
 #include <stdio.h>
-uint32_t get_DIR(void* addr)
-{
-    return (uint32_t)addr >> 22;
-}
-uint32_t get_PAGE(void* addr)
-{
-    return ((uint32_t)addr >> 12) & 0x3FF;
-}
-uint32_t get_OFFSET(void* addr)
-{
-    return (uint32_t)addr & 0xFFF;
-}
-int is_present(uint32_t pg)
-{
-    return pg & 0x80000000;
-}
+
 int _map(_AddressSpace* as, void* va, void* pa, int prot)
 {
-    printf("%x %x %x\n", as->ptr,va,pa);
-    PDE t_pde = ((PDE*)as->ptr)[get_DIR(va)];
-    if (!is_present(t_pde)) {
-        t_pde = ((PDE*)as->ptr)[get_DIR(va)] = (uint32_t)pgalloc_usr(1) | 0x80000000;
+    printf("%x %x %x\n", as->ptr, va, pa);
+    PDE t_pde = ((PDE*)as->ptr)[PDX(va)];
+    if (!(t_pde & PTE_P)) {
+        t_pde = ((PDE*)as->ptr)[PDX(va)] = (uint32_t)pgalloc_usr(1) | PTE_P;
+    }
+    if (!((PTE*)PTE_ADDR(t_pde))[PTX(va)] & PTE_P) {
+        ((PTE*)PTE_ADDR(t_pde))[PTX(va)] = PTE_ADDR(pa) | PTE_P;
     }
     printf("%x\n", t_pde);
     return 0;
