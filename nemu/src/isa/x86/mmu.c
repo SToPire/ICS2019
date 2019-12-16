@@ -55,8 +55,8 @@ paddr_t page_translate(vaddr_t addr)
     PDE pde;
     PTE pte;
     pde.val = paddr_read((cpu.cr3.page_directory_base << 12) + get_DIR(addr) * sizeof(PDE), sizeof(PDE));
-    //assert(pde.present == 1);
+    assert(pde.present == 1);
     pte.val = paddr_read((pde.page_frame << 12) + get_PAGE(addr) * sizeof(PTE), sizeof(PTE));
-    //assert(pte.present == 1);
+    assert(pte.present == 1);
     return (pte.page_frame << 12) + get_OFFSET(addr);
 }
