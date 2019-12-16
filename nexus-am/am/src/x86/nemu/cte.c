@@ -27,7 +27,7 @@ _Context* __am_irq_handle(_Context* c)
             next = c;
         }
     }
-    __am_switch(c);
+    __am_switch(next);
     return next;
 }
 
