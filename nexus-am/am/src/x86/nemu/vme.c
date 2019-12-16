@@ -83,9 +83,23 @@ void __am_switch(_Context* c)
     }
 }
 #include<stdio.h>
+uint32_t get_DIR(void* addr)
+{
+    return (uint32_t)addr >> 22;
+}
+uint32_t get_PAGE(void* addr)
+{
+    return ((uint32_t)addr >> 12) & 0x3FF;
+}
+uint32_t get_OFFSET(void* addr)
+{
+    return (uint32_t)addr & 0xFFF;
+}
 int _map(_AddressSpace* as, void* va, void* pa, int prot)
 {
-    printf("%x %x %x\n", as->ptr,va,pa);
+    //printf("%x %x %x\n", as->ptr,va,pa);
+    PDE t_pde=((PDE*)as->ptr)[get_DIR(va)];
+    printf("%x\n",t_pde);
     return 0;
 }
 
