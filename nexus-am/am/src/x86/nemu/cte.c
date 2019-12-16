@@ -25,7 +25,6 @@ _Context* __am_irq_handle(_Context* c)
         next = user_handler(ev, c);
         if (next == NULL) {
             next = c;
-            printf("ssssfff");
         }
     }
     printf("%x\n", next->as->ptr);
