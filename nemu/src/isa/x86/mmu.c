@@ -54,6 +54,7 @@ paddr_t page_translate(vaddr_t addr)
 {
     PDE pde;
     PTE pte;
+    printf("cr3:%x\n",cpu.cr3.val);
     pde.val = paddr_read((cpu.cr3.page_directory_base << 12) + get_DIR(addr) * sizeof(PDE), sizeof(PDE));
     //printf("vaddr:%x\n", addr);
     assert(pde.present == 1);
