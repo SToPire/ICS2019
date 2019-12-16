@@ -37,6 +37,7 @@ static uintptr_t loader(PCB* pcb, const char* filename)
             for (size_t i = 0, sz = P_hdr.p_filesz; i < sz;i+=PGSIZE,vaddr+=PGSIZE){
                 size_t read_bytes = ((sz - i) >= PGSIZE) ? PGSIZE : (sz - i);
                 paddr = new_page(1);
+                printf("vaddr:%x paddr:%x\n", vaddr, paddr);
                 _map(&pcb->as, vaddr, paddr, 0);
                 fs_read(fd, paddr, read_bytes);
             }
