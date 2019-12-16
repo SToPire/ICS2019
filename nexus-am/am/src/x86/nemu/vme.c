@@ -82,7 +82,6 @@ void __am_switch(_Context* c)
         cur_as = c->as;
     }
 }
-#include <stdio.h>
 
 int _map(_AddressSpace* as, void* va, void* pa, int prot)
 {
