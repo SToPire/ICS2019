@@ -39,7 +39,7 @@ _Context* schedule(_Context* prev)
     current = &pcb[0];
     // current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
     // return current->cp;
-    return prev;
+    return current->cp;
 }
 
 void load_for_execve(const char* filename)
