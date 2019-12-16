@@ -27,16 +27,10 @@ static uintptr_t loader(PCB* pcb, const char* filename)
         fs_read(fd, &P_hdr, E_hdr.e_phentsize);
         if (P_hdr.p_type == PT_LOAD) {
             fs_lseek(fd, P_hdr.p_offset, SEEK_SET);
-            void *vaddr = (void*)P_hdr.p_vaddr, *paddr;
-            // for (int i = 0; i < P_hdr.p_filesz; i += PGSIZE, vaddr += PGSIZE) {
-            //     void* paddr = new_page(1);
-            //     uint32_t sz = (P_hdr.p_filesz - i >= PGSIZE) ? PGSIZE : (P_hdr.p_filesz - i);
-            //     _map(&pcb->as, vaddr, paddr, 0);
-            //     fs_read(fd, paddr, sz);
-            // }
+            void *vaddr = (void*)P_hdr.p_vaddr;
             for (size_t i = 0, sz = P_hdr.p_filesz; i < sz;i+=PGSIZE,vaddr+=PGSIZE){
                 size_t read_bytes = ((sz - i) >= PGSIZE) ? PGSIZE : (sz - i);
-                paddr = new_page(1);
+                void *paddr = new_page(1);
                 printf("vaddr:%x paddr:%x\n", vaddr, paddr);
                 _map(&pcb->as, vaddr, paddr, 0);
                 fs_read(fd, paddr, read_bytes);
