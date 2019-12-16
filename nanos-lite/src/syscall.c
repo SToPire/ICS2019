@@ -15,7 +15,8 @@ int sys_yield()
 }
 int sys_exit(int status)
 {
-    sys_execve("/bin/init", NULL, NULL);
+    //sys_execve("/bin/init", NULL, NULL);
+    _halt(0);
     return 0;
 }
 int sys_write(int fd, void* buf, size_t count)
