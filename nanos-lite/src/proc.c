@@ -9,6 +9,7 @@ static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
 static PCB pcb_boot = {};
 PCB* current = NULL;
 
+int cnt;
 void switch_boot_pcb()
 {
     current = &pcb_boot;
@@ -38,7 +39,16 @@ _Context* schedule(_Context* prev)
 {
     current->cp = prev;
     //current = &pcb[1];
-    current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+    //current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+    if(current==&pcb[0])
+        current = &pcb[1];
+    else if(cnt==10){
+        cnt = 0;
+        current = &pcb[1];
+    }
+    else{
+        cnt++;
+    }
     return current->cp;
 }
 
