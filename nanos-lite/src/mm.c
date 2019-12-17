@@ -19,7 +19,7 @@ void free_page(void* p)
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk, intptr_t increment)
 {
-    Log("%x %x %x", current->max_brk, brk);
+    Log("%x %x ", current->max_brk, brk);
     return 0;
 }
 
