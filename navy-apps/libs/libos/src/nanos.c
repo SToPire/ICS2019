@@ -38,7 +38,7 @@
 #    error syscall is not supported
 #endif
 
-
+extern char _end;
 
 intptr_t _syscall_(intptr_t type, intptr_t a0, intptr_t a1, intptr_t a2)
 {
@@ -72,14 +72,14 @@ int _write(int fd, void* buf, size_t count)
 
 void* _sbrk(intptr_t increment)
 {
-    // if (_syscall_(SYS_brk,  increment, 0, 0) == -1) {
-    //     return (void*)(-1);
-    // } else {
-    //     intptr_t tmp = program_break;
-    //     program_break += increment;
-    //     return (void*)tmp;
-    // }
-    return _syscall_(SYS_brk, increment, 0, 0);
+    uintptr_t program_break = (uintptr_t)(&_end);
+    void* old = (void*)program_break;
+    if(_syscall_(SYS_brk,program_break+increment,0,0)==0){
+        program_break += increment;
+        return old;
+    }else{
+        return (void*)-1;
+    }
 }
 
 int _read(int fd, void* buf, size_t count)

@@ -24,9 +24,9 @@ int sys_write(int fd, void* buf, size_t count)
 {
     return fs_write(fd, buf, count);
 }
-void* sys_brk(intptr_t increment)
+int sys_brk(intptr_t increment)
 {
-    return  (void*)mm_brk(increment, 0);
+    return mm_brk(increment, 0);
 }
 
 int sys_open(const char* path, int flags, __mode_t mode)
@@ -61,7 +61,7 @@ _Context* do_syscall(_Context* c)
         case SYS_exit: c->GPRx = sys_exit((int)a[1]); break;
         case SYS_yield: c->GPRx = sys_yield(); break;
         case SYS_write: c->GPRx = sys_write((int)a[1], (void*)a[2], (size_t)a[3]); break;
-        case SYS_brk: c->GPRx = (uintptr_t)sys_brk((intptr_t)a[1]); break;
+        case SYS_brk: c->GPRx = sys_brk((intptr_t)a[1]); break;
         case SYS_open: c->GPRx = sys_open((const char*)a[1], (int)a[2], (__mode_t)a[3]); break;
         case SYS_close: c->GPRx = sys_close((int)a[1]); break;
         case SYS_read: c->GPRx = sys_read((int)a[1], (void*)a[2], (size_t)a[3]); break;
