@@ -28,13 +28,14 @@ static uintptr_t loader(PCB* pcb, const char* filename)
         if (P_hdr.p_type == PT_LOAD) {
             fs_lseek(fd, P_hdr.p_offset, SEEK_SET);
             void* vaddr = (void*)P_hdr.p_vaddr;
-            printf("fsz:%x msz:%x\n", P_hdr.p_filesz, P_hdr.p_memsz);
-            for (uint32_t i = 0; i < P_hdr.p_filesz; i += PGSIZE) {
+            uint32_t i = 0;
+            for (; i < P_hdr.p_filesz; i += PGSIZE) {
                 void* paddr = new_page(1);
                 uint32_t sz = (P_hdr.p_filesz - i >= PGSIZE) ? PGSIZE : (P_hdr.p_filesz - i);
                 _map(&pcb->as, vaddr + i, paddr, 0);
                 fs_read(fd, paddr, sz);
             }
+            printf("%u\n", i);
         }
     }
     fs_close(fd);
