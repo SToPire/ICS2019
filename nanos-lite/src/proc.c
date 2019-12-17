@@ -50,3 +50,8 @@ void load_for_execve(const char* filename)
 {
     naive_uload(current, filename);
 }
+
+void change_fg(int key)
+{
+    fg_pcb = &pcb[key - 1];
+}

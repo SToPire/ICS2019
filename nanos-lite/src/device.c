@@ -3,6 +3,7 @@
 int screen_width();
 int screen_height();
 void draw_sync();
+void change_fg(int key);
 
 size_t serial_write(const void* buf, size_t offset, size_t len)
 {
@@ -26,6 +27,8 @@ size_t events_read(void* buf, size_t offset, size_t len)
         keydown = true;
         getkey ^= 0x8000;
     }
+    if (getkey == _KEY_F1 || getkey == _KEY_F2 || getkey == _KEY_F3)
+        change_fg(getkey);
     if (getkey == _KEY_NONE)
         return snprintf(buf, len, "t %u\n", uptime());
     else
