@@ -8,7 +8,7 @@ void context_uload(PCB* pcb, const char* filename);
 static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
 static PCB pcb_boot = {};
 PCB* current = NULL;
-
+PCB* fg_pcb = &pcb[1];
 int cnt;
 void switch_boot_pcb()
 {
@@ -42,7 +42,7 @@ _Context* schedule(_Context* prev)
 {
     current->cp = prev;
     //current = &pcb[1];
-    current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+    current = (current == &pcb[0] ? fg_pcb : &pcb[0]);
     return current->cp;
 }
 
