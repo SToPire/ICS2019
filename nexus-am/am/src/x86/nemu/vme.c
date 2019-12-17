@@ -99,5 +99,6 @@ _Context* _ucontext(_AddressSpace* as, _Area ustack, _Area kstack, void* entry, 
     tmp->cs = 0x8;
     tmp->eip = (uintptr_t)entry;
     tmp->as = as;
+    tmp->eflags |= 0x200;
     return tmp;
 }
