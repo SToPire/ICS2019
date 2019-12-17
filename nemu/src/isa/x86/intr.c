@@ -16,6 +16,7 @@ void raise_intr(uint32_t NO, vaddr_t ret_addr)
     vaddr_t target_address =
         (vaddr_read(cpu.IDTR.head + index + 4, 4) & 0xFFFF0000) |
         (vaddr_read(cpu.IDTR.head + index, 4) & 0x0000FFFF);
+    Log("%x", target_address);
     rtl_j(target_address);
 }
 
