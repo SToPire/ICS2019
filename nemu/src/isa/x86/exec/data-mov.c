@@ -139,18 +139,3 @@ make_EHelper(movs)
     print_asm_template2(movs);
 }
 
-make_EHelper(mov_spe2reg)
-{
-    if(id_src->reg==0)
-        operand_write(id_dest, &cpu.cr0.val);
-    else if(id_src->reg==3)
-        operand_write(id_dest, &cpu.cr3.val);
-}
-make_EHelper(mov_reg2spe)
-{
-    assert(id_dest->reg == 0 || id_dest->reg == 3);
-    if (id_dest->reg == 0)
-        cpu.cr0.val = id_src->val;
-    else if(id_dest->reg==3)
-        cpu.cr3.val = id_src->val;
-}

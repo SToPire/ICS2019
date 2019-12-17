@@ -68,5 +68,5 @@ make_EHelper(nemu_trap);
 make_EHelper(movsb);
 make_EHelper(movs);
 
-make_EHelper(mov_spe2reg);
-make_EHelper(mov_reg2spe);
+make_EHelper(mov_cr2r);
+make_EHelper(mov_r2cr);
