@@ -36,13 +36,15 @@ static uintptr_t loader(PCB* pcb, const char* filename)
                 fs_read(fd, paddr, sz);
             }
             vaddr = vaddr + i;
+            i = 0;
             uint32_t zero_size = P_hdr.p_memsz - P_hdr.p_filesz;
-            for (uint32_t i = 0; i < zero_size;i += PGSIZE){
+            for (; i < zero_size;i += PGSIZE){
                 void* paddr = new_page(1);
                 uint32_t sz = (zero_size - i >= PGSIZE) ? PGSIZE : (zero_size - i);
                 _map(&pcb->as, vaddr + i, paddr, 0);
                 memset(paddr, 0, sz);
             }
+            pcb->max_brk = PGROUNDUP((uint32_t)vaddr + i);
         }
     }
     fs_close(fd);

@@ -1,7 +1,6 @@
 #include "memory.h"
 #include "proc.h"
 extern PCB* current;
-extern char _end;
 static void* pf = NULL;
 
 void* new_page(size_t nr_page)
@@ -20,7 +19,7 @@ void free_page(void* p)
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk, intptr_t increment)
 {
-    Log("%x %x %x", current->max_brk, brk, (uintptr_t)_end);
+    Log("%x %x %x", current->max_brk, brk);
     return 0;
 }
 
