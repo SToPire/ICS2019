@@ -17,9 +17,8 @@ void free_page(void *p) {
 
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk, intptr_t increment) {
-  Log("fuck you");
-  Log("%x\n", current->max_brk);
-  return 0;
+    Log("%x %x", current->max_brk, brk);
+    return 0;
 }
 
 void init_mm() {
