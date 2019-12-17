@@ -72,13 +72,12 @@ int _write(int fd, void* buf, size_t count)
 
 void* _sbrk(intptr_t increment)
 {
-    uintptr_t program_break = (uintptr_t)(&_end);
-    void* old = (void*)program_break;
-    if(_syscall_(SYS_brk,program_break+increment,0,0)==0){
+    if (_syscall_(SYS_brk,  increment, 0, 0) == -1) {
+        return (void*)(-1);
+    } else {
+        intptr_t tmp = program_break;
         program_break += increment;
-        return old;
-    }else{
-        return (void*)-1;
+        return (void*)tmp;
     }
 }
 
