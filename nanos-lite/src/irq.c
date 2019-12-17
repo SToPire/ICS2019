@@ -9,7 +9,7 @@ static _Context* do_event(_Event e, _Context* c)
             return schedule(c);
         case _EVENT_IRQ_TIMER:
             Log("Timer interrupt");
-           // _yield();
+            _yield();
             break;
         default: panic("Unhandled event ID = %d", e.event);
     }
