@@ -38,7 +38,6 @@ static uintptr_t loader(PCB* pcb, const char* filename)
             vaddr = vaddr + i;
             uint32_t zero_size = P_hdr.p_memsz - P_hdr.p_filesz;
             for (uint32_t i = 0; i < zero_size;i += PGSIZE){
-                Log("inzsssssssssssssssssssssssssssssssssssssssssssss");
                 void* paddr = new_page(1);
                 uint32_t sz = (zero_size - i >= PGSIZE) ? PGSIZE : (zero_size - i);
                 _map(&pcb->as, vaddr + i, paddr, 0);
