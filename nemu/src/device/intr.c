@@ -1,5 +1,5 @@
 #include "nemu.h"
 
 void dev_raise_intr() {
-    cpu.INTR = 0;
+    cpu.INTR = 1;
 }
