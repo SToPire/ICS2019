@@ -19,7 +19,6 @@ void free_page(void* p)
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk, intptr_t increment)
 {
-    Log("%x %x ", current->max_brk, brk);
     if(brk>current->max_brk){
         int len = brk - current->max_brk;
         while(len >0){
