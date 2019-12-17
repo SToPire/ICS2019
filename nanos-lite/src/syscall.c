@@ -26,8 +26,7 @@ int sys_write(int fd, void* buf, size_t count)
 }
 int sys_brk(intptr_t increment)
 {
-    uintptr_t tmp=0;
-    return mm_brk(tmp, increment);
+    return mm_brk(increment, 0);
 }
 
 int sys_open(const char* path, int flags, __mode_t mode)
