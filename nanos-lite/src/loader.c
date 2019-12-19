@@ -48,6 +48,7 @@ static uintptr_t loader(PCB* pcb, const char* filename)
         }
     }
     fs_close(fd);
+    Log("%x", E_hdr.e_entry);
     return E_hdr.e_entry;
 }
 
