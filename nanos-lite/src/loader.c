@@ -44,11 +44,11 @@ static uintptr_t loader(PCB* pcb, const char* filename)
                 _map(&pcb->as, vaddr + i, paddr, 0);
                 memset(paddr, 0, sz);
             }
-            pcb->max_brk = PGROUNDUP((uint32_t)vaddr + i);
+            uintptr_t tmp = PGROUNDUP((uint32_t)vaddr + i);
+            pcb->max_brk = (pcb->max_brk > tmp) ? pcb->max_brk : tmp;
         }
     }
     fs_close(fd);
-    Log("%x", E_hdr.e_entry);
     return E_hdr.e_entry;
 }
 
