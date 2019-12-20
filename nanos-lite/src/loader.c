@@ -44,8 +44,9 @@ static uintptr_t loader(PCB* pcb, const char* filename)
                 _map(&pcb->as, vaddr + i, paddr, 0);
                 memset(paddr, 0, sz);
             }
-            uintptr_t tmp = PGROUNDUP((uint32_t)vaddr + i);
-            pcb->max_brk = (pcb->max_brk > tmp) ? pcb->max_brk : tmp;
+            // uintptr_t tmp = PGROUNDUP((uint32_t)vaddr + i);
+            // pcb->max_brk = (pcb->max_brk > tmp) ? pcb->max_brk : tmp;
+            pcb->max_brk = PGROUNDUP((uint32_t)vaddr + i);
         }
     }
     fs_close(fd);
