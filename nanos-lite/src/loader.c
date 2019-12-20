@@ -49,6 +49,7 @@ static uintptr_t loader(PCB* pcb, const char* filename)
             pcb->max_brk = PGROUNDUP((uint32_t)vaddr + i);
         }
     }
+    Log("sss:%x",pcb->max_brk);
     fs_close(fd);
     return E_hdr.e_entry;
 }
