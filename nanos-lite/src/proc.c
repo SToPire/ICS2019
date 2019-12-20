@@ -44,7 +44,7 @@ _Context* schedule(_Context* prev)
     //current = &pcb[1];
     //current = (current == &pcb[0] ? fg_pcb : &pcb[0]);
     if (current == &pcb[0]) current = fg_pcb;
-    else if(cnt!=10){
+    else if(cnt!=100){
         ++cnt;
         current = fg_pcb;
     } else {
